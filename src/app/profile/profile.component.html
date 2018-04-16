@@ -1,3 +1,76 @@
-<p>
-  profile works!
-</p>
+<app-messages></app-messages>
+<div class = "row">
+  <div class = "col-4">
+    <div>
+      <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="Card image cap">
+      <div style="position:relative;">
+          <a class='btn btn-primary' href='javascript:;'>
+              Choose File...
+            <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
+          </a>
+          &nbsp;
+          <span class='label label-info' id="upload-file-info"></span>
+  </div>
+    </div>
+  </div>
+  <div class = "col-8" *ngIf = !isEdit>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{name}}</li>
+        <li class="list-group-item">Age: {{age}} </li>
+        <li class="list-group-item">Height: {{heightft}}" {{heightin}}' </li>
+        <li class="list-group-item">Weight: {{weight}} </li>
+        <li class="list-group-item">BMI: {{bmi}} </li>
+        <li class="list-group-item">Goal: {{goal}} </li>
+        <li class="list-group-item">Email: {{email}} </li>
+    </ul>
+    <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()">Edit User</button>
+    <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
+  </div>
+  <div class = "col-8" *ngIf = isEdit>
+      <div class="form-group row">
+          <label for="example-text-input" class="col-2 col-form-label">Name</label>
+          <div class="col-10">
+            <input class="form-control" type="text" [(ngModel)] = "name" name = "name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="example-search-input" class="col-2 col-form-label">Age</label>
+          <div class="col-10">
+            <input class="form-control" type="number"  [(ngModel)] = "age" name = "age">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="example-email-input" class="col-2 col-form-label">Height</label>
+          <div class="col-10">
+            <input class="form-control col-5" type="number" [(ngModel)] = "heightft" name = "heightft">
+            <input class="form-control col-5" type="number" [(ngModel)] = "heightin" name = "heightin">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="example-url-input" class="col-2 col-form-label">Weight</label>
+          <div class="col-10">
+            <input class="form-control" type="number" [(ngModel)] = "weight" name = "weight">
+          </div>
+        </div>
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label">BMI</label>
+            <div class="col-10">
+              <input class="form-control" type="number" [(ngModel)] = "bmi" name = "bmi">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-search-input" class="col-2 col-form-label">Goal</label>
+            <div class="col-10">
+              <input class="form-control" type="text" [(ngModel)] = "goal" name = "goal">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-email-input" class="col-2 col-form-label">Email</label>
+            <div class="col-10">
+              <input class="form-control" type="email" [(ngModel)] = "email" name = "email">
+            </div>
+          </div>
+      <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()">Save</button>
+      <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
+    </div>
+</div>

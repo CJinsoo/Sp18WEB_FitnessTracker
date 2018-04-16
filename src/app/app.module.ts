@@ -10,6 +10,7 @@ import { RouterModule, Routes}  from '@angular/router';
 import { TrackerComponent } from './tracker/tracker.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ShareComponent } from './share/share.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ShareComponent } from './share/share.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     RouterModule.forRoot([//array of router object
       {path: 'home', component: HomeComponent},
       {path: 'tracker', component: TrackerComponent},
