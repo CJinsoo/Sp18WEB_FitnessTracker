@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Http } from "@angular/http";
+import { User, Tracker } from '../model/tracker';
 
 @Component({
   selector: 'app-profile',
@@ -6,41 +8,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  isEdit:boolean = false;
-  name:string;
-  age:number;
-  gender:string;
-  email:string;
-  heightft:number;
-  heightin:number;
-  weight:number;
-  bmi:number;
-  goal:string;
+ 
+  Model = new Tracker();
+  Me :User;
 
-  constructor() { 
+  private _api = "http://localhost:8080/fitTracker";
+  isEdit:boolean = false;
+
+  constructor(private http: Http) {
     
   }
 
   bmiCalculator(){
-    var height = this.heightft*12 + this.heightin;
-    var num = this.weight/height/height*703;
-    this.bmi = Math.round(num * 100) / 100;
+    var height = this.Me.UserProfile.Heightft*12 + this.Me.UserProfile.Heightin;
+    var num = this.Me.UserProfile.Weight/height/height*703;
+    this.Me.UserProfile.Bmi = Math.round(num * 100) / 100;
   }
 
   ngOnInit() {
-    this.name = "Jane Doe";
-    this.age = 20;
-    this.heightft = 5;
-    this.heightin = 1;
-    this.weight = 100;
-    this.email = "example@gmail.com";
-    
+    /*
+    this.Me.UserProfile.Name = "Jane Doe";
+    this.Me.UserProfile.Age = 20;
+    this.Me.UserProfile.Heightft = 5;
+    this.Me.UserProfile.Heightin = 1;
+    this.Me.UserProfile.Weight = 100;
+    this.Me.UserProfile.Email = "example@gmail.com";
+    */
     //this.bmi = this.bmiCalculator((this.heightft * 12 + this.heightin), this.weight);
   }
   //this.weight / (this.heightft * 12 + this.heightin)*(this.heightft * 12 + this.heightin)) * 703
 
   toggleEdit(){
     this.isEdit = !this.isEdit;
+  }
+
+  login(id: string){
+    this.http.get(this._api + "/exercises", { params : { userId: id } })
+    .subscribe(data=> this.Me =  { UserProfile: data.json() } )
   }
 
 }

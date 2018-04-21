@@ -1,80 +1,88 @@
 <app-messages></app-messages>
-<div class = "row">
-  <div class = "col-4">
-    <div>
-      <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="Card image cap">
-      <div style="position:relative;">
-          <a class='btn btn-primary' href='javascript:;'>
-              Choose File...
-            <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
-          </a>
-          &nbsp;
-          <span class='label label-info' id="upload-file-info"></span>
-  </div>
+<div class="row container" *ngIf="!Me">
+  <h2>Please Sign in!</h2>
+  
+  <a class='btn btn-primary' routerLink = "/signin">Go to Sign in</a>
+</div>
+<div class="row" *ngIf="Me">
+  <div class = "row">
+    <div class = "col-4">
+      <div>
+        <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="Card image cap">
+        <div style="position:relative;">
+            <a class='btn btn-primary' href='javascript:;'>
+                Choose File...
+              <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
+            </a>
+            &nbsp;
+            <span class='label label-info' id="upload-file-info"></span>
     </div>
-  </div>
-  <div class = "col-8" *ngIf = !isEdit>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{name}}</li>
-        <li class="list-group-item">Age: {{age}} </li>
-        <li class="list-group-item">Gender: {{gender}} </li>
-        <li class="list-group-item">Height: {{heightft}}" {{heightin}}' </li>
-        <li class="list-group-item">Weight: {{weight}} lb</li>
-        <li class="list-group-item">BMI: {{bmi}} </li>
-        <li class="list-group-item">Goal: {{goal}} </li>
-        <li class="list-group-item">Email: {{email}} </li>
-    </ul>
-    <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()">Edit User</button>
-    <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
-  </div>
-  <div class = "col-8" *ngIf = isEdit>
-      <div class="form-group row">
-          <label for="example-text-input" class="col-2 col-form-label">Name</label>
-          <div class="col-10">
-            <input class="form-control" type="text" [(ngModel)] = "name" name = "name">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-search-input" class="col-2 col-form-label">Age</label>
-          <div class="col-10">
-            <input class="form-control" type="number"  [(ngModel)] = "age" name = "age">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-email-input" class="col-2 col-form-label">Height</label>
-          <div class="col-10">
-            <input class="form-control col-5" type="number" [(ngModel)] = "heightft" name = "heightft">
-            <input class="form-control col-5" type="number" [(ngModel)] = "heightin" name = "heightin">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="example-url-input" class="col-2 col-form-label">Weight</label>
-          <div class="col-10">
-            <input class="form-control" type="number" [(ngModel)] = "weight" name = "weight">
-          </div>
-        </div>
-        
-          <div class="form-group row">
-            <label for="example-search-input" class="col-2 col-form-label">Goal</label>
-            <div class="col-10">
-              <input class="form-control" type="text" [(ngModel)] = "goal" name = "goal">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="example-email-input" class="col-2 col-form-label">Email</label>
-            <div class="col-10">
-              <input class="form-control" type="email" [(ngModel)] = "email" name = "email">
-            </div>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="female">
-            <label class="form-check-label" for="inlineRadio1">Female</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="male">
-            <label class="form-check-label" for="inlineRadio2">Male</label>
-          </div>
-      <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()">Save</button>
+      </div>
+    </div>
+    <div class = "col-8" *ngIf = !isEdit>
+      <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{Me.UserId}}</li>
+          <li class="list-group-item">{{Model.Name}}</li>
+          <li class="list-group-item">Age: {{Model.Age}} </li>
+          <li class="list-group-item">Gender: {{Gender}} </li>
+          <li class="list-group-item">Height: {{Model.Heightft}}" {{Model.Heightin}}' </li>
+          <li class="list-group-item">Weight: {{Model.Weight}} lb</li>
+          <li class="list-group-item">BMI: {{Model.Bmi}} </li>
+          <li class="list-group-item">Goal: {{Model.Goal}} </li>
+          <li class="list-group-item">Email: {{Model.Email}} </li>
+      </ul>
+      <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()">Edit User</button>
       <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
     </div>
+    <div class = "col-8" *ngIf = isEdit>
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label">Name</label>
+            <div class="col-10">
+              <input class="form-control" type="text" [(ngModel)] = "Model.Name" name = "Name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-search-input" class="col-2 col-form-label">Age</label>
+            <div class="col-10">
+              <input class="form-control" type="number"  [(ngModel)] = "Model.Age" name = "Age">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-email-input" class="col-2 col-form-label">Height</label>
+            <div class="col-10">
+              <input class="form-control col-5" type="number" [(ngModel)] = "Model.Heightft" name = "Heightft">
+              <input class="form-control col-5" type="number" [(ngModel)] = "Model.Heightin" name = "Heightin">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-url-input" class="col-2 col-form-label">Weight</label>
+            <div class="col-10">
+              <input class="form-control" type="number" [(ngModel)] = "Model.Weight" name = "Weight">
+            </div>
+          </div>
+          
+            <div class="form-group row">
+              <label for="example-search-input" class="col-2 col-form-label">Goal</label>
+              <div class="col-10">
+                <input class="form-control" type="text" [(ngModel)] = "Model.Goal" name = "Goal">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="example-email-input" class="col-2 col-form-label">Email</label>
+              <div class="col-10">
+                <input class="form-control" type="email" [(ngModel)] = "Model.Email" name = "Email">
+              </div>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="female">
+              <label class="form-check-label" for="inlineRadio1">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="male">
+              <label class="form-check-label" for="inlineRadio2">Male</label>
+            </div>
+        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()">Save</button>
+        <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
+      </div>
+  </div>
 </div>

@@ -11,6 +11,7 @@ import { TrackerComponent } from './tracker/tracker.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ShareComponent } from './share/share.component';
 import { FormsModule } from '@angular/forms';
+import { SigninComponent } from './signin/signin.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     TrackerComponent,
     ProfileComponent,
-    ShareComponent
+    ShareComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { FormsModule } from '@angular/forms';
       {path: 'tracker', component: TrackerComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'share', component: ShareComponent},
-      {path: '', redirectTo: '/home', pathMatch: 'full'}
+      {path: '', redirectTo: '/home', pathMatch: 'full'},
+      {path: 'signin', component: SigninComponent}
     ])
   ],
   providers: [],
