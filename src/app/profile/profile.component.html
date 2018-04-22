@@ -1,10 +1,8 @@
 <app-messages></app-messages>
 <div class="row container" *ngIf="!Me">
-  <h2>Please Sign in!</h2>
-  
-  <a class='btn btn-primary' routerLink = "/signin">Go to Sign in</a>
+  <input #Name /><button (click) = "login(Name.value)" >Login</button>
 </div>
-<div class="row" *ngIf="Me">
+<div class="container" *ngIf="Me">
   <div class = "row">
     <div class = "col-4">
       <div>
@@ -21,15 +19,15 @@
     </div>
     <div class = "col-8" *ngIf = !isEdit>
       <ul class="list-group list-group-flush">
-          <li class="list-group-item">{{Me.UserId}}</li>
-          <li class="list-group-item">{{Model.Name}}</li>
-          <li class="list-group-item">Age: {{Model.Age}} </li>
-          <li class="list-group-item">Gender: {{Gender}} </li>
-          <li class="list-group-item">Height: {{Model.Heightft}}" {{Model.Heightin}}' </li>
-          <li class="list-group-item">Weight: {{Model.Weight}} lb</li>
-          <li class="list-group-item">BMI: {{Model.Bmi}} </li>
-          <li class="list-group-item">Goal: {{Model.Goal}} </li>
-          <li class="list-group-item">Email: {{Model.Email}} </li>
+          <li class="list-group-item">User Id: {{Me.UserId}}</li>
+          <li class="list-group-item">Name: {{Me.Name}}</li>
+          <li class="list-group-item">Age: {{Me.Age}} </li>
+          <li class="list-group-item">Gender: {{Me.Gender}} </li>
+          <li class="list-group-item">Height: {{Me.Heightft}}" {{Me.Heightin}}' </li>
+          <li class="list-group-item">Weight: {{Me.Weight}} lb</li>
+          <li class="list-group-item">BMI: {{Me.Bmi}} </li>
+          <li class="list-group-item">Goal: {{Me.Goal}} </li>
+          <li class="list-group-item">Email: {{Me.Email}} </li>
       </ul>
       <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()">Edit User</button>
       <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
@@ -38,39 +36,41 @@
         <div class="form-group row">
             <label for="example-text-input" class="col-2 col-form-label">Name</label>
             <div class="col-10">
-              <input class="form-control" type="text" [(ngModel)] = "Model.Name" name = "Name">
+              <input #name class="form-control" placeholder = "Jane Doe" type="text" [(ngModel)] = "Me.Name" name = "Name">
             </div>
           </div>
           <div class="form-group row">
             <label for="example-search-input" class="col-2 col-form-label">Age</label>
             <div class="col-10">
-              <input class="form-control" type="number"  [(ngModel)] = "Model.Age" name = "Age">
+              <input #age class="form-control" placeholder = "20" type="number"  [(ngModel)] = "Me.Age" name = "Age">
             </div>
           </div>
           <div class="form-group row">
             <label for="example-email-input" class="col-2 col-form-label">Height</label>
-            <div class="col-10">
-              <input class="form-control col-5" type="number" [(ngModel)] = "Model.Heightft" name = "Heightft">
-              <input class="form-control col-5" type="number" [(ngModel)] = "Model.Heightin" name = "Heightin">
+            <div class="col">
+              <input #heightF class="form-control col" placeholder = "ft" type="number" [(ngModel)] = "Me.Heightft" name = "Heightft">
+            </div>
+            <div class = "col">
+              <input #heightI class="form-control col" placeholder = "in" type="number" [(ngModel)] = "Me.Heightin" name = "Heightin">
             </div>
           </div>
           <div class="form-group row">
             <label for="example-url-input" class="col-2 col-form-label">Weight</label>
             <div class="col-10">
-              <input class="form-control" type="number" [(ngModel)] = "Model.Weight" name = "Weight">
+              <input #weight class="form-control" placeholder = "lb" type="number" [(ngModel)] = "Me.Weight" name = "Weight">
             </div>
           </div>
           
             <div class="form-group row">
               <label for="example-search-input" class="col-2 col-form-label">Goal</label>
               <div class="col-10">
-                <input class="form-control" type="text" [(ngModel)] = "Model.Goal" name = "Goal">
+                <input #goal class="form-control" placeholder = "ex) Lose 5lbs" type="text" [(ngModel)] = "Me.Goal" name = "Goal">
               </div>
             </div>
             <div class="form-group row">
               <label for="example-email-input" class="col-2 col-form-label">Email</label>
               <div class="col-10">
-                <input class="form-control" type="email" [(ngModel)] = "Model.Email" name = "Email">
+                <input #email class="form-control" placeholder = "example@gmail.com" type="email" [(ngModel)] = "Me.Email" name = "Email">
               </div>
             </div>
             <div class="form-check form-check-inline">
@@ -81,8 +81,8 @@
               <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="male">
               <label class="form-check-label" for="inlineRadio2">Male</label>
             </div>
-        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()">Save</button>
-        <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
+        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()" (click) = "saveProfile($event)"> Save</button>
+       
       </div>
   </div>
 </div>

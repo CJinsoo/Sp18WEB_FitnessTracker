@@ -1,1 +1,25 @@
 <app-messages></app-messages>
+<div class = "container">
+    <div class = "row">
+        <div class = "col-sm-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{this.UserId}}</li>
+                <li class="list-group-item">{{this.Name}}</li>
+                <li class="list-group-item">Weight: {{this.Weight}} lb</li>
+                <li class="list-group-item">BMI: {{this.Bmi}} </li>
+                <li class="list-group-item">Goal: {{this.Goal}} </li>
+            </ul>
+        </div>
+        <div class = "col-sm-5">
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Select Your Workout</label>
+                <select multiple class="form-control" id="exampleFormControlSelect2">
+                    <option *ngFor = "let item of Model.ExerciseStack">
+                        {{item}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+   
+</div>

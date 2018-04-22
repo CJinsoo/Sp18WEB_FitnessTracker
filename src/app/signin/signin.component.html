@@ -1,3 +1,6 @@
-<p>
-  signin works!
-</p>
+<div class = "container" *ngIf = "!Me">
+    <input #Name /><button (click) = "login(Name.value)" >Login</button>
+</div>
+<div class = "container" *ngIf = "Me">
+    <h2>You are already logged in</h2>
+</div>
