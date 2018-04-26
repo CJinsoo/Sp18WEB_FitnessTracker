@@ -1,25 +1,73 @@
-<app-messages></app-messages>
+<div id = "messages">
+    <div class = "alert alert-info">
+        {{messages[0]}}
+    </div>
+</div>
 <div class = "container">
     <div class = "row">
-        <div class = "col-sm-3">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{this.UserId}}</li>
-                <li class="list-group-item">{{this.Name}}</li>
-                <li class="list-group-item">Weight: {{this.Weight}} lb</li>
-                <li class="list-group-item">BMI: {{this.Bmi}} </li>
-                <li class="list-group-item">Goal: {{this.Goal}} </li>
-            </ul>
+        <div class = "col-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">User Name</h5>
+                        <h6 class="card-subtitle mb-2 text-white">UserId</h6>
+                    </div>
+                    <ul class="list-group list-group-flush text-info">
+                        <li class="list-group-item">Weight: {{Me.Weight}} lb</li>
+                        <li class="list-group-item">BMI: {{Me.Bmi}} </li>
+                        <li class="list-group-item">Goal: {{Me.Goal}} </li>
+                    </ul>
+                </div>
         </div>
-        <div class = "col-sm-5">
-            <div class="form-group">
-                <label for="exampleFormControlSelect2">Select Your Workout</label>
-                <select multiple class="form-control" id="exampleFormControlSelect2">
-                    <option *ngFor = "let item of Model.ExerciseStack">
-                        {{item}}
-                    </option>
-                </select>
+        <div class = "col-5">
+            <div class="card border-primary mb-3">
+                    <div class="card-body text-primary">
+                        <h5 class="card-title">Select Your Workout</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Choose completed workout</h6>
+                        <div class="form-group">
+                                <select multiple class="form-control" id="exampleFormControlSelect2">
+                                    <option *ngFor = "let item of Model.ExerciseStack"
+                                        (click) = "select($event, item)">
+                                        {{item}}
+                                    </option>
+                                </select>
+                            </div>
+                    </div>
             </div>
         </div>
+        <div class = "col-4" style = "padding-bottom: 2rem">
+            <div class="card border-info mb-3">
+                    <div class="card-body text-info">
+                        <h5 class="card-title">Selected Workout</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Workout name</h6>
+                        <p>Duration</p>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #duration class="form-control" placeholder = "minutes" type="number">
+                            </div>
+                        </div>
+                        <p>Cycle(s)</p>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #cycle class="form-control" placeholder = "time(s)" type="number">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()" (click) = "saveProfile($event)"> Save</button>
+                    </div>
+            </div>
+        </div>       
     </div>
-   
+    <div class = "row" >
+        <div class="card col border-success mb-3">
+                <div class="card-body text-success">
+                  <h5 class="card-title">Workout Summary</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Today is: </h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+        </div>
+    </div>
 </div>
+<script>
+    var date = new Date();
+    document.body.innerHTML = "<h6>Today is: " + date + "</h6>";
+
+</script>

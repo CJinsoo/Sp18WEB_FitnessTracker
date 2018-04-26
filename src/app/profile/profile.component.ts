@@ -11,12 +11,14 @@ export class ProfileComponent implements OnInit {
  
   Model = new Tracker();
   Me:User;
+  messages:string[];
 
   private _api = "http://localhost:8080/fitTracker";
   isEdit:boolean = false;
 
   constructor(private http: Http) {
-      
+    this.messages = ['Hi, View your profile and edit here']
+
   }
 
   bmiCalculator(){
@@ -27,9 +29,9 @@ export class ProfileComponent implements OnInit {
     return Math.round(num * 100) / 100;
   }
 
-  findUser(userId) {
-    this.Me = this.Model.Members.find(function (obj) {return obj.UserProfile.UserId === userId;});
-  }
+  //findUser(userId) {
+  //  this.Me = this.Model.Members.find(function (obj) {return obj.UserProfile.UserId === userId;});
+  //}
 
   ngOnInit() {
     /*
@@ -49,8 +51,8 @@ export class ProfileComponent implements OnInit {
   }
 
   login(id: string){
-    this.http.get(this._api + "/exercises", { params : { userId: id } })
-    .subscribe(data=> this.Me =  { UserId: id, UserProfile: data.json() } )
+    this.http.get(this._api + "/exercises", { params : { userId: id, User:this.Me } })
+    .subscribe(data=> this.Me =  { UserId: id, UserProfile: data.json(), Workout:[], CurrentWorkout:"" } )
     //console.log(this.Me.UserProfile.Name)
 
   }

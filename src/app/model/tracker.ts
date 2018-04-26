@@ -6,17 +6,21 @@ export class Tracker{
         "Bench Press", "Chest fly", "Push Up", "Pull Down", "Pull Up", "Shoulder Press", "Triceps Extension", "Biceps Curl",
         "Crunch", "Lunge", "Plank", "Running", "Mild Walking", "Fast Walking", "Yoga", "Tabata", "Dance", "Step"
     ]
+    Tips:{
+        url: string
+    };
 }
 
 export class User {
     UserId:string;
     UserProfile: Profile;
-
+    Workout: Activity[];
+    CurrentWorkout: string;
 }
 
 export class Profile {
 
-    UserId:string;
+    //UserId:string;
     Name:string;
     Age:number;
     Gender:string;
@@ -43,5 +47,5 @@ export class Activity {
     ActivityName: string;
     Duration: number;
     TotalHrWeek: number;
-
+    Cycle: number;
 }

@@ -1,3 +1,48 @@
-<p>
-  share works!
-</p>
+<div id = "messages">
+    <div class = "alert alert-info">
+        {{messages[0]}}
+    </div>
+</div>
+<div class = "container">
+    <div class = "row">
+      <div class = "col-5">
+        <div class="card border-primary mb-3">
+          <div class="card-body text-primary">
+            <h5 class="card-title">Select Friends</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
+            <div class="form-group">
+              <select multiple class="form-control" id="exampleFormControlSelect2">
+                  <option *ngFor = "let user of Model.Members"
+                      (click) = "select($event, user)">
+                      {{user}}
+                  </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class = "col-7">
+            <div class="card border-info mb-3">
+                    <div class="card-body text-info">
+                        <h5 class="card-title">Friends to Share</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"></h6>
+                        <ul class="list-group list-group-flush text-info">
+                            <li class="list-group-item">Weight: {{Me.Weight}} lb</li>
+                            <li class="list-group-item">BMI: {{Me.Bmi}} </li>
+                            <li class="list-group-item">Goal: {{Me.Goal}} </li>
+                        </ul>
+                        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()" (click) = "saveProfile($event)"> Save</button>
+                    </div>
+            </div>
+        </div>       
+      </div>
+    <div class = "row" >
+        <div class="card col border-danger mb-3">
+                <div class="card-body text-danger">
+                  <h5 class="card-title">Shared Friends</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Today is: </h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+        </div>
+    </div>
+</div>
