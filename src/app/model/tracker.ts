@@ -16,6 +16,7 @@ export class User {
     UserProfile: Profile;
     Workout: Activity[];
     CurrentWorkout: string;
+    Password:string;
 }
 
 export class Profile {

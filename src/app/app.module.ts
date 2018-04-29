@@ -12,6 +12,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { ShareComponent } from './share/share.component';
 import { FormsModule } from '@angular/forms';
 import { SigninComponent } from './signin/signin.component';
+import { TrackerService } from './services/tracker.service';
+import { SignupComponent } from './signup/signup.component';
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { SigninComponent } from './signin/signin.component';
     TrackerComponent,
     ProfileComponent,
     ShareComponent,
-    SigninComponent
+    SigninComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -35,10 +38,11 @@ import { SigninComponent } from './signin/signin.component';
       {path: 'profile', component: ProfileComponent},
       {path: 'share', component: ShareComponent},
       {path: '', redirectTo: '/home', pathMatch: 'full'},
-      {path: 'signin', component: SigninComponent}
+      {path: 'signin', component: SigninComponent},
+      {path: 'signup', component: SignupComponent}
     ])
   ],
-  providers: [],
+  providers: [TrackerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ function Tracker() {
         this.Members = [];
         this.Profile;
         this.Tips = null;
-
+ 
         //this.SetProfile
 
         this.GetProfile = (userId, user) => {

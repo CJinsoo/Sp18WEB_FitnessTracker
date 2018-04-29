@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from "@angular/http";
 import { User, Tracker } from '../model/tracker';
+import { TrackerService } from '../services/tracker.service';
 
 @Component({
   selector: 'app-signin',
@@ -8,14 +9,17 @@ import { User, Tracker } from '../model/tracker';
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  Model = new Tracker();
-  Me:User;
-  private _api = "http://localhost:8080/fitTracker";
+  //Model = new Tracker();
+  //Me:User;
+  //private _api = "http://localhost:8080/fitTracker";
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private _Tracker: TrackerService) { }
 
   ngOnInit() {
   }
 
-  
+  login(name: string, password: string){
+    this._Tracker.login(name, password);//delegate to service
+    
+  }
 }

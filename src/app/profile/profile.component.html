@@ -3,10 +3,7 @@
         {{messages[0]}}
     </div>
 </div>
-<div class="row container" *ngIf="!Me">
-  <input #Name /><button (click) = "login(Name.value)" >Login</button>
-</div>
-<div class="container" *ngIf="Me">
+<div class="container">
   <div class = "row">
     <div class = "col-4">
       <div>

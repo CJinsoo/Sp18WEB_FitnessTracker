@@ -50,12 +50,12 @@ export class ProfileComponent implements OnInit {
     this.isEdit = !this.isEdit;
   }
 
-  login(id: string){
+  /*login(id: string){
     this.http.get(this._api + "/exercises", { params : { userId: id, User:this.Me } })
     .subscribe(data=> this.Me =  { UserId: id, UserProfile: data.json(), Workout:[], CurrentWorkout:"" } )
     //console.log(this.Me.UserProfile.Name)
 
-  }
+  }*/
 
   saveProfile(e: MouseEvent, name:string, age:number, heightF:number, heightI:number, weight:number, goal:string, email:string){
     this.http.post(this._api + "/exercises/save", { UserId:this.Me.UserId, Name:name, Age:age, Gender:undefined, Email:email, Heightft:heightF, Heightin:heightI, Weight:weight, Bmi:this.bmiCalculator(), Goal:goal })
