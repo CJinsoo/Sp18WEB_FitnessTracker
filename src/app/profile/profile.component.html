@@ -21,14 +21,14 @@
     <div class = "col-8" *ngIf = !isEdit>
       <ul class="list-group list-group-flush">
           <li class="list-group-item">User Id: {{Me.UserId}}</li>
-          <li class="list-group-item">Name: {{Me.Name}}</li>
-          <li class="list-group-item">Age: {{Me.Age}} </li>
-          <li class="list-group-item">Gender: {{Me.Gender}} </li>
-          <li class="list-group-item">Height: {{Me.Heightft}}" {{Me.Heightin}}' </li>
-          <li class="list-group-item">Weight: {{Me.Weight}} lb</li>
-          <li class="list-group-item">BMI: {{Me.Bmi}} </li>
-          <li class="list-group-item">Goal: {{Me.Goal}} </li>
-          <li class="list-group-item">Email: {{Me.Email}} </li>
+          <li class="list-group-item">Name: {{Me.UserProfile.Name}}</li>
+          <li class="list-group-item">Age: {{Me.UserProfile.Age}} </li>
+          <li class="list-group-item">Gender: {{Me.UserProfile.Gender}} </li>
+          <li class="list-group-item">Height: {{Me.UserProfile.Heightft}}" {{Me.UserProfile.Heightin}}' </li>
+          <li class="list-group-item">Weight: {{Me.UserProfile.Weight}} lb</li>
+          <li class="list-group-item">BMI: {{Me.UserProfile.Bmi}} </li>
+          <li class="list-group-item">Goal: {{Me.UserProfile.Goal}} </li>
+          <li class="list-group-item">Email: {{Me.UserProfile.Email}} </li>
       </ul>
       <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()">Edit User</button>
       <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
@@ -82,7 +82,7 @@
               <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="male">
               <label class="form-check-label" for="inlineRadio2">Male</label>
             </div>
-        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()" (click) = "saveProfile($event)"> Save</button>
+        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()" (click) = "saveProfile($event, name.value, age.value, heightF.value, heightI.value, weight.value, goal.value, email.value)"> Save</button>
        
       </div>
   </div>

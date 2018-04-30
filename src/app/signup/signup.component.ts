@@ -9,6 +9,7 @@ import { TrackerService } from '../services/tracker.service';
 })
 export class SignupComponent implements OnInit {
 
+  isClick:boolean = false;
   constructor(private http: Http, private _Tracker: TrackerService) { }
 
   ngOnInit() {
@@ -17,5 +18,14 @@ export class SignupComponent implements OnInit {
   signup(name: string, password: string){
     this._Tracker.signup(name, password);//delegate to service
     
+  }
+
+  submitInitialProfile(name:string, age:number, heightft:number, heightin:number, weight:number, email:string) {
+    this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, email);
+    console.log('initialization success')
+  }
+
+  toggleSignup(){
+    this.isClick = !this.isClick;
   }
 }

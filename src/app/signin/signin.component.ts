@@ -13,13 +13,16 @@ export class SigninComponent implements OnInit {
   //Me:User;
   //private _api = "http://localhost:8080/fitTracker";
 
+  success:boolean = true;
   constructor(private http: Http, private _Tracker: TrackerService) { }
 
   ngOnInit() {
   }
 
   login(name: string, password: string){
-    this._Tracker.login(name, password);//delegate to service
-    
+    var success = this._Tracker.login(name, password);//delegate to service
+    if(!success){
+      this.success = false;
+    }
   }
 }

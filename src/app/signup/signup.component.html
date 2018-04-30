@@ -4,17 +4,52 @@
             <div class="card border-info">
                 <div class = "card-body text-info">
                     <h5 class="card-title" style = "text-align: center">Create account</h5>
-                    <div class="form-group">
-                        <div class="col-12">
-                            <input #Name class="form-control" placeholder = "User Name" type="text">
+                    <form #form = "ngForm">
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input class="form-control" type="text" name = "input" [(ngModel)]="input" placeholder = "User Name" #Id required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-12">
-                            <input #Password class="form-control" placeholder = "Password" type="text">
+                        <div class="form-group"> 
+                            <div class="col-12">
+                                <input #Password="ngModel" class="form-control" name = "password" [(ngModel)]="password" placeholder = "Password" type="text" required>
+                            </div>
                         </div>
+                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" *ngIf = !isClick (click) = "signup(Id.value, Password.value)" (click) = "toggleSignup()">Create</button> 
+                    </form>
+                    <div *ngIf = isClick>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Name class="form-control" placeholder = "Name" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Age class="form-control" placeholder = "Age" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Heightft class="form-control" placeholder = "Height ft" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Heightin class="form-control" placeholder = "Height in" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Weight class="form-control" placeholder = "Weight lb" type="number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Email class="form-control" placeholder = "example@gmail.com" type="text">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "submitInitialProfile(Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">Submit</button> 
                     </div>
-                    <button class="btn btn-primary btn-sm" style = "float:right" (click) = "signup(Name.value, Password.value)" >Submit</button> 
                 </div>
             </div>
         </div>

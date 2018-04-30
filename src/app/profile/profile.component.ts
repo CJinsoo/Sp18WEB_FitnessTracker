@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from "@angular/http";
 import { User, Tracker } from '../model/tracker';
+import { TrackerService } from '../services/tracker.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -9,15 +11,19 @@ import { User, Tracker } from '../model/tracker';
 })
 export class ProfileComponent implements OnInit {
  
-  Model = new Tracker();
+  //Model = new Tracker();
   Me:User;
   messages:string[];
 
   private _api = "http://localhost:8080/fitTracker";
   isEdit:boolean = false;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private _Tracker: TrackerService, private _Router:Router) {
     this.messages = ['Hi, View your profile and edit here']
+    this.Me = _Tracker.Me;
+    if(!this.Me ){
+      _Router.navigate(['/signin']);
+    }
 
   }
 
@@ -28,6 +34,7 @@ export class ProfileComponent implements OnInit {
     console.log('running bmicalculator' + this.Me.UserProfile.Bmi)
     return Math.round(num * 100) / 100;
   }
+  
 
   //findUser(userId) {
   //  this.Me = this.Model.Members.find(function (obj) {return obj.UserProfile.UserId === userId;});
@@ -58,8 +65,7 @@ export class ProfileComponent implements OnInit {
   }*/
 
   saveProfile(e: MouseEvent, name:string, age:number, heightF:number, heightI:number, weight:number, goal:string, email:string){
-    this.http.post(this._api + "/exercises/save", { UserId:this.Me.UserId, Name:name, Age:age, Gender:undefined, Email:email, Heightft:heightF, Heightin:heightI, Weight:weight, Bmi:this.bmiCalculator(), Goal:goal })
-    .subscribe()
+    this._Tracker.saveProfile(name, age, heightF, heightI, weight, goal, email);
   }
 
 }
