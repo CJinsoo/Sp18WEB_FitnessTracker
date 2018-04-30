@@ -5,9 +5,12 @@ var app = express.Router();
 var tracker = new Tracker();
 
 module.exports = app
-    .get('/exercises', (req, res) =>
-        res.send( tracker.GetProfile(req.query.userId, req.query.User) )
+    .get('/join', (req, res) =>
+        res.send( tracker.SignUp( req.query.userId, req.query.password) )
         //res.send( tracker ) 
+    )
+    .get('/login', (req, res) =>
+        res.send(tracker.Login(req.query.name, req.query.password))
     )
     .get('/exercises/getExercises', (req, res) =>
         res.send( tracker.GetExercises() )

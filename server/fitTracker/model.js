@@ -5,15 +5,16 @@ var TipsStack = [
 ];
 var iCurrentTips = 0;
 function Tracker() {
-
+  
         this.Members = [];
         this.Profile;
         this.Tips = null;
  
         //this.SetProfile
 
-        this.GetProfile = (userId, user) => {
-            if(this.Members.some(x=> x.UserId == userId)){
+        this.SignUp = ( userId, password) => {
+            this.Members.push({UserId:userId, Password: password});
+            /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
                 return this.Members.find(function (obj) {return obj.UserId === userId;});
                 
@@ -21,8 +22,28 @@ function Tracker() {
                 this.Members.push({ User:user });
                 //console.log('creating new user')
             }
-            return [];
+            return []; */
                   
+        }
+        this.Login = ( name, password ) => {
+            if(this.Members.find( x => x.UserId == name )){
+                var foundUser = this.Members.find( x => x.UserId == name );
+                if(foundUser.Password == password){
+                    console.log("login successful")
+                    //this._Router.navigate(['/home'])
+                    return foundUser;
+                }else{
+                    console.log("wrong password")
+                    return false;
+                }
+            }else{
+                
+                console.log("could not find user")
+                return false;
+                
+            //return false;
+            //this._Router.navigate(['/home'])
+            }
         }
         this.flipWelcome = () =>
         this.Tips = TipsStack[iCurrentPicture = (iCurrentPicture +1) % TipsStack.length];

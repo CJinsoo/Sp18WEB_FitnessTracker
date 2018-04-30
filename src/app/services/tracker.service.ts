@@ -6,7 +6,7 @@ import { User, Tracker, Profile } from '../model/tracker';
 @Injectable()
 export class TrackerService {
   
-  Model = new Tracker();
+  //Model = new Tracker();
   Me : User;
 
   constructor(private http:Http, private _Router:Router) { 
@@ -16,13 +16,13 @@ export class TrackerService {
   signup(name: string, password: string) {
 
       this.Me = { UserId: name, UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:password};//Me becomes nothing
-      this.Model.Members.push(this.Me);
+      //this.Model.Members.push(this.Me);
 
       console.log('signup successful')
       //this._Router.navigate(['/signin'])
   }
 
-  login(name: string, password: string) {
+  /* login(name: string, password: string) {
     if(this.Model.Members.find( x => x.UserId == name )){
       var user = this.Model.Members.find( x => x.UserId == name );
       if(user.Password == password)
@@ -36,7 +36,7 @@ export class TrackerService {
     }
     
 
-  }
+  } */
 
   submitInitialProfile(name:string, age:number, heightft:number, heightin:number, weight:number, email:string){
     this.Me.UserProfile.Name = name;
@@ -45,10 +45,17 @@ export class TrackerService {
     this.Me.UserProfile.Heightin = heightin;
     this.Me.UserProfile.Weight = weight;
     this.Me.UserProfile.Email = email;
+    var height = this.Me.UserProfile.Heightft*12 + this.Me.UserProfile.Heightin;
+    this.Me.UserProfile.Bmi = Math.round((this.Me.UserProfile.Weight/height/height*703) * 10000)/100;
 
+    this._Router.navigate(['/home']);
 
   }
-  
+
+  /* bmiCalculator(bmi:number){
+    this.Me.UserProfile.Bmi = bmi;
+  } */
+
   saveProfile(name:string, age:number, heightF:number, heightI:number, weight:number, goal:string, email:string){
     this.Me.UserProfile.Name = name;
     this.Me.UserProfile.Age = age;

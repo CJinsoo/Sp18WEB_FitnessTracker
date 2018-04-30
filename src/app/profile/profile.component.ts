@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   Me:User;
   messages:string[];
 
-  private _api = "http://localhost:8080/fitTracker";
+  private _api = "http://localhost:8080/profile";
   isEdit:boolean = false;
 
   constructor(private http: Http, private _Tracker: TrackerService, private _Router:Router) {
@@ -25,15 +25,18 @@ export class ProfileComponent implements OnInit {
       _Router.navigate(['/signin']);
     }
 
+    
+ 
   }
 
-  bmiCalculator(){
+/*   bmiCalculator(){
     var height = this.Me.UserProfile.Heightft*12 + this.Me.UserProfile.Heightin;
     var num = this.Me.UserProfile.Weight/height/height*703;
-    this.Me.UserProfile.Bmi = Math.round(num * 100) / 100;
+    //this.Me.UserProfile.Bmi = Math.round(num * 100) / 100;
     console.log('running bmicalculator' + this.Me.UserProfile.Bmi)
-    return Math.round(num * 100) / 100;
-  }
+    var bmi = Math.round(num * 100);
+    this._Tracker.bmiCalculator(bmi);
+  } */
   
 
   //findUser(userId) {
@@ -65,7 +68,9 @@ export class ProfileComponent implements OnInit {
   }*/
 
   saveProfile(e: MouseEvent, name:string, age:number, heightF:number, heightI:number, weight:number, goal:string, email:string){
+    e.preventDefault();
     this._Tracker.saveProfile(name, age, heightF, heightI, weight, goal, email);
   }
+
 
 }

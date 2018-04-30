@@ -1,5 +1,5 @@
 <div class = "container">
-    <div class = "row justify-content-center">
+    <div class = "row justify-content-center" *ngIf = "!Me">
         <div class = "col-md-4" style = "padding-top: 6rem">
             <div class="card border-info">
                 <div class = "card-body text-info">
@@ -12,46 +12,51 @@
                         </div>
                         <div class="form-group"> 
                             <div class="col-12">
-                                <input #Password="ngModel" class="form-control" name = "password" [(ngModel)]="password" placeholder = "Password" type="text" required>
+                                <input #Password="ngModel" class="form-control" name = "password" [(ngModel)]="password" placeholder = "Password" type="password" required>
                             </div>
                         </div>
-                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" *ngIf = !isClick (click) = "signup(Id.value, Password.value)" (click) = "toggleSignup()">Create</button> 
+                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" *ngIf = !isClick (click) = "toggleSignup()">Create</button> 
                     </form>
                     <div *ngIf = isClick>
-                        <div class="form-group">
-                            <div class="col-12">
-                                <input #Name class="form-control" placeholder = "Name" type="text">
+                        <form #form = "ngForm">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <input #Name class="form-control" placeholder = "Name" type="text" [(ngModel)]="name" name = "name" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-12">
-                                <input #Age class="form-control" placeholder = "Age" type="number">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <input #Age class="form-control" placeholder = "Age" type="number" [(ngModel)]="age" name = "age" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-12">
-                                <input #Heightft class="form-control" placeholder = "Height ft" type="number">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <input #Heightft class="form-control" placeholder = "Height ft" type="number" [(ngModel)]="heightft" name = "heightft" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-12">
-                                <input #Heightin class="form-control" placeholder = "Height in" type="number">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <input #Heightin class="form-control" placeholder = "Height in" type="number" [(ngModel)]="heightin" name = "heightin" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-12">
-                                <input #Weight class="form-control" placeholder = "Weight lb" type="number">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <input #Weight class="form-control" placeholder = "Weight lb" type="number" [(ngModel)]="weight" name = "weight" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-12">
-                                <input #Email class="form-control" placeholder = "example@gmail.com" type="text">
+                            <div class="form-group">
+                                <div class="col-12">
+                                    <input #Email class="form-control" placeholder = "example@gmail.com" type="text" [(ngModel)]="email" name = "email" required>
+                                </div>
                             </div>
-                        </div>
-                        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "submitInitialProfile(Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">Submit</button> 
+                            <button [disabled]="!name || !age || !heightft || !heightin || !weight || !email" class="btn btn-primary btn-sm" style = "float:right" (click) = "signup(Id.value, Password.value)" (click) = "submitInitialProfile($event, Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">Submit</button> 
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class = "row justify-content-center" *ngIf = "Me">
+        <h1>Already signed in</h1>
     </div>
 </div>
