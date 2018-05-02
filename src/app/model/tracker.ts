@@ -1,11 +1,7 @@
 export class Tracker{
     
     Members: User[] = [];
-    ExerciseStack = [
-        "Squat", "Leg Press", "Lunge", "Deadlift", "Leg Extension", "Leg Curl", "Standing Calf Raise", "Seated Calf Raise",
-        "Bench Press", "Chest fly", "Push Up", "Pull Down", "Pull Up", "Shoulder Press", "Triceps Extension", "Biceps Curl",
-        "Crunch", "Lunge", "Plank", "Running", "Mild Walking", "Fast Walking", "Yoga", "Tabata", "Dance", "Step"
-    ]
+    
     Tips:{
         url: string
     };
@@ -17,6 +13,9 @@ export class User {
     Workout: Activity[];
     CurrentWorkout: string;
     Password:string;
+    AvailableExercises :string[];
+    Today:TotalToday;
+    WorkoutHistory: TotalToday[];
 }
 
 export class Profile {
@@ -47,6 +46,13 @@ export class Activity {
 
     ActivityName: string;
     Duration: number;
-    TotalHrWeek: number;
+    //TotalToday: number;
     Cycle: number;
+}
+
+export class TotalToday {
+
+    TotalTime:number;
+    TotalWorkoutType:number;
+    TotalWorkout:Activity[];
 }

@@ -14,7 +14,8 @@ export class TrackerService {
   
   constructor(private http:Http, private _Router:Router) { 
     //this.model.Members.push()
-    setInterval(() => this.refresh(), 1000)
+    //setInterval(() => this.refresh(), 1000)
+    //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
   }
 
 
@@ -37,6 +38,8 @@ export class TrackerService {
           //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
             
             this.Me = data.json();//Me becomes nothing
+            //this.Me.AvailableExercises = [];
+            this.getExercisesList();
           //}
         }, err => { //handling errors -> if there was an error on the server side, this is going to be executed
           console.log(err);//passing the status to the header
@@ -54,6 +57,7 @@ export class TrackerService {
         return;
       }
       this.Me = data.json()
+      //this.Me.AvailableExercises = [];
       this._Router.navigate(['/home'])
       this.success = true;
       console.log('when is correct ' + this.success)
@@ -127,6 +131,47 @@ export class TrackerService {
       //this.refresh();
       
     });
+  }
+
+  getExercisesList() {
+    this.http.get(this._api + "/exercises/getExercises", {})
+    .subscribe(data=>{
+      this.Me.AvailableExercises = data.json();
+
+    })
+  }
+
+  selectExercise(text:string) {
+    //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
+    this.Me.CurrentWorkout = text;
+    console.log(text)
+    console.log(this.Me.CurrentWorkout)
+  }
+
+  submitExercise(duration:number, cycle:number){
+    this.http.post(this._api + "/exercises/submitExercise",{ ActivityName:this.Me.CurrentWorkout, UserId: this.Me.UserId, Duration:duration, Cycle:cycle })
+        .subscribe(data => {
+          this.Me = data.json();  
+          //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
+          //this.Me.CurrentWorkout = item[0];
+          console.log(this.Me.Workout)
+          //}
+        }, err => {
+          console.log(err);
+        });
+  } 
+
+  calculateTotalToday() {
+    this.http.post(this._api + "/exercises/calculateToday",{ Workout:this.Me.Workout, UserId: this.Me.UserId })
+        .subscribe(data => {
+          this.Me = data.json();  
+          //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
+          //this.Me.CurrentWorkout = item[0];
+          console.log(this.Me.Today.TotalWorkout)
+          //}
+        }, err => {
+          console.log(err);
+        });
   }
 
   
