@@ -12,6 +12,9 @@ module.exports = app
     .get('/login', (req, res) =>
         res.send(tracker.Login(req.query.name, req.query.password))
     )
+    .get('/join/initialize', (req, res) =>{
+        res.send( tracker.SaveInitialProfile(req.query.id, req.query.name, req.query.age, req.query.heightft, req.query.heightin, req.query.weight, req.query.email))
+    })
     .get('/exercises/getExercises', (req, res) =>
         res.send( tracker.GetExercises() )
 

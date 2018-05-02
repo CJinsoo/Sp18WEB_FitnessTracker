@@ -27,7 +27,6 @@ export class SignupComponent implements OnInit {
 
   signup(name: string, password: string){
     this._Tracker.signup(name, password);//delegate to service
-    this.join();
   }
 
   refresh(){
@@ -39,14 +38,10 @@ export class SignupComponent implements OnInit {
     e.preventDefault();
     this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, email);
     console.log('initialization success')
-  }
+  }//need to do something here, or the profile won't work.
 
   toggleSignup(){
     this.isClick = !this.isClick;
   }
 
-  join(){
-    this.http.get(this._api + "/join", { params : { userId:this._Tracker.Me.UserId, password:this._Tracker.Me.Password} })
-    .subscribe()
-  }
 }

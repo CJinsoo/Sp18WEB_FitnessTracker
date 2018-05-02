@@ -7,13 +7,13 @@ var iCurrentTips = 0;
 function Tracker() {
   
         this.Members = [];
-        this.Profile;
+        this.UserProfile;
         this.Tips = null;
  
         //this.SetProfile
 
         this.SignUp = ( userId, password) => {
-            this.Members.push({UserId:userId, Password: password});
+            this.Members.push({UserId:userId, UserProfile: {}, Password: password});
             /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
                 return this.Members.find(function (obj) {return obj.UserId === userId;});
@@ -44,13 +44,25 @@ function Tracker() {
             //return false;
             //this._Router.navigate(['/home'])
             }
-        }
+        } 
         this.flipWelcome = () =>
         this.Tips = TipsStack[iCurrentPicture = (iCurrentPicture +1) % TipsStack.length];
 
         this.GetExercises = () => ExerciseStack;
-        this.SaveProfile = ( id, name, age, gender, email, heightf, heighti, weight, bmi, goal) => { 
-            this.Members.push({UserId: id, Age: age, Gender:gender, Email:email, Heightft: heightft, Heightin: heighti, Weight:weight, Bmi: bmi, Goal:goal})
+        this.SaveInitialProfile = ( id, name, age, heightft, heightin, weight, email) => { 
+            if(this.Members.find( x => x.UserId == id )){
+                var thisUser = this.Members.find( x => x.UserId == id );
+                thisUser.UserProfile.Name = name;
+                thisUser.UserProfile.Age = age;
+                thisUser.UserProfile.Heightft = heightft;
+                thisUser.UserProfile.Heightin = heightin;
+                thisUser.UserProfile.Weight = weight;
+                thisUser.UserProfile.Email = email;
+                return thisUser;
+            }else{
+                return false;
+            }
+            //this.Members.push({UserId: id, Age: age, Gender:gender, Email:email, Heightft: heightft, Heightin: heighti, Weight:weight, Bmi: bmi, Goal:goal})
         }
         //this.CurrentExercise = (text) => this.Members.find(function obj)
         /*

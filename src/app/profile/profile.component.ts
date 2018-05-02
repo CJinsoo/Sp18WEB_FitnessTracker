@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   Me:User;
   messages:string[];
 
-  private _api = "http://localhost:8080/profile";
+  //private _api = "http://localhost:8080/profile";
   isEdit:boolean = false;
 
   constructor(private http: Http, private _Tracker: TrackerService, private _Router:Router) {

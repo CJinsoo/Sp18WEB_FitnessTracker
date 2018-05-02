@@ -26,7 +26,7 @@ export class SigninComponent implements OnInit {
     this.http.get(this._api + "/login", { params : {  name:name, password:password} })
     .subscribe(data=> {
       if(!data.json()){
-        this.success = !this.success;
+        this.success = false;
         return;
       }
       this._Tracker.Me = data.json()
