@@ -13,33 +13,23 @@ export class SigninComponent implements OnInit {
   //Model = new Tracker();
   Me:User;
   private _api = "http://localhost:8080/fitTracker";
-
   success:boolean = true;
+
   constructor(private http: Http, private _Tracker: TrackerService, private _Router: Router) { 
     this.Me = _Tracker.Me;
+    this.success = this._Tracker.success;
+
   }
 
   ngOnInit() {
   }
 
   login(name: string, password: string){
-    this.http.get(this._api + "/login", { params : {  name:name, password:password} })
-    .subscribe(data=> {
-      if(!data.json()){
-        this.success = false;
-        return;
-      }
-      this._Tracker.Me = data.json()
-      this._Router.navigate(['/home'])
-    })
-
-    //if(this.Me == null)
-      //return false;
-    
-    /* var success = this._Tracker.login(name, password);//delegate to service
-    if(!success){
-      this.success = false;
-    } */
+    this._Tracker.login(name, password);
+    //this.success = this._Tracker.success;
+    console.log('in component' + this.success);
+    /* if(!this.success)
+      this.success = false; */
     
   }
 

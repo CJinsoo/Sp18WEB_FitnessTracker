@@ -15,7 +15,7 @@
                                 <input #Password="ngModel" class="form-control" name = "password" [(ngModel)]="password" placeholder = "Password" type="password" required>
                             </div>
                         </div>
-                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" *ngIf = !isClick (click) = "toggleSignup()">Create</button> 
+                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" *ngIf = !isClick (click) = "signup(Id.value, Password.value)" (click) = "toggleSignup()">Create</button> 
                     </form>
                     <div *ngIf = isClick>
                         <form #form = "ngForm">
@@ -49,7 +49,7 @@
                                     <input #Email class="form-control" placeholder = "example@gmail.com" type="text" [(ngModel)]="email" name = "email" required>
                                 </div>
                             </div>
-                            <button [disabled]="!name || !age || !heightft || !heightin || !weight || !email" class="btn btn-primary btn-sm" style = "float:right" (click) = "signup(Id.value, Password.value)" (click) = "submitInitialProfile($event, Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">Submit</button> 
+                            <button [disabled]="!name || !age || !heightft || !heightin || !weight || !email" class="btn btn-primary btn-sm" style = "float:right"  (click) = "submitInitialProfile($event, Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">Submit</button> 
                         </form>
                     </div>
                 </div>

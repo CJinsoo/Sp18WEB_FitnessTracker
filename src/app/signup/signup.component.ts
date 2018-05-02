@@ -19,7 +19,7 @@ export class SignupComponent implements OnInit {
   constructor(private http: Http, private _Tracker: TrackerService) { 
     this.Me = _Tracker.Me;
 
-    setInterval(() => this.refresh(), 1000)
+    
   }
 
   ngOnInit() {
@@ -29,14 +29,12 @@ export class SignupComponent implements OnInit {
     this._Tracker.signup(name, password);//delegate to service
   }
 
-  refresh(){
-    this.http.get(this._api + "/state")
-      .subscribe()
-  }
+  
 
   submitInitialProfile(e: MouseEvent, name:string, age:number, heightft:number, heightin:number, weight:number, email:string) {
     e.preventDefault();
-    this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, email);
+    var bmi = this.bmiCalculator(heightft, heightin, weight);
+    this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, bmi, email);
     console.log('initialization success')
   }//need to do something here, or the profile won't work.
 
@@ -44,4 +42,10 @@ export class SignupComponent implements OnInit {
     this.isClick = !this.isClick;
   }
 
+  bmiCalculator(heightft:number, heightin:number, weight:number){
+    var height = heightft*12 + heightin;
+    var bmi = Math.round((weight/height/height*703) * 10000)/100;
+    return bmi;
+    //console.log('user bmi ' + this.Me.UserProfile.Age)
+  }
 }

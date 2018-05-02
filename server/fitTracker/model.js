@@ -13,7 +13,8 @@ function Tracker() {
         //this.SetProfile
 
         this.SignUp = ( userId, password) => {
-            this.Members.push({UserId:userId, UserProfile: {}, Password: password});
+            var len = this.Members.push({UserId:userId, UserProfile: {}, Password: password});
+            return this.Members[len-1];
             /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
                 return this.Members.find(function (obj) {return obj.UserId === userId;});
@@ -49,7 +50,7 @@ function Tracker() {
         this.Tips = TipsStack[iCurrentPicture = (iCurrentPicture +1) % TipsStack.length];
 
         this.GetExercises = () => ExerciseStack;
-        this.SaveInitialProfile = ( id, name, age, heightft, heightin, weight, email) => { 
+        this.SaveInitialProfile = ( id, name, age, heightft, heightin, weight, goal, bmi, email) => { 
             if(this.Members.find( x => x.UserId == id )){
                 var thisUser = this.Members.find( x => x.UserId == id );
                 thisUser.UserProfile.Name = name;
@@ -57,6 +58,8 @@ function Tracker() {
                 thisUser.UserProfile.Heightft = heightft;
                 thisUser.UserProfile.Heightin = heightin;
                 thisUser.UserProfile.Weight = weight;
+                thisUser.UserProfile.Goal = goal;
+                thisUser.UserProfile.Bmi = bmi;
                 thisUser.UserProfile.Email = email;
                 return thisUser;
             }else{
@@ -64,6 +67,8 @@ function Tracker() {
             }
             //this.Members.push({UserId: id, Age: age, Gender:gender, Email:email, Heightft: heightft, Heightin: heighti, Weight:weight, Bmi: bmi, Goal:goal})
         }
+
+        
         //this.CurrentExercise = (text) => this.Members.find(function obj)
         /*
         this.FlipPicture = () => this.Picture = PicturesStack[iCurrentPicture = (iCurrentPicture+1) % PicturesStack.length ];

@@ -67,10 +67,18 @@ export class ProfileComponent implements OnInit {
 
   }*/
 
-  saveProfile(e: MouseEvent, name:string, age:number, heightF:number, heightI:number, weight:number, goal:string, email:string){
+  saveProfile(e: MouseEvent, name:string, age:number, heightft:number, heightin:number, weight:number, goal:string, email:string){
     e.preventDefault();
-    this._Tracker.saveProfile(name, age, heightF, heightI, weight, goal, email);
+    var height = heightft*12 + heightin;
+    //var bmi = this.bmiCalculator(heightft, heightin, weight);
+    this._Tracker.saveProfile(name, age, heightft, heightin, weight, goal, (Math.round((weight/height/height*703) * 10000)/100), email);
   }
 
+  bmiCalculator(heightft:number, heightin:number, weight:number){
+    var height = heightft*12 + heightin;
+    var bmi = Math.round((weight/height/height*703) * 10000)/100;
+    return bmi;
+    //console.log('user bmi ' + this.Me.UserProfile.Age)
+  }
 
 }

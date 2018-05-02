@@ -5,15 +5,20 @@ var app = express.Router();
 var tracker = new Tracker();
 
 module.exports = app
-    .get('/join', (req, res) =>
-        res.send( tracker.SignUp( req.query.userId, req.query.password) )
-        //res.send( tracker ) 
+    .post('/join', (req, res) =>{
+        try{
+            res.send( tracker.SignUp(req.body.UserId, req.body.Password));
+            //res.send( { success: true });
+        } catch(error) {
+            res.status(403).send({ success: false, message: error.message });
+        }
+    } 
     )
     .get('/login', (req, res) =>
         res.send(tracker.Login(req.query.name, req.query.password))
     )
-    .get('/join/initialize', (req, res) =>{
-        res.send( tracker.SaveInitialProfile(req.query.id, req.query.name, req.query.age, req.query.heightft, req.query.heightin, req.query.weight, req.query.email))
+    .post('/saveProfile', (req, res) =>{
+        res.send( tracker.SaveInitialProfile(req.body.UserId, req.body.Name, req.body.Age, req.body.Heightft, req.body.Heightin, req.body.Weight, req.body.Goal, req.body.Bmi, req.body.Email))
     })
     .get('/exercises/getExercises', (req, res) =>
         res.send( tracker.GetExercises() )
