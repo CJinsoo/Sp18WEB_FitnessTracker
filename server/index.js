@@ -13,8 +13,8 @@ const port = 8080;
 
 
 app
-    .use(bodyParser.json())
-    .use(bodyParser.urlencoded({ extended: false }))
+    .use(bodyParser.json({limit: '50mb'}))
+    .use(bodyParser.urlencoded({limit: '50mb', extended: true}))
     .use('/', (req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "*");
@@ -23,9 +23,8 @@ app
     .use('/', express.static(path.join(__dirname, "../dist/")))
     .use('/simple', simple)
     .use('/fitTracker', fitTracker)
-    .use('/', (req, res, next) => {
-        res.sendFile(path.join(__dirname, "../dist/index.html"));
-    })
+    .use('/', (req, res, next) => res.sendFile(path.join(__dirname, "../dist/index.html")))
     .listen(port);
+
 
 console.log("running on http://" + servername + ":" + port)

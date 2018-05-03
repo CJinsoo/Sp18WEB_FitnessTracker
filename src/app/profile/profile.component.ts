@@ -14,7 +14,8 @@ export class ProfileComponent implements OnInit {
   //Model = new Tracker();
   Me:User;
   messages:string[];
-
+  selectedFile: File;
+  url:string = '';
   //private _api = "http://localhost:8080/profile";
   isEdit:boolean = false;
 
@@ -29,6 +30,24 @@ export class ProfileComponent implements OnInit {
  
   }
 
+  onFileChanged(event) {
+    this.selectedFile = <File>event.target.files[0]
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = (event) => {
+      this.Me.UserProfile.ProfileImg = reader.result;
+      //console.log(this.url)
+    }
+    console.log(this.selectedFile)
+    
+  }
+
+  onUpload() {
+    this._Tracker.uploadImage(this.Me.UserProfile.ProfileImg);
+    console.log("uploading")
+
+    // upload code goes here
+  }
 /*   bmiCalculator(){
     var height = this.Me.UserProfile.Heightft*12 + this.Me.UserProfile.Heightin;
     var num = this.Me.UserProfile.Weight/height/height*703;
@@ -70,8 +89,9 @@ export class ProfileComponent implements OnInit {
   saveProfile(e: MouseEvent, name:string, age:number, heightft:number, heightin:number, weight:number, goal:string, email:string){
     e.preventDefault();
     var height = heightft*12 + heightin;
-    //var bmi = this.bmiCalculator(heightft, heightin, weight);
-    this._Tracker.saveProfile(name, age, heightft, heightin, weight, goal, (Math.round((weight/height/height*703) * 10000)/100), email);
+    var bmi = this.bmiCalculator(heightft, heightin, weight);
+    this._Tracker.saveProfile(name, age, heightft, heightin, weight, goal, bmi, email);
+    //this.Me.UserProfile = 
   }
 
   bmiCalculator(heightft:number, heightin:number, weight:number){

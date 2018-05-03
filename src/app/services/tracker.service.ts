@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { User, Tracker, Profile } from '../model/tracker';
@@ -10,11 +10,11 @@ export class TrackerService {
   //Model = new Tracker();
   Me : User;
   success: boolean = true;
-  zone:NgZone;
+  //zone:NgZone;
   //model = new Tracker();
   
   constructor(private http:Http, private _Router:Router) { 
-    this.zone = new NgZone({enableLongStackTrace: false});
+    //this.zone = new NgZone({enableLongStackTrace: false});
 
     //this.model.Members.push()
     //setInterval(() => this.refresh(), 1000)
@@ -85,16 +85,24 @@ export class TrackerService {
 
   } */
 
+  uploadImage(url:string){
+    this.Me.UserProfile.ProfileImg = url;
+    this.http.post(this._api + "/uploadImg", { UserId:this.Me.UserId, ProfileImg:url }).subscribe();
+    console.log('uploadImage in service clicked')
+  }
+
   submitInitialProfile(name:string, age:number, heightft:number, heightin:number, weight:number, bmi:number, email:string){
-    /* this.Me.UserProfile.Name = name;
+    this.Me.UserProfile.Name = name;
     this.Me.UserProfile.Age = age;
     this.Me.UserProfile.Heightft = heightft;
     this.Me.UserProfile.Heightin = heightin;
     this.Me.UserProfile.Weight = weight;
-    this.Me.UserProfile.Email = email; */
+    this.Me.UserProfile.Bmi = bmi;
+    this.Me.UserProfile.Email = email; 
+    this.Me.UserProfile.ProfileImg = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     
 
-    this.http.post(this._api + "/saveProfile", { UserId:this.Me.UserId, Name:name, Age:age, Heightft: heightft, Heightin: heightin, Weight: weight, Goal: '', Bmi: bmi, Email:email} )
+    this.http.post(this._api + "/saveProfile",  { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
     .subscribe(data=> {
       this.Me = data.json();
       //this.Me = obj;
@@ -113,18 +121,19 @@ export class TrackerService {
    
 
   saveProfile(name:string, age:number, heightft:number, heightin:number, weight:number, goal:string, bmi:number, email:string){
-    /* this.Me.UserProfile.Name = name;
+    this.Me.UserProfile.Name = name;
     this.Me.UserProfile.Age = age;
-    this.Me.UserProfile.Heightft = heightF;
-    this.Me.UserProfile.Heightin = heightI;
+    this.Me.UserProfile.Heightft = heightft;
+    this.Me.UserProfile.Heightin = heightin;
     this.Me.UserProfile.Weight = weight;
     this.Me.UserProfile.Goal = goal;
+    this.Me.UserProfile.Bmi = bmi;
     this.Me.UserProfile.Email = email;
- */
+ 
 
-    this.http.post(this._api + "/saveProfile", { UserId:this.Me.UserId, Name:name, Age:age, Heightft: heightft, Heightin: heightin, Weight: weight, Goal: goal, Bmi: bmi, Email:email} )
+    this.http.post(this._api + "/saveProfile", { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
     .subscribe(data=> {
-      this.Me = data.json();
+      //this.Me = data.json();
       //this.Me = obj;
       /* if(data.json())
         return;

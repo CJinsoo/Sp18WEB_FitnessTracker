@@ -55,17 +55,10 @@ function Tracker() {
         //this.Tips = TipsStack[iCurrentPicture = (iCurrentPicture +1) % TipsStack.length];
 
         this.GetExercises = () => {return ExerciseStack}
-        this.SaveProfile = ( id, name, age, heightft, heightin, weight, goal, bmi, email) => { 
+        this.SaveProfile = ( userProfile, id) => { 
             if(this.Members.find( x => x.UserId == id )){
                 var thisUser = this.Members.find( x => x.UserId == id );
-                thisUser.UserProfile.Name = name;
-                thisUser.UserProfile.Age = age;
-                thisUser.UserProfile.Heightft = heightft;
-                thisUser.UserProfile.Heightin = heightin;
-                thisUser.UserProfile.Weight = weight;
-                thisUser.UserProfile.Goal = goal;
-                thisUser.UserProfile.Bmi = bmi;
-                thisUser.UserProfile.Email = email;
+                thisUser.UserProfile = userProfile;
                 return thisUser;
             }else{
                 return false;
@@ -98,8 +91,14 @@ function Tracker() {
             return thisUser;
         }
 
+        this.UploadImg = (userId, url) => {
+            var thisUser = this.Members.find( x => x.UserId == userId );
+            thisUser.UserProfile.ProfileImg = url;
+            console.log('uploaded')
+            //console.log(thisUser.UserProfile.ProfileImg)
+        } 
  
-        
+         
         //this.CurrentExercise = (text) => this.Members.find(function obj)
         /*
         this.FlipPicture = () => this.Picture = PicturesStack[iCurrentPicture = (iCurrentPicture+1) % PicturesStack.length ];
@@ -108,7 +107,7 @@ function Tracker() {
         this.ChooseQuote = text => {
             this.PlayedQuotes.find(x=> x.Text == text).Chosen = true;
             this.DealerId = this.Players[this.DealerId = (this.DealerId + 1) % this.Players.length ] 
-        } 
+        }  
         */
 
 }

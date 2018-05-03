@@ -2,9 +2,9 @@ var express = require('express');
 var Tracker = require('./model');
 var app = express.Router();
 
-var tracker = new Tracker();
+var tracker = new Tracker(); 
 
-module.exports = app
+module.exports = app 
     .post('/join', (req, res) =>{
         try{
             res.send( tracker.SignUp(req.body.UserId, req.body.Password));
@@ -26,7 +26,7 @@ module.exports = app
     )
     .get('/state', (req, res) => res.send(tracker))
     .post('/saveProfile', (req, res) => {
-        res.send( tracker.SaveProfile(req.body.UserId, req.body.Name, req.body.Age, req.body.Heightft, req.body.Heightin, req.body.Weight, req.body.Goal, req.body.Bmi, req.body.Email) )
+        res.send( tracker.SaveProfile(req.body.UserProfile, req.body.UserId) )
     })
     //.post('/picture', (req, res) => res.send( tracker.FlipPicture() ))
     /* .post('/exercises/submitExercise', (req, res) => {
@@ -39,4 +39,5 @@ module.exports = app
     .post('/exercises/calculateToday', (req, res) => {
         res.send( tracker.CalculateTotal( req.body.UserId) )
     })
+    .post('/uploadImg', (req, res) => res.send( tracker.UploadImg(req.body.UserId, req.body.ProfileImg)))
  
