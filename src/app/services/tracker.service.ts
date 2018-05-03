@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { User, Tracker, Profile } from '../model/tracker';
@@ -10,14 +10,18 @@ export class TrackerService {
   //Model = new Tracker();
   Me : User;
   success: boolean = true;
+  zone:NgZone;
   //model = new Tracker();
   
   constructor(private http:Http, private _Router:Router) { 
+    this.zone = new NgZone({enableLongStackTrace: false});
+
     //this.model.Members.push()
     //setInterval(() => this.refresh(), 1000)
     //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
   }
 
+  
 
   refresh(){
     this.http.get(this._api + "/state")
@@ -149,6 +153,14 @@ export class TrackerService {
   }
 
   submitExercise(duration:number, cycle:number){
+    /* var thisExercise = this.Me.Workout.find( x => x.ActivityName == this.Me.CurrentWorkout);
+        if(thisExercise){
+            thisExercise.Duration += duration;
+            thisExercise.Cycle += cycle;
+        }else{
+            this.Me.Workout.push({ ActivityName:this.Me.CurrentWorkout, Duration:duration, Cycle:cycle })
+        }  */
+    //this.Me.Workout.push({ActivityName:this.Me.CurrentWorkout, Duration: duration, Cycle:cycle});
     this.http.post(this._api + "/exercises/submitExercise",{ ActivityName:this.Me.CurrentWorkout, UserId: this.Me.UserId, Duration:duration, Cycle:cycle })
         .subscribe(data => {
           this.Me = data.json();  
@@ -159,20 +171,29 @@ export class TrackerService {
         }, err => {
           console.log(err);
         });
+      
   } 
 
   calculateTotalToday() {
-    this.http.post(this._api + "/exercises/calculateToday",{ Workout:this.Me.Workout, UserId: this.Me.UserId })
+    this.http.post(this._api + "/exercises/calculateToday",{ UserId: this.Me.UserId })
         .subscribe(data => {
           this.Me = data.json();  
           //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
           //this.Me.CurrentWorkout = item[0];
-          console.log(this.Me.Today.TotalWorkout)
+          console.log('in calctoday' )
+          console.log( this.Me.Today.TotalWorkout)
           //}
         }, err => {
           console.log(err);
         });
   }
-
+  /* initListeners() {
+    this.socketSvc.socket.on('success', (data) => {
+        this.zone.run(() => {
+            this.myList = data;
+            console.log('Updated List: ', this.myList);
+        });
+    });
+} */
   
 }

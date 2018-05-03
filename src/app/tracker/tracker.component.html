@@ -59,18 +59,20 @@
         </div>       
     </div>
     <div class = "row" >
-        <div class="card col border-success mb-3">
-            <div class="card-body text-success">
-                <h5 class="card-title">Workout Summary</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Today is: {{today}}</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>   
-            <ul class="list-group list-group-flush text-info">
-                <li class="list-group-item" *ngFor = "let workout of Me.Today.TotalWorkout">
-                    {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
-                </li>
-            </ul>
-    
+        <div class = "col" >
+            <div class="card border-success mb-3">
+                <div class="card-body text-success">
+                    <h5 class="card-title">Workout Summary</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Today is: {{today}}</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>   
+                <ul class="list-group list-group-flush text-info">
+                    <li class="list-group-item" *ngFor = "let workout of Me.Workout">
+                        {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
+                    </li>
+                </ul>
+        
+            </div>
         </div>
     </div>
 </div>

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Http } from "@angular/http";
 import { User, Tracker, Profile, Activity } from '../model/tracker';
 import { Router } from '@angular/router';
 import { TrackerService } from '../services/tracker.service';
+//import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-tracker',
@@ -10,13 +11,14 @@ import { TrackerService } from '../services/tracker.service';
   styleUrls: ['./tracker.component.css']
 })
 export class TrackerComponent implements OnInit {
-
+  
   Me:User ;
   messages:string[];
   choice:boolean = false;
   //initiation:boolean = false;
   date:Date;
   today:string;
+  
   //today = "" + this.date.getMonth() + this.date.getDate() + this.date.getUTCMonth;
 
   private _api = "http://localhost:8080/fitTracker";
@@ -34,10 +36,24 @@ export class TrackerComponent implements OnInit {
     this.date = new Date();
     this.today = this.date.toDateString();
    //this.today = 
+   //this.initListeners();
   }
+
 
   ngOnInit() {
   }
+
+
+/*   getIndicatorsStream(): Observable {
+    return Observable.create((observer) => {
+      let eventSource = this.sseService
+                          .createEventSource('http://localhost:8080/fitTracker');
+      eventSource.onmessage = (event) => {
+        this.zone.run(() => observer.next(JSON.parse(event.data)));
+      };
+      eventSource.onerror = (error) => observer.error(error);
+  });
+} */
 
   selectExercise(e: MouseEvent, item: string){
     e.preventDefault();
@@ -72,8 +88,11 @@ export class TrackerComponent implements OnInit {
     this.Me.CurrentWorkout = 'not selected';
   }
 
-  calculateTotalToday(e: MouseEvent) {
+  calculateTotalToday(e:MouseEvent) {
+    e.preventDefault();
     this._Tracker.calculateTotalToday();
+    this.Me.Workout = this._Tracker.Me.Workout;
+    //return true;
   }
 
 }

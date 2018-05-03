@@ -84,15 +84,16 @@ function Tracker() {
             } 
             //thisUser.AvailableExercises.splice( this.Me.)
             return thisUser;
-        }
+        } 
 
-        this.CalculateTotal = (workout, userId) => {
+        this.CalculateTotal = (userId) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
-            thisUser.Today.TotalWorkout = workout;
+            thisUser.Today.TotalWorkout = thisUser.Workout;
             var x;
             for (x in thisUser.Today.TotalWorkout) {
                 thisUser.Today.TotalTime += thisUser.Today.TotalWorkout[x];
             }
+            console.log(thisUser.Today.TotalWorkout)
             return thisUser;
         }
 

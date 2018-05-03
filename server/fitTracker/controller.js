@@ -37,6 +37,6 @@ module.exports = app
     }) */
     .post('/exercises/submitExercise', (req, res) => res.send( tracker.SubmitExercise(req.body.ActivityName, req.body.UserId, req.body.Duration, req.body.Cycle) ))
     .post('/exercises/calculateToday', (req, res) => {
-        res.send( tracker.CalculateTotal(req.body.Workout, req.body.UserId) )
+        res.send( tracker.CalculateTotal( req.body.UserId) )
     })
  
