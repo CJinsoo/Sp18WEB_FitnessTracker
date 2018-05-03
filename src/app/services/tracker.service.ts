@@ -153,20 +153,20 @@ export class TrackerService {
   }
 
   submitExercise(duration:number, cycle:number){
-    /* var thisExercise = this.Me.Workout.find( x => x.ActivityName == this.Me.CurrentWorkout);
+    var thisExercise = this.Me.Workout.find( x => x.ActivityName == this.Me.CurrentWorkout);
         if(thisExercise){
             thisExercise.Duration += duration;
             thisExercise.Cycle += cycle;
         }else{
             this.Me.Workout.push({ ActivityName:this.Me.CurrentWorkout, Duration:duration, Cycle:cycle })
-        }  */
+        } 
     //this.Me.Workout.push({ActivityName:this.Me.CurrentWorkout, Duration: duration, Cycle:cycle});
-    this.http.post(this._api + "/exercises/submitExercise",{ ActivityName:this.Me.CurrentWorkout, UserId: this.Me.UserId, Duration:duration, Cycle:cycle })
+    this.http.post(this._api + "/exercises/submitExercise",{ Workout:this.Me.Workout, UserId:this.Me.UserId })
         .subscribe(data => {
-          this.Me = data.json();  
+          ///this.Me = data.json();  
           //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
           //this.Me.CurrentWorkout = item[0];
-          console.log(this.Me.Workout)
+          //console.log(this.Me.Workout)
           //}
         }, err => {
           console.log(err);

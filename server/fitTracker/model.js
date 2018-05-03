@@ -73,9 +73,10 @@ function Tracker() {
             //this.Members.push({UserId: id, Age: age, Gender:gender, Email:email, Heightft: heightft, Heightin: heighti, Weight:weight, Bmi: bmi, Goal:goal})
         }
 
-        this.SubmitExercise = (activityName, userId, duration, cycle) => {
+        this.SubmitExercise = (workout, userId) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
-            var thisExercise = thisUser.Workout.find( x => x.ActivityName == activityName);
+            thisUser.Workout = workout;
+            /* var thisExercise = thisUser.Workout.find( x => x.ActivityName == activityName);
             if(thisExercise){
                 thisExercise.Duration += duration;
                 thisExercise.Cycle += cycle;
@@ -83,7 +84,7 @@ function Tracker() {
                 thisUser.Workout.push({ ActivityName:activityName, Duration:duration, Cycle:cycle })
             } 
             //thisUser.AvailableExercises.splice( this.Me.)
-            return thisUser;
+            return thisUser; */
         } 
 
         this.CalculateTotal = (userId) => {
@@ -91,7 +92,7 @@ function Tracker() {
             thisUser.Today.TotalWorkout = thisUser.Workout;
             var x;
             for (x in thisUser.Today.TotalWorkout) {
-                thisUser.Today.TotalTime += thisUser.Today.TotalWorkout[x];
+                thisUser.Today.TotalTime += thisUser.Today.TotalWorkout[x].Duration;
             }
             console.log(thisUser.Today.TotalWorkout)
             return thisUser;
