@@ -27,6 +27,7 @@ export class SignupComponent implements OnInit {
 
   signup(name: string, password: string){
     this._Tracker.signup(name, password);//delegate to service
+  
   }
 
   

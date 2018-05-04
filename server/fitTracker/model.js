@@ -18,7 +18,9 @@ function Tracker() {
         //this.SetProfile
 
         this.SignUp = ( userId, password) => {
-            var len = this.Members.push({UserId:userId, Workout:[], UserProfile: {}, Password: password, AvailableExercises:[], Today:{}, WorkoutHistory:[]});
+            if(this.Members.find( x => x.UserId == userId ))
+                return false;
+            var len = this.Members.push({UserId:userId, Workout:[], UserProfile: {}, Password: password, AvailableExercises:[], Today:{TotalTime:0, TotalWorkoutType:0}, WorkoutHistory:[], Friends:[]});
             return this.Members[len-1];
             /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
@@ -28,7 +30,7 @@ function Tracker() {
                 this.Members.push({ User:user });
                 //console.log('creating new user')
             }
-            return []; */
+            return []; */ 
                    
         }
         this.Login = ( name, password ) => {
@@ -80,14 +82,9 @@ function Tracker() {
             return thisUser; */
         } 
 
-        this.CalculateTotal = (userId) => {
+        this.CalculateTotal = (userId, today) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
-            thisUser.Today.TotalWorkout = thisUser.Workout;
-            var x;
-            for (x in thisUser.Today.TotalWorkout) {
-                thisUser.Today.TotalTime += thisUser.Today.TotalWorkout[x].Duration;
-            }
-            console.log(thisUser.Today.TotalWorkout)
+            thisUser.Today = today;
             return thisUser;
         }
 
@@ -97,7 +94,10 @@ function Tracker() {
             console.log('uploaded')
             //console.log(thisUser.UserProfile.ProfileImg)
         } 
- 
+        
+        this.ReturnMember = () => {
+            return this.Members;
+        }
          
         //this.CurrentExercise = (text) => this.Members.find(function obj)
         /*
@@ -110,6 +110,11 @@ function Tracker() {
         }  
         */
 
+        this.PutHistory = (userId, history) => {
+            var thisUser = this.Members.find( x => x.UserId == userId );
+            thisUser.WorkoutHistory = history;
+            return thisUser;
+        }
 }
 
-module.exports = Tracker;
+module.exports = Tracker; 

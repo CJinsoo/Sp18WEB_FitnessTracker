@@ -52,7 +52,7 @@
                                     <input #Cycle = "ngModel" class="form-control" name = "cycle" [(ngModel)] = "cycle" placeholder = "time(s)" type="number" required>
                                 </div>
                             </div>
-                            <button [disabled] = "!duration || !cycle || !choice" class="btn btn-primary btn-sm" style = "float:right" (click) = "submitWorkout($event, Duration.value, Cycle.value)" (click) = "calculateTotalToday($event)"> Save</button>
+                            <button [disabled] = "!duration || !cycle || !choice" class="btn btn-primary btn-sm" style = "float:right" (click) = "submitWorkout($event, Duration.value, Cycle.value)" (click) = "calculateTotalToday($event)" (click) = "putHistory()"> Save</button>
                         </form>
                     </div>
             </div>
@@ -72,7 +72,8 @@
                     </li>
                 </ul>
                 <div class="card-body text-success">
-                    <p class="card-text">Total Workout Time: {{Me.Today.TotalTime}}</p>
+                    <p class="card-text">Total Workout Time Today: {{Me.Today.TotalTime}} minutes</p>
+                    <p class="card-text">Total Number of Exercises : {{Me.Today.TotalWorkoutType}} </p>
                 </div>
         
             </div>

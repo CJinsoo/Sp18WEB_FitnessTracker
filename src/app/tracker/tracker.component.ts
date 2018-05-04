@@ -37,6 +37,18 @@ export class TrackerComponent implements OnInit {
     this.today = this.date.toDateString();
    //this.today = 
    //this.initListeners();
+    if(this.Me){
+      this.putHistory();
+      this._Tracker.Me.WorkoutHistory[-1] = {Date: '', TotalTime:0, TotalWorkoutType: 0, TotalWorkout: []};
+      console.log(this.Me.WorkoutHistory[length-1].Date)
+      console.log(this.today)
+      if(this._Tracker.Me.WorkoutHistory[length-1].Date != this.today){
+        this._Tracker.Me.Today = {Date:'', TotalTime: 0, TotalWorkoutType:0, TotalWorkout:[]}
+        console.log('reset complete')
+        console.log(this._Tracker.Me.Today)
+      }
+  }
+    
   }
 
 
@@ -90,9 +102,13 @@ export class TrackerComponent implements OnInit {
 
   calculateTotalToday(e:MouseEvent) {
     e.preventDefault();
-    this._Tracker.calculateTotalToday();
+    this._Tracker.calculateTotalToday(this.today);
     this.Me.Workout = this._Tracker.Me.Workout;
-    //return true;
+    //return true; 
+  }
+
+  putHistory(){
+    this._Tracker.putHistory(this.today);
   }
 
 }

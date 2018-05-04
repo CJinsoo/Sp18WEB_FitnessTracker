@@ -37,7 +37,8 @@ module.exports = app
     }) */
     .post('/exercises/submitExercise', (req, res) => res.send( tracker.SubmitExercise(req.body.Workout, req.body.UserId) ))
     .post('/exercises/calculateToday', (req, res) => {
-        res.send( tracker.CalculateTotal( req.body.UserId) )
+        res.send( tracker.CalculateTotal( req.body.UserId, req.body.Today) )
     })
     .post('/uploadImg', (req, res) => res.send( tracker.UploadImg(req.body.UserId, req.body.ProfileImg)))
- 
+    .post('/putHistory', (req, res) => res.send( tracker.PutHistory(req.body.UserId, req.body.History)))
+    .get('/returnMember', (req, res) => res.send( tracker.ReturnMember()))

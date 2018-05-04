@@ -16,6 +16,8 @@ export class User {
     AvailableExercises :string[];
     Today:TotalToday;
     WorkoutHistory: TotalToday[];
+    Friends: User[];
+
 }
 
 export class Profile {
@@ -53,7 +55,9 @@ export class Activity {
 
 export class TotalToday {
 
+    Date:string;
     TotalTime:number;
     TotalWorkoutType:number;
     TotalWorkout:Activity[];
 }
+

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { User, Tracker, Profile } from '../model/tracker';
+import { User, Tracker, Profile, TotalToday } from '../model/tracker';
 
 @Injectable()
 export class TrackerService {
@@ -9,9 +9,12 @@ export class TrackerService {
 
   //Model = new Tracker();
   Me : User;
+  Users:User[];
   success: boolean = true;
+
   //zone:NgZone;
   //model = new Tracker();
+  //isClick:boolean = false;
   
   constructor(private http:Http, private _Router:Router) { 
     //this.zone = new NgZone({enableLongStackTrace: false});
@@ -32,11 +35,16 @@ export class TrackerService {
 
       //this.Model.Members.push(this.Me);
 
-      console.log('signup successful')
+      //console.log('signup successful')
       //this._Router.navigate(['/signin'])
       this.http.post(this._api + "/join", {UserId:name, Password:password})
         .subscribe(data =>{
-
+          if(!data.json()){
+            alert('UserId already exists');
+            return;
+            //this.toggleClick();
+          }
+          
           console.log('successful sign up')
 
           //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
@@ -47,9 +55,14 @@ export class TrackerService {
           //}
         }, err => { //handling errors -> if there was an error on the server side, this is going to be executed
           console.log(err);//passing the status to the header
-        })
+        });
+        
+        
   }
 
+  /* toggleClick(){
+    this.isClick = !this.isClick;
+  } */
 
   login(name: string, password: string) {
     //var success:boolean;
@@ -87,7 +100,11 @@ export class TrackerService {
 
   uploadImage(url:string){
     this.Me.UserProfile.ProfileImg = url;
-    this.http.post(this._api + "/uploadImg", { UserId:this.Me.UserId, ProfileImg:url }).subscribe();
+    try{    
+      this.http.post(this._api + "/uploadImg", { UserId:this.Me.UserId, ProfileImg:url }).subscribe();
+    }catch(error){
+      alert('Should be no larger than 50mb.')
+    }
     console.log('uploadImage in service clicked')
   }
 
@@ -183,14 +200,24 @@ export class TrackerService {
       
   } 
 
-  calculateTotalToday() {
-    this.http.post(this._api + "/exercises/calculateToday",{ UserId: this.Me.UserId })
+  calculateTotalToday(date:string) {
+    this.Me.Today.TotalWorkout = this.Me.Workout;
+    this.Me.Today.TotalTime = 0;
+    this.Me.Today.TotalWorkoutType = this.Me.Today.TotalWorkout.length;
+    this.Me.Today.Date = date;
+    console.log(this.Me.Today.TotalWorkout.length)
+    var x;
+    for (x in this.Me.Today.TotalWorkout) {
+        this.Me.Today.TotalTime += this.Me.Today.TotalWorkout[x].Duration;
+    }
+    console.log(this.Me.Today.TotalTime)
+    this.http.post(this._api + "/exercises/calculateToday",{ UserId: this.Me.UserId, Today: this.Me.Today})
         .subscribe(data => {
-          this.Me = data.json();  
+          //this.Me = data.json();  
           //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
           //this.Me.CurrentWorkout = item[0];
-          console.log('in calctoday' )
-          console.log( this.Me.Today.TotalWorkout)
+          //console.log('in calctoday' )
+          //console.log( this.Me.Today.TotalWorkout)
           //}
         }, err => {
           console.log(err);
@@ -205,4 +232,28 @@ export class TrackerService {
     });
 } */
   
+  putHistory(date:string) {
+    var thisDate = this.Me.WorkoutHistory.find( x => x.Date == date);
+    if(!thisDate)
+      this.Me.WorkoutHistory.push(this.Me.Today);
+    else{
+      thisDate.TotalTime = this.Me.Today.TotalTime;
+      thisDate.TotalWorkout = this.Me.Today.TotalWorkout;
+      thisDate.TotalWorkoutType = this.Me.Today.TotalWorkoutType;
+    }
+      this.http.post(this._api + "/putHistory",{ UserId: this.Me.UserId, History: this.Me.WorkoutHistory})
+        .subscribe(data => {
+          
+        }, err => {
+          console.log(err);
+        });
+      console.log(this.Me.WorkoutHistory)
+  }
+
+  getAllMembers() {
+    this.http.get(this._api + "/returnMember", { })
+    .subscribe(data=> {
+      this.Users = data.json();
+    })
+  }
 }
