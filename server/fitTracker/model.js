@@ -25,6 +25,7 @@ function Tracker() {
                 return true;
         }
         this.SignUp = ( user) => {
+            //user.Friend = Friends[this.Members.len]
             var len = this.Members.push(user);
             return this.Members[len-1];
             /* if(this.Members.some(x=> x.UserId == userId)){
@@ -103,6 +104,15 @@ function Tracker() {
         this.ReturnMember = () => {
             return this.Members;
         }
+
+        /* this.PropagateFriend = (userId) => {
+            var thisUser = this.Members.find( x => x.UserId == userId );
+            //console.log(thiUser)
+            var a;
+            for (a in this.Members) {
+                thisUser.Friend.push({User:this.Members[a], AreYouMyFriend:false, DidYouRequest:false, DidIRequest:false});
+            }
+        } */
          
         //this.CurrentExercise = (text) => this.Members.find(function obj)
         /*
@@ -136,7 +146,31 @@ function Tracker() {
         }
 
         this.AcceptFriend = (userId, myId, requests) => {
+            var thisUser = this.Members.find( x => x.UserId == myId );
+            var otherUser = this.Members.find( x => x.UserId == userId );
             
+            var index = thisUser.Friend.RequestsToMe.findIndex( x=> x == userId);
+            thisUser.Friend.RequestsToMe.splice(index, 1);
+            thisUser.Friend.Friends.push(userId);
+            otherUser.Friend.Friends.push(myId);
+
+            var index1 = otherUser.Friend.MyRequests.findIndex( x=> x == myId);
+            otherUser.Friend.MyRequests.splice(index1, 1);
+            
+        }
+
+        this.FriendData = (friendList) => {
+            console.log(friendList)
+            if(friendList != undefined){
+                var a;
+                var friends = [];
+                for (a in this.Members){
+                    friends.push(this.Members.find( x => x.UserId == friendList[a] ))
+                }
+                return friends;
+            }
+           // var friend = this.Members.find( x => x.UserId == userId );
+            return false;
         }
 
         this.GiveMe = (userId) => {

@@ -26,7 +26,7 @@ module.exports = app
         res.send( tracker.GetExercises() )
 
     )
-    .get('/state', (req, res) => res.send(tracker))
+    //.get('/state', (req, res) => res.send(tracker))
     .post('/saveProfile', (req, res) => {
         res.send( tracker.SaveProfile(req.body.UserProfile, req.body.UserId) )
     })
@@ -47,4 +47,9 @@ module.exports = app
     .post('/friend/req', (req, res) => res.send(tracker.SendFriendReq( req.body.UserId, req.body.MyUserId , req.body.MyRequests)))
     .get('/giveMe', (req, res) => res.send( tracker.GiveMe(req.query.UserId) ))
     .post('/friend/accept', (req, res) => res.send(tracker.AcceptFriend(req.body.UserId, req.body.MyUserId, req.body.RequestsToMe)))
- 
+    //.post('/propagateFriend', (req, res) => res.send(tracker.PropagateFriend(req.body.UserId)))
+    .get('/getFriendsData', (req, res) => res.send(tracker.FriendData(req.query.Friend)))
+
+
+
+

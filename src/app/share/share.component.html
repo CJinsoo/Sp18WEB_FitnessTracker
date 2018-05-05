@@ -8,13 +8,16 @@
             <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
             <div>
               <ul class="list-group list-group-flush">
-                <li *ngFor = "let user of this._Tracker.Users" 
+                <li *ngFor = "let user of Users" 
+                  [hidden] = "inRequestToMe(user.UserId)"
+                  [hidden] = "inMyRequests(user.UserId)"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <img class="rounded" [src]="user.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
+                    
                     {{user.UserId}}
                     <form>
                   <button (click) = "sendFriendReq($event, user.UserId)"
-                  onclick="this.disabled=true;"
+                  
                   class = "btn btn-sm btn-primary">
                   Request Friend
                   </button>
@@ -31,7 +34,7 @@
                         <h5 class="card-title">Friend Requests</h5>
                         <h6 class="card-subtitle mb-2 text-muted"></h6>
                         <ul class="list-group list-group-flush text-info">
-                            <li *ngFor = "let req of this._Tracker.Me.Friend.RequestsToMe" 
+                            <li *ngFor = "let req of Me.Friend.RequestsToMe" 
                               class="list-group-item">
                               {{req}}
                               <button class="btn btn-primary btn-sm" style = "float:right" (click) = "acceptFriendReq($event, req)"> Accept</button>
@@ -48,6 +51,31 @@
                   <h6 class="card-subtitle mb-2 text-muted">Today is: </h6>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
+                <ul class="list-group list-group-flush text-info">
+                    <li *ngFor = "let list of Me.Friend.Friends"
+                      (click) = "showFriends(list)" 
+                      class="list-group-item">
+                      {{list}}
+                      <div *ngIf = "isSelectedFriend(list)">
+                        <div class="card border-success mb-3">
+                            <div class="card-body text-success">
+                                <h5 class="card-title">Workout Summary</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Today is: {{today}}</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>   
+                            <ul class="list-group list-group-flush text-info">
+                                <li class="list-group-item" *ngFor = "let workout of selectedFriend.Workout">
+                                    {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
+                                </li>
+                            </ul>
+                            <div class="card-body text-success">
+                                <p class="card-text">Total Workout Time Today: {{selectedFriend.Today.TotalTime}} minutes</p>
+                                <p class="card-text">Total Number of Exercises : {{selectedFriend.Today.TotalWorkoutType}} </p>
+                            </div>
+                        </div>
+                      </div>
+                    </li>
+                </ul>
         </div>
     </div>
 </div>

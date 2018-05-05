@@ -8,6 +8,7 @@ export class Tracker{
 }
 
 export class User {
+    //PossibleFriends:User[];
     UserId:string;
     UserProfile: Profile;
     Workout: Activity[];
@@ -16,22 +17,22 @@ export class User {
     AvailableExercises :string[];
     Today:TotalToday;
     WorkoutHistory: TotalToday[];
-    //Friend: Friends;
-    Friend:Friends[];
+    Friend: Friends;
+    // Friend:Friends[];
 }
 
-/* export class Friends {
+export class Friends {
     Friends:string[];
     MyRequests:string[];
     RequestsToMe:string[];
-} */
+}
 
-export class Friends {
+/* export class Friends {
     User:User;
     AreYouMyFriend:boolean;
     DidYouRequest:boolean;
     DidIRequest:boolean;
-}
+} */
 
 export class Profile {
 

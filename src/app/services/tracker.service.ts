@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { User, Tracker, Profile, TotalToday, Friends } from '../model/tracker';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TrackerService {
@@ -21,16 +22,16 @@ export class TrackerService {
     //this.zone = new NgZone({enableLongStackTrace: false});
 
     //this.model.Members.push()
-    setInterval(() => this.refresh(), 1000)
+    // setInterval(() => this.refresh(), 1000)
     //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
   }
 
   
 
-  refresh(){
+  /* refresh(){
     this.http.get(this._api + "/state")
       .subscribe()
-  }
+  } */
 
   isIdTaken(name: string, password:string) {
     this.http.get(this._api + "/join/taken", { params: { UserId:name, Password:password}})
@@ -45,18 +46,13 @@ export class TrackerService {
 
   signup(name: string, password: string) {
 
-      //this.Model.Members.push(this.Me);
       this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:<Friends>{ Friends:[], MyRequests:[], RequestsToMe:[]}};
-      //console.log('signup successful')
-      //this._Router.navigate(['/signin'])
+      //this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:[]};
+
       this.http.post(this._api + "/join", {User:this.Me})
         .subscribe(data =>{
-          
-            //this.toggleClick();
-          
-          
           console.log('successful sign up')
-
+          //this.Me.Friend = Friends[data.json()]
           //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
             
             //this.Me = data.json();//Me becomes nothing
@@ -261,17 +257,32 @@ export class TrackerService {
   }
 
   getAllMembers() {
-    this.http.get(this._api + "/returnMember", { })
+    /* this.http.post(this._api + "/propagateFriend", { UserId: this.Me.UserId })
     .subscribe(data=> {
+      this.Users = data.json();
+      var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
+      if(index != -1)
+        this.Users.splice(index, 1);
+     
+    }) */
+   return this.http.get(this._api + "/returnMember", { })
+    .map((response:Response) => response.json());
+     /* .subscribe(data=> {
       this.Users = data.json();
       //console.log(this.Users)
       var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
       //console.log(index)
       if(index != -1)
         this.Users.splice(index, 1);
-     
+      var a;
+      for (a in this.Me.Friend.RequestsToMe) {
+        var exist = this.Users.find(x => x.UserId == this.Me.Friend.RequestsToMe[a])
+        if(exist){
+          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[a]), 1 );
+        }
+      } 
       //console.log(this.Users)
-    })
+    })   */
 
     
   }
@@ -281,27 +292,38 @@ export class TrackerService {
     this.Me.Friend.RequestsToMe.splice(thisReq, 1)
     this.http.post(this._api + "/friend/accept", { UserId: userId, MyUserId: this.Me.UserId, RequestsToMe:this.Me.Friend.RequestsToMe })
     .subscribe(data => {
-      //var user = data.json()
-      //console.log(user.Friend.MyRequests)
     })
   }
 
   sendFriendReq(userId:string) {
-    //this.myFriend.push(user);
+    
     this.Me.Friend.MyRequests.push(userId);
-    //console.log(this.Me.UserId)
     console.log('UserId passed from component ts')
     console.log(userId)
-    this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId, MyRequests:this.Me.Friend.MyRequests })
+    return this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId, MyRequests:this.Me.Friend.MyRequests })
+    .map((response:Response) => response.json())
+    /* .subscribe(data => {
+    }) */
+  }
+
+  getFriends(){
+    this.http.get(this._api + "/getFriendsData", {params: {Friend:this.Me.Friend.Friends}})
     .subscribe(data => {
-      var user = data.json()
-      //console.log(user.Friend.MyRequests)
-    })
+      if(!data.json())
+        return;
+      this.myFriend = data.json();
+      console.log('in getFriends service.ts myFriend is')
+      console.log(this.myFriend)
+    });
   }
 
   reGiveMe(){
-    this.http.get(this._api + "/giveMe", {params: {UserId:this.Me.UserId}}).subscribe(data=> {
+    return this.http.get(this._api + "/giveMe", {params: {UserId:this.Me.UserId}})
+    .map((response:Response) => response.json());
+    /* .subscribe(data=> {
+      if(!data.json())
+        return;
       this.Me = data.json()
-    })
+    }) */
   }
 }
