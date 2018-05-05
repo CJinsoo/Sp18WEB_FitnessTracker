@@ -49,4 +49,9 @@ export class SignupComponent implements OnInit {
     return bmi;
     //console.log('user bmi ' + this.Me.UserProfile.Age)
   }
+
+  isIdTaken(name: string, password:string) {
+   
+  }
+  
 }

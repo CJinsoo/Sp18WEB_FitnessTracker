@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { User, Tracker, Profile, TotalToday } from '../model/tracker';
+import { User, Tracker, Profile, TotalToday, Friends } from '../model/tracker';
 
 @Injectable()
 export class TrackerService {
@@ -9,8 +9,9 @@ export class TrackerService {
 
   //Model = new Tracker();
   Me : User;
-  Users:User[];
+  Users:User[] = [];
   success: boolean = true;
+  myFriend: User[] = [];
 
   //zone:NgZone;
   //model = new Tracker();
@@ -20,7 +21,7 @@ export class TrackerService {
     //this.zone = new NgZone({enableLongStackTrace: false});
 
     //this.model.Members.push()
-    //setInterval(() => this.refresh(), 1000)
+    setInterval(() => this.refresh(), 1000)
     //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
   }
 
@@ -31,25 +32,34 @@ export class TrackerService {
       .subscribe()
   }
 
+  isIdTaken(name: string, password:string) {
+    this.http.get(this._api + "/join/taken", { params: { UserId:name, Password:password}})
+    .subscribe(data => {
+      /* if(!data.json()){
+        alert('UserId already exists');
+        return;
+      } */
+      return data.json();
+    });
+  }
+
   signup(name: string, password: string) {
 
       //this.Model.Members.push(this.Me);
-
+      this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:<Friends>{ Friends:[], MyRequests:[], RequestsToMe:[]}};
       //console.log('signup successful')
       //this._Router.navigate(['/signin'])
-      this.http.post(this._api + "/join", {UserId:name, Password:password})
+      this.http.post(this._api + "/join", {User:this.Me})
         .subscribe(data =>{
-          if(!data.json()){
-            alert('UserId already exists');
-            return;
+          
             //this.toggleClick();
-          }
+          
           
           console.log('successful sign up')
 
           //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
             
-            this.Me = data.json();//Me becomes nothing
+            //this.Me = data.json();//Me becomes nothing
             //this.Me.AvailableExercises = [];
             this.getExercisesList();
           //}
@@ -254,6 +264,44 @@ export class TrackerService {
     this.http.get(this._api + "/returnMember", { })
     .subscribe(data=> {
       this.Users = data.json();
+      //console.log(this.Users)
+      var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
+      //console.log(index)
+      if(index != -1)
+        this.Users.splice(index, 1);
+     
+      //console.log(this.Users)
+    })
+
+    
+  }
+
+  acceptFriendReq(userId:string){
+    var thisReq = this.Me.Friend.RequestsToMe.findIndex( x => x == userId)
+    this.Me.Friend.RequestsToMe.splice(thisReq, 1)
+    this.http.post(this._api + "/friend/accept", { UserId: userId, MyUserId: this.Me.UserId, RequestsToMe:this.Me.Friend.RequestsToMe })
+    .subscribe(data => {
+      //var user = data.json()
+      //console.log(user.Friend.MyRequests)
+    })
+  }
+
+  sendFriendReq(userId:string) {
+    //this.myFriend.push(user);
+    this.Me.Friend.MyRequests.push(userId);
+    //console.log(this.Me.UserId)
+    console.log('UserId passed from component ts')
+    console.log(userId)
+    this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId, MyRequests:this.Me.Friend.MyRequests })
+    .subscribe(data => {
+      var user = data.json()
+      //console.log(user.Friend.MyRequests)
+    })
+  }
+
+  reGiveMe(){
+    this.http.get(this._api + "/giveMe", {params: {UserId:this.Me.UserId}}).subscribe(data=> {
+      this.Me = data.json()
     })
   }
 }

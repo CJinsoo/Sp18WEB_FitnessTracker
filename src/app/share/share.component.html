@@ -4,19 +4,21 @@
       <div class = "col-5">
         <div class="card border-primary mb-3">
           <div class="card-body text-primary">
-            <h5 class="card-title">Send Friend request</h5>
+            <h5 class="card-title">Send Friend Requests</h5>
             <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
             <div>
               <ul class="list-group list-group-flush">
                 <li *ngFor = "let user of this._Tracker.Users" 
-                    [ngClass] = "{ display:none : Me.UserId == user.UserId }"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <img class="rounded" [src]="user.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
                     {{user.UserId}}
-                  <button (click) = "select($event, user)"
-                          class = "btn btn-sm btn-primary">
-                          Request Friend
+                    <form>
+                  <button (click) = "sendFriendReq($event, user.UserId)"
+                  onclick="this.disabled=true;"
+                  class = "btn btn-sm btn-primary">
+                  Request Friend
                   </button>
+                </form>
                 </li>
               </ul>
             </div>
@@ -26,14 +28,15 @@
         <div class = "col-7">
             <div class="card border-info mb-3">
                     <div class="card-body text-info">
-                        <h5 class="card-title">Friends to Share</h5>
+                        <h5 class="card-title">Friend Requests</h5>
                         <h6 class="card-subtitle mb-2 text-muted"></h6>
                         <ul class="list-group list-group-flush text-info">
-                            <li class="list-group-item">Weight: {{Me.Weight}} lb</li>
-                            <li class="list-group-item">BMI: {{Me.Bmi}} </li>
-                            <li class="list-group-item">Goal: {{Me.Goal}} </li>
+                            <li *ngFor = "let req of this._Tracker.Me.Friend.RequestsToMe" 
+                              class="list-group-item">
+                              {{req}}
+                              <button class="btn btn-primary btn-sm" style = "float:right" (click) = "acceptFriendReq($event, req)"> Accept</button>
+                            </li>
                         </ul>
-                        <button class="btn btn-primary btn-sm" style = "float:right" (click) = "toggleEdit()" (click) = "bmiCalculator()" (click) = "saveProfile($event)"> Save</button>
                     </div>
             </div>
         </div>       

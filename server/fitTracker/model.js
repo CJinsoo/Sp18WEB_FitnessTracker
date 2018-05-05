@@ -1,3 +1,4 @@
+
 //var axios = require("axios");
 //axios.get(' https://wger.de/api/v2/exerciseinfo')
 //    .then( response => TipsStack = response.data.data.exerciseinfo)
@@ -17,10 +18,14 @@ function Tracker() {
  
         //this.SetProfile
 
-        this.SignUp = ( userId, password) => {
+        this.IsIdTaken = (userId, password) => {
             if(this.Members.find( x => x.UserId == userId ))
                 return false;
-            var len = this.Members.push({UserId:userId, Workout:[], UserProfile: {}, Password: password, AvailableExercises:[], Today:{TotalTime:0, TotalWorkoutType:0}, WorkoutHistory:[], Friends:[]});
+            else
+                return true;
+        }
+        this.SignUp = ( user) => {
+            var len = this.Members.push(user);
             return this.Members[len-1];
             /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
@@ -108,13 +113,37 @@ function Tracker() {
             this.PlayedQuotes.find(x=> x.Text == text).Chosen = true;
             this.DealerId = this.Players[this.DealerId = (this.DealerId + 1) % this.Players.length ] 
         }  
-        */
+        */ 
 
         this.PutHistory = (userId, history) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
             thisUser.WorkoutHistory = history;
+            //return thisUser;
+        }
+
+        this.SendFriendReq = ( userId, myId, myRequests ) => {
+            //console.log(this.Members)
+            var thisUser = this.Members.find( x => x.UserId == myId );
+            var otherUser = this.Members.find( x => x.UserId == userId );
+            //console.log(thisUser)
+            //console.log('otheruser found with j')
+            //console.log(otherUser)
+                //console.log(otherUser)
+            otherUser.Friend.RequestsToMe.push(myId);
+            thisUser.Friend.MyRequests = myRequests;
+            //console.log()
             return thisUser;
         }
-}
 
-module.exports = Tracker; 
+        this.AcceptFriend = (userId, myId, requests) => {
+            
+        }
+
+        this.GiveMe = (userId) => {
+            var me = this.Members.find( x=> x.UserId == userId)
+            return me;
+        }
+
+} 
+
+module.exports = Tracker;  

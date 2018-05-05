@@ -7,13 +7,15 @@ var tracker = new Tracker();
 module.exports = app 
     .post('/join', (req, res) =>{
         try{
-            res.send( tracker.SignUp(req.body.UserId, req.body.Password));
+            res.send( tracker.SignUp(req.body.User));
             //res.send( { success: true });
         } catch(error) {
             res.status(403).send({ success: false, message: error.message });
         }
-    } 
-    )
+    } )
+    .get('/join/taken', (req, res) =>{
+        res.send( tracker.IsIdTaken(req.query.UserId, req.query.Password))
+    })
     .get('/login', (req, res) =>
         res.send(tracker.Login(req.query.name, req.query.password))
     )
@@ -40,5 +42,9 @@ module.exports = app
         res.send( tracker.CalculateTotal( req.body.UserId, req.body.Today) )
     })
     .post('/uploadImg', (req, res) => res.send( tracker.UploadImg(req.body.UserId, req.body.ProfileImg)))
-    .post('/putHistory', (req, res) => res.send( tracker.PutHistory(req.body.UserId, req.body.History)))
+    .post('/putHistory', (req, res) => tracker.PutHistory(req.body.UserId, req.body.History))
     .get('/returnMember', (req, res) => res.send( tracker.ReturnMember()))
+    .post('/friend/req', (req, res) => res.send(tracker.SendFriendReq( req.body.UserId, req.body.MyUserId , req.body.MyRequests)))
+    .get('/giveMe', (req, res) => res.send( tracker.GiveMe(req.query.UserId) ))
+    .post('/friend/accept', (req, res) => res.send(tracker.AcceptFriend(req.body.UserId, req.body.MyUserId, req.body.RequestsToMe)))
+ 
