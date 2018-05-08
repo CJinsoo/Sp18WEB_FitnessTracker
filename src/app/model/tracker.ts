@@ -8,7 +8,7 @@ export class Tracker{
 }
 
 export class User {
-    PossibleFriends:string[];
+    //PossibleFriends:string[];
     UserId:string;
     UserProfile: Profile;
     Workout: Activity[];

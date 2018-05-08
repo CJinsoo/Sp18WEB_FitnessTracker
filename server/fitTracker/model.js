@@ -26,8 +26,20 @@ function Tracker() {
                 return true;
         }
         this.SignUp = ( user) => {
+            /* var a=0;
+            for(a in this.Members){
+                this.Members[a].PossibleFriends.push(user.UserId);
+                console.log(this.Members[a].PossibleFriends)
+            } 
+            //console.log(this.Members[0].PossibleFriends)
             //user.Friend = Friends[this.Members.len]
+            var b=0;
+            for(b in this.Members)
+                user.PossibleFriends.push(this.Members[b].UserId) */
+            //user.Friend = {Friends= new Array(), MyRequests = new Array(), RequestsToMe = new Array()}
             var len = this.Members.push(user);
+            // console.log(user.PossibleFriends)
+            //var thisUser = this.Members.find(x=>x.UserId == user.UserId)
             return this.Members[len-1];
             /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
@@ -102,9 +114,28 @@ function Tracker() {
             //console.log(thisUser.UserProfile.ProfileImg)
         } 
         
-        this.ReturnMember = () => {
+        this.ReturnMember = (userId) => {
+            var thisUser = this.Members.find(x=>x.UserId == userId)
+            console.log(thisUser.Friend)
+            //console.log(thisUser.Friend)
+            /* if(!thisUser.hasOwnProperty('Friend')){
+                return this.Members.filter(x => x.UserId != userId);
+
+            } */
+           
+            var myFriends = this.Members.filter(x=> 
+                x.UserId != userId &&
+                !thisUser.Friend.Friends.find(y=> x.UserId == y) &&
+                !thisUser.Friend.MyRequests.find(y=> x.UserId == y) &&
+                !thisUser.Friend.RequestsToMe.find(y=> x.UserId == y))
+
             
-            return this.Members;
+            // console.log('current myFriends')
+            console.log(thisUser.Friend.MyRequests)
+            console.log(myFriends)
+            return myFriends;
+
+            // return this.Members.filter(x=> !this.friendList.some(y=> x.id == y) ) );
             /* var thisUser = this.Members.find( x => x.UserId == userId );
             
             var i;
@@ -174,8 +205,8 @@ function Tracker() {
             //console.log(otherUser)
                 //console.log(otherUser)
             otherUser.Friend.RequestsToMe.push(myId);
-            thisUser.Friend.MyRequests = myRequests;
-            //console.log()
+            thisUser.Friend.MyRequests.push(userId);
+            console.log(thisUser.Friend.MyRequests)
             return thisUser;
         }
 
@@ -194,7 +225,7 @@ function Tracker() {
         }
 
         this.FriendData = (friendList) => {
-            console.log(friendList)
+            //console.log(friendList)
             if(friendList != undefined){
                 var a;
                 var friends = [];

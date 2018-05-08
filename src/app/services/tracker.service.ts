@@ -46,9 +46,12 @@ export class TrackerService {
 
   signup(name: string, password: string) {
 
-      this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:<Friends>{ Friends:[], MyRequests:[], RequestsToMe:[]}};
+      this.Me = { UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, 
+                  Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, 
+                  TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], 
+                  Friend:<Friends>{Friends:[], MyRequests:[], RequestsToMe:[]}};
       //this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:[]};
-
+      console.log(this.Me.Friend)
       this.http.post(this._api + "/join", {User:this.Me})
         .subscribe(data =>{
           console.log('successful sign up')
@@ -58,6 +61,8 @@ export class TrackerService {
             //this.Me = data.json();//Me becomes nothing
             //this.Me.AvailableExercises = [];
             this.getExercisesList();
+            // console.log('in sign up in service: my possible freinds list is:')
+            // console.log(this.Me.PossibleFriends)
           //}
         }, err => { //handling errors -> if there was an error on the server side, this is going to be executed
           console.log(err);//passing the status to the header
@@ -173,7 +178,7 @@ export class TrackerService {
     this.http.get(this._api + "/exercises/getExercises", {})
     .subscribe(data=>{
       this.Me.AvailableExercises = data.json();
-
+      this.Me.AvailableExercises.some
     })
   }
 
@@ -265,7 +270,7 @@ export class TrackerService {
         this.Users.splice(index, 1);
      
     }) */
-   return this.http.get(this._api + "/returnMember", {})
+   return this.http.get(this._api + "/returnMember", {params: {UserId:this.Me.UserId} })
     .map((response:Response) => response.json());
      /* .subscribe(data=> {
       this.Users = data.json();
@@ -296,9 +301,9 @@ export class TrackerService {
   }
 
   sendFriendReq(userId:string) {
-    if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
+    /* if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
       return;
-    this.Me.Friend.MyRequests.push(userId);
+    this.Me.Friend.MyRequests.push(userId); */
     console.log('UserId passed from component ts')
     console.log(userId)
     return this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId, MyRequests:this.Me.Friend.MyRequests })
