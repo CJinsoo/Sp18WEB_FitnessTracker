@@ -12,7 +12,7 @@ export class TrackerService {
   Me : User;
   Users:User[] = [];
   success: boolean = true;
-  myFriend: Friends;
+  myFriend: User[] = [];
 
   //zone:NgZone;
   //model = new Tracker();
@@ -46,15 +46,12 @@ export class TrackerService {
 
   signup(name: string, password: string) {
 
-      this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[]};
+      this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:<Friends>{ Friends:[], MyRequests:[], RequestsToMe:[]}};
       //this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:[]};
 
-      this.myFriend = {UserId:name, PossibleFriends:new Array(), Friends:[], MyRequests:[], RequestsToMe:[]}
-      this.http.post(this._api + "/join", {User:this.Me, Friends:this.myFriend})
+      this.http.post(this._api + "/join", {User:this.Me})
         .subscribe(data =>{
           console.log('successful sign up')
-          
-          this.myFriend.PossibleFriends = data.json();
           //this.Me.Friend = Friends[data.json()]
           //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
             
@@ -175,8 +172,6 @@ export class TrackerService {
   getExercisesList() {
     this.http.get(this._api + "/exercises/getExercises", {})
     .subscribe(data=>{
-      if(!data.json())
-        return;
       this.Me.AvailableExercises = data.json();
 
     })
@@ -270,7 +265,7 @@ export class TrackerService {
         this.Users.splice(index, 1);
      
     }) */
-   return this.http.post(this._api + "/returnMember", {UserId:this.Me.UserId})
+   return this.http.get(this._api + "/returnMember", {})
     .map((response:Response) => response.json());
      /* .subscribe(data=> {
       this.Users = data.json();
@@ -292,27 +287,27 @@ export class TrackerService {
     
   }
 
-  /* acceptFriendReq(userId:string){
+  acceptFriendReq(userId:string){
     var thisReq = this.Me.Friend.RequestsToMe.findIndex( x => x == userId)
     this.Me.Friend.RequestsToMe.splice(thisReq, 1)
     this.http.post(this._api + "/friend/accept", { UserId: userId, MyUserId: this.Me.UserId, RequestsToMe:this.Me.Friend.RequestsToMe })
     .subscribe(data => {
     })
-  } */
+  }
 
-  sendFriendReq(user:User) {
-    if(this.myFriend.MyRequests.find(x => x.UserId == user.UserId) || this.myFriend.Friends.find(x => x.UserId == user.UserId))
+  sendFriendReq(userId:string) {
+    if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
       return;
-    this.myFriend.MyRequests.push(user);
-    console.log('User passed from component ts')
-    console.log(user)
-    return this.http.post(this._api + "/friend/req", { User: user, MyUser: this.Me, MyRequests:this.myFriend.MyRequests })
+    this.Me.Friend.MyRequests.push(userId);
+    console.log('UserId passed from component ts')
+    console.log(userId)
+    return this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId, MyRequests:this.Me.Friend.MyRequests })
     .map((response:Response) => response.json())
     /* .subscribe(data => {
     }) */
   }
 
-  /* getFriends(){
+  getFriends(){
     this.http.get(this._api + "/getFriendsData", {params: {Friend:this.Me.Friend.Friends}})
     .subscribe(data => {
       if(!data.json())
@@ -321,7 +316,7 @@ export class TrackerService {
       console.log('in getFriends service.ts myFriend is')
       console.log(this.myFriend)
     });
-  } */
+  }
 
   reGiveMe(){
     return this.http.get(this._api + "/giveMe", {params: {UserId:this.Me.UserId}})

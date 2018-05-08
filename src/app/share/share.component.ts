@@ -21,6 +21,9 @@ export class ShareComponent implements OnInit, OnDestroy{
   thisFriend:string;
   myFriends:User[];
   public selectedFriend:User;
+  myReq:string[];
+  reqToMo:string[];
+
 
   constructor(private _Tracker: TrackerService, private _Router:Router) { 
     this.Me = _Tracker.Me;
@@ -30,16 +33,15 @@ export class ShareComponent implements OnInit, OnDestroy{
     }
 
     if(this.Me){
-      //console.log(_Tracker.myFriend.PossibleFriends)
-      setInterval(() => 
-      this.refreshData(), 1000);
+     
       //console.log(this._Tracker.Users)
       //this.reReceiveMe();
       //this.getAllMember();
-      //this.getFriends();
+      this.getFriends();
     }
 
-    
+    setInterval(() => 
+        this.refreshData(), 1000);
   }
 
   ngOnDestroy() {
@@ -68,10 +70,28 @@ export class ShareComponent implements OnInit, OnDestroy{
   refreshData(){
     this.result = this._Tracker.getAllMembers()
         .subscribe(data => {
-          this._Tracker.myFriend.PossibleFriends = data;
-        /* var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
+          this.Users = data;
+        //console.log(this.Users)
+        var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
+        //console.log(index)
         if(index != -1)
-          this.Users.splice(index, 1); */
+          this.Users.splice(index, 1);
+        // this.myReq = this.Me.Friend.MyRequests;
+        // this.reqToMo = this.Me.Friend.RequestsToMe;
+        var b;
+      for (b in this.Me.Friend.MyRequests) {
+        var exist1 = this.Users.find(x => x.UserId == this.Me.Friend.MyRequests[b])
+        if(exist1){
+          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.MyRequests[b]), 1 );
+        }
+      }
+
+      var c;
+      for (c in this.Me.Friend.RequestsToMe) {
+        var exist2 = this.Users.find(x => x.UserId == this.Me.Friend.RequestsToMe[c])
+        if(exist2){
+          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[c]), 1 );
+        }
         
         
             
@@ -82,14 +102,14 @@ export class ShareComponent implements OnInit, OnDestroy{
         return;
       this.Me = data;
        var a;
-      /* for (a in this.Me.Friend.Friends) {
+      for (a in this.Me.Friend.Friends) {
         var exist = this.Users.find(x => x.UserId == this.Me.Friend.Friends[a])
         if(exist){
           this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.Friends[a]), 1 );
         }
       } 
 
-      var b;
+      /* var b;
       for (b in this.Me.Friend.MyRequests) {
         var exist1 = this.Users.find(x => x.UserId == this.Me.Friend.MyRequests[b])
         if(exist1){
@@ -124,19 +144,19 @@ export class ShareComponent implements OnInit, OnDestroy{
     this._Tracker.reGiveMe();
   }
 
-  sendFriendReq(e:MouseEvent, user:User) {
-    /* var index = this.Users.findIndex(x => x.UserId == userId);
+  sendFriendReq(e:MouseEvent, userId:string) {
+    var index = this.Users.findIndex(x => x.UserId == userId);
     this.Users.splice(index, 1);
     if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
-      return;  */   
-    this._Tracker.sendFriendReq(user).subscribe(data => {
+      return;    
+    this._Tracker.sendFriendReq(userId).subscribe(data => {
       //var index = this.Users.findIndex(x => x.UserId == this.thisFriend);
-        //this.Users.splice( this.Users.findIndex(x => x.UserId == this.thisFriend), 1);
+        this.Users.splice( this.Users.findIndex(x => x.UserId == this.thisFriend), 1);
       })
     //this.thisFriend = userId;
   }
 
-  /* acceptFriendReq(e:MouseEvent, userId:string) {
+  acceptFriendReq(e:MouseEvent, userId:string) {
     this._Tracker.acceptFriendReq(userId);    
   }
 
@@ -166,10 +186,10 @@ export class ShareComponent implements OnInit, OnDestroy{
       //this.myFriends.push( this.Me.Friend.Friends)
     }
   }
-  inRequestToMe = (userId) => (this.Me.Friend.RequestsToMe.includes(userId))
+  inRequestToMe = (userId) => (this.reqToMo.includes(userId))
   
-  inMyRequests = (userId) => (this.Me.Friend.MyRequests.includes(userId))
-   *//* select(e:MouseEvent, user:User) {
+  inMyRequests = (userId) => (this.myReq.includes(userId))
+  /* select(e:MouseEvent, user:User) {
     this._Tracker.selectFriend(user);
   } */
 }
