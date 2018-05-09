@@ -1,14 +1,12 @@
 export class Tracker{
     
     Members: User[] = [];
-    
     Tips:{
         url: string
     };
 }
 
 export class User {
-    //PossibleFriends:string[];
     UserId:string;
     UserProfile: Profile;
     Workout: Activity[];
@@ -18,7 +16,6 @@ export class User {
     Today:TotalToday;
     WorkoutHistory: TotalToday[];
     Friend: Friends;
-    // Friend:Friends[];
 }
 
 export class Friends {

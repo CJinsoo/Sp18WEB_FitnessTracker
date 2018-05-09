@@ -8,7 +8,7 @@
             <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
             <div>
               <ul class="list-group list-group-flush">
-                <li *ngFor = "let user of Users" 
+                <li *ngFor = "let user of ShowList" 
                   
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <img class="rounded" [src]="user.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
@@ -30,10 +30,11 @@
                         <h5 class="card-title">Friend Requests</h5>
                         <h6 class="card-subtitle mb-2 text-muted"></h6>
                         <ul class="list-group list-group-flush text-info">
-                            <li *ngFor = "let req of Me.Friend.RequestsToMe" 
-                              class="list-group-item">
-                              {{req}}
-                              <button class="btn btn-primary btn-sm" style = "float:right" (click) = "acceptFriendReq($event, req)"> Accept</button>
+                            <li *ngFor = "let req of reqToMe" 
+                              class="list-group-item d-flex justify-content-between align-items-center">
+                              <img class="rounded" [src]="req.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
+                              {{req.UserId}}
+                              <button class="btn btn-primary btn-sm" style = "float:right" (click) = "acceptFriendReq($event, req.UserId)"> Accept</button>
                             </li>
                         </ul>
                     </div>
@@ -47,31 +48,31 @@
                   <h6 class="card-subtitle mb-2 text-muted">Today is: </h6>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
-                <ul class="list-group list-group-flush text-info">
-                    <li *ngFor = "let list of Me.Friend.Friends"
-                      (click) = "showFriends(list)" 
-                      class="list-group-item">
-                      {{list}}
-                      <div *ngIf = "isSelectedFriend(list)">
-                        <div class="card border-success mb-3">
-                            <div class="card-body text-success">
-                                <h5 class="card-title">Workout Summary</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Today is: {{today}}</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>   
-                            <ul class="list-group list-group-flush text-info">
-                                <li class="list-group-item" *ngFor = "let workout of selectedFriend.Workout">
-                                    {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
-                                </li>
-                            </ul>
-                            <div class="card-body text-success">
-                                <p class="card-text">Total Workout Time Today: {{selectedFriend.Today.TotalTime}} minutes</p>
-                                <p class="card-text">Total Number of Exercises : {{selectedFriend.Today.TotalWorkoutType}} </p>
-                            </div>
-                        </div>
+                <div *ngFor = "let list of myFriends">
+                  <a (click) = "selectFriend(list)" >{{list.UserId}}</a>
+                      <div class="card border-success mb-3">
+                          <div class="card-header" style="text-align: right">
+                              <button [disabled] = "list.WorkoutHistory.length - this.minusLength == -1" type="button" class="btn btn-dark" (click) = "showPrev(list)">Prev</button>
+                              <button [disabled] = "list.WorkoutHistory.length - this.minusLength == list.WorkoutHistory.length-1" type="button" class="btn btn-dark" (click) = "showNext(list)">Next</button>
+                          </div>
+                          <div class="card-body text-success">
+                              <h5 class="card-title">Workout Summary</h5>
+                              <h6 class="card-subtitle mb-2 text-muted">{{thisHistory.Date}}<span *ngIf = "today == thisHistory.Date">Today</span></h6>
+                              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          </div>   
+                          <ul class="list-group list-group-flush text-info" *ngIf = "!isNeg1">
+                              <li class="list-group-item" *ngFor = "let workout of thisHistory.TotalWorkout">
+                                  {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
+                              </li>
+                          </ul>
+                          <div class="card-body text-success" *ngIf = "!isNeg1">
+                              <p class="card-text">Total Workout Time Today: {{thisHistory.TotalTime}} minutes</p>
+                              <p class="card-text">Total Number of Exercises : {{thisHistory.TotalWorkoutType}} </p>
+                          </div>
+                  
                       </div>
-                    </li>
-                </ul>
+                
+                </div>
         </div>
     </div>
 </div>

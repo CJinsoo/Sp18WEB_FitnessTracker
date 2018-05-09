@@ -15,9 +15,6 @@ function Tracker() {
         this.Members = [];
         this.UserProfile;
         this.Tips = null;
-        this.PossibleFriends = [];
- 
-        //this.SetProfile
 
         this.IsIdTaken = (userId, password) => {
             if(this.Members.find( x => x.UserId == userId ))
@@ -25,6 +22,7 @@ function Tracker() {
             else
                 return true;
         }
+
         this.SignUp = ( user) => {
             /* var a=0;
             for(a in this.Members){
@@ -57,25 +55,21 @@ function Tracker() {
                 var foundUser = this.Members.find( x => x.UserId == name );
                 if(foundUser.Password == password){
                     console.log("login successful")
-                    //this._Router.navigate(['/home'])
                     return foundUser;
                 }else{
                     console.log("wrong password")
                     return false;
                 }
             }else{
-                
                 console.log("could not find user")
                 return false;
-                
-            //return false;
-            //this._Router.navigate(['/home'])
             }
         }   
         //this.flipWelcome = () =>
         //this.Tips = TipsStack[iCurrentPicture = (iCurrentPicture +1) % TipsStack.length];
 
         this.GetExercises = () => {return ExerciseStack}
+        
         this.SaveProfile = ( userProfile, id) => { 
             if(this.Members.find( x => x.UserId == id )){
                 var thisUser = this.Members.find( x => x.UserId == id );
@@ -111,18 +105,11 @@ function Tracker() {
             var thisUser = this.Members.find( x => x.UserId == userId );
             thisUser.UserProfile.ProfileImg = url;
             console.log('uploaded')
-            //console.log(thisUser.UserProfile.ProfileImg)
         } 
         
         this.ReturnMember = (userId) => {
-            var thisUser = this.Members.find(x=>x.UserId == userId)
+            /* var thisUser = this.Members.find(x=>x.UserId == userId)
             console.log(thisUser.Friend)
-            //console.log(thisUser.Friend)
-            /* if(!thisUser.hasOwnProperty('Friend')){
-                return this.Members.filter(x => x.UserId != userId);
-
-            } */
-           
             var myFriends = this.Members.filter(x=> 
                 x.UserId != userId &&
                 !thisUser.Friend.Friends.find(y=> x.UserId == y) &&
@@ -133,7 +120,8 @@ function Tracker() {
             // console.log('current myFriends')
             console.log(thisUser.Friend.MyRequests)
             console.log(myFriends)
-            return myFriends;
+            return myFriends; */
+            return this.Members;
 
             // return this.Members.filter(x=> !this.friendList.some(y=> x.id == y) ) );
             /* var thisUser = this.Members.find( x => x.UserId == userId );
@@ -180,15 +168,6 @@ function Tracker() {
         } */
          
         //this.CurrentExercise = (text) => this.Members.find(function obj)
-        /*
-        this.FlipPicture = () => this.Picture = PicturesStack[iCurrentPicture = (iCurrentPicture+1) % PicturesStack.length ];
-
-        this.SubmitQuote = (text, playerId) => this.PlayedQuotes.push({ Text: text, PlayerId: playerId });
-        this.ChooseQuote = text => {
-            this.PlayedQuotes.find(x=> x.Text == text).Chosen = true;
-            this.DealerId = this.Players[this.DealerId = (this.DealerId + 1) % this.Players.length ] 
-        }  
-        */ 
 
         this.PutHistory = (userId, history) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
@@ -197,13 +176,8 @@ function Tracker() {
         }
 
         this.SendFriendReq = ( userId, myId, myRequests ) => {
-            //console.log(this.Members)
             var thisUser = this.Members.find( x => x.UserId == myId );
             var otherUser = this.Members.find( x => x.UserId == userId );
-            //console.log(thisUser)
-            //console.log('otheruser found with j')
-            //console.log(otherUser)
-                //console.log(otherUser)
             otherUser.Friend.RequestsToMe.push(myId);
             thisUser.Friend.MyRequests.push(userId);
             console.log(thisUser.Friend.MyRequests)

@@ -12,7 +12,8 @@ import { Subscription } from 'rxjs/Subscription';
 export class ShareComponent implements OnInit, OnDestroy{
 
   Me:User;
-  Users:User[];
+  Members:User[];
+  ShowList:User[];
   data: any;
   interval:any;
   result:Subscription = new Subscription();
@@ -22,7 +23,11 @@ export class ShareComponent implements OnInit, OnDestroy{
   myFriends:User[];
   public selectedFriend:User;
   myReq:string[];
-  reqToMo:string[];
+  reqToMe:User[];
+  hideme=[];
+  minusLength:number=1;
+  thisHistory: TotalToday;
+  isNeg1:boolean = false;
 
 
   constructor(private _Tracker: TrackerService, private _Router:Router) { 
@@ -33,15 +38,18 @@ export class ShareComponent implements OnInit, OnDestroy{
     }
 
     if(this.Me){
-     
+      setInterval(() => 
+      this.refreshData(), 1000);
       //console.log(this._Tracker.Users)
       //this.reReceiveMe();
       //this.getAllMember();
-      this.getFriends();
+      //this.getFriends();
+      this.thisHistory = {Date:'No friend selected yet', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}
+      this.minusLength = 1;
+      this.isNeg1 = false;
     }
 
-    setInterval(() => 
-        this.refreshData(), 1000);
+    
   }
 
   ngOnDestroy() {
@@ -67,37 +75,57 @@ export class ShareComponent implements OnInit, OnDestroy{
   }
 
 
+
+  showPrev(friend:User) {
+    this.minusLength += 1;
+    console.log(this._Tracker.Me.WorkoutHistory.length)
+    console.log(this._Tracker.Me.WorkoutHistory.length - this.minusLength)
+    if(friend.WorkoutHistory.length - this.minusLength == -1){
+      this.isNeg1 = true;
+      // return;
+    }
+      
+    this.thisHistory = friend.WorkoutHistory[friend.WorkoutHistory.length - this.minusLength];
+  }
+  
+  showNext(friend:User) {
+    this.minusLength -= 1;
+    if(friend.WorkoutHistory.length - this.minusLength != -1){
+      this.isNeg1 = false;
+      // return;
+    }
+    this.thisHistory = friend.WorkoutHistory[friend.WorkoutHistory.length - this.minusLength];
+
+  }
+  
+  selectFriend(friend: User) {
+    //Friend should have a -1 array element that shows that there's no more history.
+    if(friend.WorkoutHistory.length == 0)
+      this.thisHistory = {Date:'Your friend has no history yet', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}
+    else
+      this.thisHistory = friend.WorkoutHistory[friend.WorkoutHistory.length-1];
+    console.log(this.thisHistory)
+  }
+
   refreshData(){
     this.result = this._Tracker.getAllMembers()
         .subscribe(data => {
-          /* if(!data)
-            return; */
-            console.log(data)
-          this.Users = data;
+          this.Members = data;
+            var myFriends = this.Members.filter(x=> 
+                x.UserId != this.Me.UserId &&
+                !this.Me.Friend.Friends.find(y=> x.UserId == y) &&
+                !this.Me.Friend.MyRequests.find(y=> x.UserId == y) &&
+                !this.Me.Friend.RequestsToMe.find(y=> x.UserId == y))
+            this.ShowList = myFriends;
 
-        //console.log(this.Users)
+
+
        /*  var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
         //console.log(index)
         if(index != -1)
           this.Users.splice(index, 1); */
         // this.myReq = this.Me.Friend.MyRequests;
         // this.reqToMo = this.Me.Friend.RequestsToMe;
-        var b;
-      /* for (b in this.Me.Friend.MyRequests) {
-        var exist1 = this.Users.find(x => x.UserId == this.Me.Friend.MyRequests[b])
-        if(exist1){
-          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.MyRequests[b]), 1 );
-        }
-      }
-
-      var c;
-      for (c in this.Me.Friend.RequestsToMe) {
-        var exist2 = this.Users.find(x => x.UserId == this.Me.Friend.RequestsToMe[c])
-        if(exist2){
-          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[c]), 1 );
-        } */
-        
-        
             
     })
 
@@ -105,29 +133,11 @@ export class ShareComponent implements OnInit, OnDestroy{
       if(!data)
         return;
       this.Me = data;
-       var a;
-      /* for (a in this.Me.Friend.Friends) {
-        var exist = this.Users.find(x => x.UserId == this.Me.Friend.Friends[a])
-        if(exist){
-          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.Friends[a]), 1 );
-        }
-      }  */
+      this.reqToMe = this.Members.filter(x=> 
+        this.Me.Friend.RequestsToMe.find(y=> x.UserId == y))
 
-      /* var b;
-      for (b in this.Me.Friend.MyRequests) {
-        var exist1 = this.Users.find(x => x.UserId == this.Me.Friend.MyRequests[b])
-        if(exist1){
-          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.MyRequests[b]), 1 );
-        }
-      }
-
-      var c;
-      for (c in this.Me.Friend.RequestsToMe) {
-        var exist2 = this.Users.find(x => x.UserId == this.Me.Friend.RequestsToMe[c])
-        if(exist2){
-          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[c]), 1 );
-        }
-      }  */
+      this.myFriends = this.Members.filter(x=> 
+        this.Me.Friend.Friends.find(y=> x.UserId == y))
     })
 
     
@@ -140,9 +150,8 @@ export class ShareComponent implements OnInit, OnDestroy{
           /* if(!data)
             return; */
             console.log(data)
-          this.Users = data;
+          this.Members = data;
         }
-        //this.Users.includes
         )}
 
   reReceiveMe() {
@@ -169,8 +178,7 @@ export class ShareComponent implements OnInit, OnDestroy{
     this._Tracker.getFriends();
   }
 
-  showFriends(friend:string) {
-    console.log(this._Tracker.myFriend)
+  showFriend(friend:string) {
     var thisFriend = this._Tracker.myFriend.find(x => x.UserId == friend);
     //this.isSelectedFriend = true;
 
@@ -191,7 +199,7 @@ export class ShareComponent implements OnInit, OnDestroy{
       //this.myFriends.push( this.Me.Friend.Friends)
     }
   }
-  inRequestToMe = (userId) => (this.reqToMo.includes(userId))
+  inRequestToMe = (userId) => (this.reqToMe.includes(userId))
   
   inMyRequests = (userId) => (this.myReq.includes(userId))
   /* select(e:MouseEvent, user:User) {

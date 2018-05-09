@@ -61,28 +61,37 @@
     <div class = "row" >
         <div class = "col" >
             <div class="card border-success mb-3">
+                <div class="card-header" style="text-align: right">
+                    <button [disabled] = "_Tracker.Me.WorkoutHistory.length - this.minusLength == -1" type="button" class="btn btn-dark" (click) = "showPrev()">Prev</button>
+                    <button [disabled] = "_Tracker.Me.WorkoutHistory.length - this.minusLength == _Tracker.Me.WorkoutHistory.length-1" type="button" class="btn btn-dark" (click) = "showNext()">Next</button>
+                </div>
                 <div class="card-body text-success">
                     <h5 class="card-title">Workout Summary</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Today is: {{today}}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{thisHistory.Date}}<span *ngIf = "today == thisHistory.Date">Today</span></h6>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>   
-                <ul class="list-group list-group-flush text-info">
-                    <li class="list-group-item" *ngFor = "let workout of Me.Workout">
+                <ul class="list-group list-group-flush text-info" *ngIf = "!isNeg1">
+                    <li class="list-group-item" *ngFor = "let workout of thisHistory.TotalWorkout">
                         {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
                     </li>
                 </ul>
-                <div class="card-body text-success">
-                    <p class="card-text">Total Workout Time Today: {{Me.Today.TotalTime}} minutes</p>
-                    <p class="card-text">Total Number of Exercises : {{Me.Today.TotalWorkoutType}} </p>
+                <div class="card-body text-success" *ngIf = "!isNeg1">
+                    <p class="card-text">Total Workout Time Today: {{thisHistory.TotalTime}} minutes</p>
+                    <p class="card-text">Total Number of Exercises : {{thisHistory.TotalWorkoutType}} </p>
                 </div>
         
             </div>
         </div>
     </div>
-    <div class = "row" >
+    <!-- <div class = "row" >
             <div class = "col" >
                 <div class="card border-success mb-3">
+                        <div class="card-header" style="text-align: right">
+                                <button type="button" class="btn btn-dark" (click) = "showPrev()">Prev</button>
+                                <button type="button" class="btn btn-dark" (click) = "showNext()">Next</button>
+                            </div>
                     <div class="card-body text-success">
+                        
                         <h5 class="card-title">Workout History</h5>
                         <p class="card-text">Click on the date to expand your workout history</p>
                     </div>   
@@ -106,5 +115,5 @@
             
                 </div>
             </div>
-        </div>
+        </div> -->
 </div>
