@@ -13,7 +13,7 @@ export class ShareComponent implements OnInit, OnDestroy{
 
   Me:User;
   Members:User[];
-  ShowList:User[];
+  ShowList:any[] = [];
   data: any;
   interval:any;
   result:Subscription = new Subscription();
@@ -54,7 +54,7 @@ export class ShareComponent implements OnInit, OnDestroy{
       this.isNeg1 = false;
       this.selectedFriend = {UserId:'', UserProfile:<Profile>{}, Workout:[], CurrentWorkout:'', Password:'', AvailableExercises:[], Today:<TotalToday>{}, WorkoutHistory:[], Friend:<Friends>{}};
     }
-
+    //console.log(this.ShowList.length)
     
   }
 
@@ -115,10 +115,16 @@ export class ShareComponent implements OnInit, OnDestroy{
   }
 
   refreshData(){
-    this.result = this._Tracker.getAllMembers()
+    /* this.result = this._Tracker.getAllMembers()
         .subscribe(data => {
           this.Members = data;
-            /* var myFriends = this.Members.filter(x=> 
+          this.ShowList = data.filter(x=>
+            !x.isMe && !x.isFriend && !x.isRequestsToMe && !x.isMyRequest
+          );
+          this.reqToMe = data.filter(x=> x.isRequestsToMe)
+          this.myFriends = data.filter(x=> x.isFriend)
+ */
+           /* var myFriends = this.Members.filter(x=> 
                 x.UserId != this.Me.UserId &&
                 !this.Me.Friend.Friends.find(y=> x.UserId == y) &&
                 !this.Me.Friend.MyRequests.find(y=> x.UserId == y) &&
@@ -134,21 +140,17 @@ export class ShareComponent implements OnInit, OnDestroy{
         // this.myReq = this.Me.Friend.MyRequests;
         // this.reqToMo = this.Me.Friend.RequestsToMe;
             
-    })
-
-    this._Tracker.getShowList().subscribe(data => {
-          this.ShowList = data;
-    })
-
-    this._Tracker.reGiveMe().subscribe(data=> {
-      if(!data)
-        return;
-      this.Me = data;
-      this.reqToMe = this.Members.filter(x=> 
-        this.Me.Friend.RequestsToMe.find(y=> x.UserId == y))
-
-      this.myFriends = this.Members.filter(x=> 
-        this.Me.Friend.Friends.find(y=> x.UserId == y))
+    // })
+    this._Tracker.getShowList().subscribe(data=>{
+      this.Members = data;
+      this.ShowList = data.filter(x=>
+        !x.isMe && !x.isFriend && !x.isRequestsToMe && !x.isMyRequest
+      );
+      //console.log(this.ShowList)
+      //console.log(this.ShowList[0].User.UserId)
+      this.reqToMe = data.filter(x=> x.isRequestsToMe)
+      this.myFriends = data.filter(x=> x.isFriend)
+      //console.log(this.reqToMe)
     })
 
     

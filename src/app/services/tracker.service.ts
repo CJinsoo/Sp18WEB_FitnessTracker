@@ -160,7 +160,8 @@ export class TrackerService {
             thisExercise.Duration += duration;
             thisExercise.Cycle += cycle;
         }else{
-            this.Me.Workout.push({ ActivityName:this.Me.CurrentWorkout, Duration:duration, Cycle:cycle })
+            thisExercise = { ActivityName:this.Me.CurrentWorkout, Duration:duration, Cycle:cycle };
+            this.Me.Workout.push(thisExercise)
         } 
     //this.Me.Workout.push({ActivityName:this.Me.CurrentWorkout, Duration: duration, Cycle:cycle});
     this.http.post(this._api + "/exercises/submitExercise",{ Workout:this.Me.Workout, UserId:this.Me.UserId })

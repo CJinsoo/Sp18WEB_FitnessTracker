@@ -7,13 +7,13 @@
             <h5 class="card-title">Send Friend Requests</h5>
             <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
             <div>
-              <ul class="list-group list-group-flush">
+              <ul class="list-group list-group-flush" >
                 <li *ngFor = "let user of ShowList" 
                   
                     class="list-group-item d-flex justify-content-between align-items-center">
-                    <img class="rounded" [src]="user.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
-                    {{user.UserId}}
-                  <button (click) = "sendFriendReq($event, user.UserId)"
+                    <img class="rounded" [src]="user.User.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
+                    {{user.User.UserId}}
+                  <button (click) = "sendFriendReq($event, user.User.UserId)"
                   
                   class = "btn btn-sm btn-primary">
                   Request Friend
@@ -32,9 +32,9 @@
                         <ul class="list-group list-group-flush text-info">
                             <li *ngFor = "let req of reqToMe" 
                               class="list-group-item d-flex justify-content-between align-items-center">
-                              <img class="rounded" [src]="req.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
-                              {{req.UserId}}
-                              <button class="btn btn-primary btn-sm" style = "float:right" (click) = "acceptFriendReq($event, req.UserId)"> Accept</button>
+                              <img class="rounded" [src]="req.User.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
+                              {{req.User.UserId}}
+                              <button class="btn btn-primary btn-sm" style = "float:right" (click) = "acceptFriendReq($event, req.User.UserId)"> Accept</button>
                             </li>
                         </ul>
                     </div>
@@ -46,11 +46,11 @@
             <div class="card-body text-danger">
                 <h5 class="card-title">Shared Friends</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Today is: </h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text">{{selectedFriend.UserId}}</p>
             </div>
             <div class="card border-success mb-3" >
                 <div class="card-header"  >
-                    <a *ngFor = "let list of myFriends" class="btn text-left" (click) = "selectFriend(list)" >{{list.UserId}}</a>
+                    <a *ngFor = "let list of myFriends" class="btn text-left" (click) = "selectFriend(list.User)" >{{list.User.UserId}}</a>
                 
                     <button class="btn text-right" [disabled] = "selectedFriend.WorkoutHistory.length - this.minusLength <= 0" type="button" class="btn btn-dark" (click) = "showPrev(list)">Prev</button>
                     <button class="btn text-right" [disabled] = "selectedFriend.WorkoutHistory.length - this.minusLength == selectedFriend.WorkoutHistory.length-1" type="button" class="btn btn-dark" (click) = "showNext(list)">Next</button>
@@ -58,7 +58,7 @@
                 <div class="card-body text-success">
                     <h5 class="card-title">Workout Summary</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{thisHistory.Date}}<span *ngIf = "today == thisHistory.Date">Today</span></h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p class="card-text"></p>
                 </div>   
                 <ul class="list-group list-group-flush text-info" *ngIf = "!isNeg1">
                     <li class="list-group-item" *ngFor = "let workout of thisHistory.TotalWorkout">

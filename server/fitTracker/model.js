@@ -116,11 +116,14 @@ function Tracker() {
         this.ReturnShowList = (userId) => {
             var thisUser = this.Members.find(x=>x.UserId == userId)
             // console.log(thisUser.Friend)
-            var myFriends = this.Members.filter(x=> 
-                x.UserId != userId &&
-                !thisUser.Friend.Friends.find(y=> x.UserId == y) &&
-                !thisUser.Friend.MyRequests.find(y=> x.UserId == y) &&
-                !thisUser.Friend.RequestsToMe.find(y=> x.UserId == y))
+            var myFriends = this.Members.map(x=> ({
+                User: { UserId: x.UserId, UserProfile:{ ProfileImg: x.UserProfile.ProfileImg}, WorkoutHistory:x.WorkoutHistory },
+                isMe: x.UserId == userId,
+                isFriend: thisUser.Friend.Friends.some(y=> x.UserId == y),
+                isMyRequest: thisUser.Friend.MyRequests.some(y=> x.UserId == y),
+                isRequestsToMe: thisUser.Friend.RequestsToMe.some(y=> x.UserId == y)
+
+            }))
 
             
             // console.log('current myFriends')
