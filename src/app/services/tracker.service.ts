@@ -8,21 +8,13 @@ import 'rxjs/add/operator/map';
 export class TrackerService {
   private _api = "http://localhost:8080/fitTracker";
 
-  //Model = new Tracker();
   Me : User;
   Users:User[] = [];
   success: boolean = true;
   myFriend: User[] = [];
 
-  //zone:NgZone;
-  //model = new Tracker();
-  //isClick:boolean = false;
-  
   constructor(private http:Http, private _Router:Router) { 
-    //this.zone = new NgZone({enableLongStackTrace: false});
 
-    //this.model.Members.push()
-    // setInterval(() => this.refresh(), 1000)
     //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
   }
 
@@ -71,12 +63,8 @@ export class TrackerService {
         
   }
 
-  /* toggleClick(){
-    this.isClick = !this.isClick;
-  } */
-
   login(name: string, password: string) {
-    //var success:boolean;
+
     this.http.get(this._api + "/login", { params : {  name:name, password:password} })
     .subscribe(data=> {      
       if(!data.json()){
@@ -92,22 +80,6 @@ export class TrackerService {
     })
     console.log('after all ' + this.success)
   }
-
-  /* login(name: string, password: string) {
-    if(this.Model.Members.find( x => x.UserId == name )){
-      var user = this.Model.Members.find( x => x.UserId == name );
-      if(user.Password == password)
-        this.Me = user;
-      console.log("login successful")
-      this._Router.navigate(['/home'])
-    }else{
-      console.log("login failed")
-      return false;
-      //this._Router.navigate(['/home'])
-    }
-    
-
-  } */
 
   uploadImage(url:string){
     this.Me.UserProfile.ProfileImg = url;
@@ -129,7 +101,6 @@ export class TrackerService {
     this.Me.UserProfile.Email = email; 
     this.Me.UserProfile.ProfileImg = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     
-
     this.http.post(this._api + "/saveProfile",  { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
     .subscribe(data=> {
       this.Me = data.json();
@@ -140,13 +111,8 @@ export class TrackerService {
       //this.bmiCalculator();
 
       this._Router.navigate(['/home']);
-      
     });
-    
-  
   }
-
-   
 
   saveProfile(name:string, age:number, heightft:number, heightin:number, weight:number, goal:string, bmi:number, email:string){
     this.Me.UserProfile.Name = name;
@@ -158,7 +124,6 @@ export class TrackerService {
     this.Me.UserProfile.Bmi = bmi;
     this.Me.UserProfile.Email = email;
  
-
     this.http.post(this._api + "/saveProfile", { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
     .subscribe(data=> {
       //this.Me = data.json();
@@ -178,7 +143,7 @@ export class TrackerService {
     this.http.get(this._api + "/exercises/getExercises", {})
     .subscribe(data=>{
       this.Me.AvailableExercises = data.json();
-      this.Me.AvailableExercises.some
+      // this.Me.AvailableExercises.some
     })
   }
 
@@ -270,7 +235,7 @@ export class TrackerService {
         this.Users.splice(index, 1);
      
     }) */
-   return this.http.get(this._api + "/returnMember", {params: {UserId:this.Me.UserId} })
+   return this.http.get(this._api + "/returnMember", { })
     .map((response:Response) => response.json());
      /* .subscribe(data=> {
       this.Users = data.json();
@@ -290,6 +255,11 @@ export class TrackerService {
     })   */
 
     
+  }
+
+  getShowList() {
+    return this.http.get(this._api + "/returnShowList", {params: {UserId:this.Me.UserId} })
+    .map((response:Response) => response.json());
   }
 
   acceptFriendReq(userId:string){

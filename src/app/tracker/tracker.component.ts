@@ -23,14 +23,12 @@ export class TrackerComponent implements OnInit {
   minusLength:number = 1;
   isNeg1:boolean = false;
   
-  //today = "" + this.date.getMonth() + this.date.getDate() + this.date.getUTCMonth;
-
   private _api = "http://localhost:8080/fitTracker";
   constructor(private http:Http, private _Tracker: TrackerService, private _Router:Router) { 
   
     this.messages = ['Choose activities and start recording your workout results']
-    //http.get(this._api + "/exercises/getExercises").subscribe(data=> this.Me.MyQuotes = data.json())
     this.Me = _Tracker.Me;
+    
     if(!this.Me ){
       _Router.navigate(['/signin']);
     }
@@ -40,25 +38,19 @@ export class TrackerComponent implements OnInit {
     }
     this.date = new Date();
     this.today = this.date.toDateString();
-   //this.today = 
-   //this.initListeners();
+    
     if(this.Me){
-      //this.putHistory();
       this._Tracker.Me.WorkoutHistory[-1] = {Date: 'No history yet!', TotalTime:0, TotalWorkoutType: 0, TotalWorkout: []};
-      console.log(this.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1].Date)
-      console.log(this.today)
+      
       if(this._Tracker.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1].Date != this.today){
         this._Tracker.Me.Today = {Date:this.today, TotalTime: 0, TotalWorkoutType:0, TotalWorkout:[]}
         this._Tracker.Me.Workout = [];
         this._Tracker.Me.WorkoutHistory.push(this._Tracker.Me.Today)
-        console.log('reset complete')
-        console.log(this._Tracker.Me.Today)
       }
       this.thisHistory = this.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1];
-  }
+    }
     
   }
-
 
   ngOnInit() {
   }

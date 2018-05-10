@@ -30,20 +30,14 @@ module.exports = app
     .post('/saveProfile', (req, res) => {
         res.send( tracker.SaveProfile(req.body.UserProfile, req.body.UserId) )
     })
-    //.post('/picture', (req, res) => res.send( tracker.FlipPicture() ))
-    /* .post('/exercises/submitExercise', (req, res) => {
-        //console.log(req.body);
-        res.send( tracker. )
-        //tracker.SubmitQuote(req.body.Text, req.body.PlayerId);
-        //res.send( { success: true } );
-    }) */
     .post('/exercises/submitExercise', (req, res) => res.send( tracker.SubmitExercise(req.body.Workout, req.body.UserId) ))
     .post('/exercises/calculateToday', (req, res) => {
         res.send( tracker.CalculateTotal( req.body.UserId, req.body.Today) )
     })
     .post('/uploadImg', (req, res) => res.send( tracker.UploadImg(req.body.UserId, req.body.ProfileImg)))
     .post('/putHistory', (req, res) => tracker.PutHistory(req.body.UserId, req.body.History))
-    .get('/returnMember', (req, res) => res.send( tracker.ReturnMember(req.query.UserId)))
+    .get('/returnMember', (req, res) => res.send( tracker.ReturnMembers()))
+    .get('/returnShowList', (req, res) => res.send( tracker.ReturnShowList(req.query.UserId)))
     .post('/friend/req', (req, res) => res.send(tracker.SendFriendReq( req.body.UserId, req.body.MyUserId , req.body.MyRequests)))
     .get('/giveMe', (req, res) => res.send( tracker.GiveMe(req.query.UserId) ))
     .post('/friend/accept', (req, res) => res.send(tracker.AcceptFriend(req.body.UserId, req.body.MyUserId, req.body.RequestsToMe)))

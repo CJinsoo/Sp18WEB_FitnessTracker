@@ -84,6 +84,8 @@ function Tracker() {
         this.SubmitExercise = (workout, userId) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
             thisUser.Workout = workout;
+            //Should I just push here as well?
+
             /* var thisExercise = thisUser.Workout.find( x => x.ActivityName == activityName);
             if(thisExercise){
                 thisExercise.Duration += duration;
@@ -107,9 +109,13 @@ function Tracker() {
             console.log('uploaded')
         } 
         
-        this.ReturnMember = (userId) => {
-            /* var thisUser = this.Members.find(x=>x.UserId == userId)
-            console.log(thisUser.Friend)
+        this.ReturnMembers = () => {
+            return this.Members;
+        }
+
+        this.ReturnShowList = (userId) => {
+            var thisUser = this.Members.find(x=>x.UserId == userId)
+            // console.log(thisUser.Friend)
             var myFriends = this.Members.filter(x=> 
                 x.UserId != userId &&
                 !thisUser.Friend.Friends.find(y=> x.UserId == y) &&
@@ -118,12 +124,11 @@ function Tracker() {
 
             
             // console.log('current myFriends')
-            console.log(thisUser.Friend.MyRequests)
-            console.log(myFriends)
-            return myFriends; */
-            return this.Members;
+            // console.log(thisUser.Friend.MyRequests)
+            // console.log(myFriends)
+            return myFriends;
+           
 
-            // return this.Members.filter(x=> !this.friendList.some(y=> x.id == y) ) );
             /* var thisUser = this.Members.find( x => x.UserId == userId );
             
             var i;

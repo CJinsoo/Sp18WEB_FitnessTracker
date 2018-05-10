@@ -21,7 +21,7 @@ export class ShareComponent implements OnInit, OnDestroy{
   //isSelectedFriend:boolean = false;
   thisFriend:string;
   myFriends:User[];
-  public selectedFriend:User;
+  selectedFriend:User;
   myReq:string[];
   reqToMe:User[];
   hideme=[];
@@ -38,8 +38,13 @@ export class ShareComponent implements OnInit, OnDestroy{
     }
 
     if(this.Me){
-      setInterval(() => 
-      this.refreshData(), 1000);
+
+      this.refreshData(); 
+      this.interval = setInterval(() => {  
+          this.refreshData();  
+      }, 1000); 
+      // setInterval(() => 
+      // this.refreshData(), 1000);
       //console.log(this._Tracker.Users)
       //this.reReceiveMe();
       //this.getAllMember();
@@ -47,6 +52,7 @@ export class ShareComponent implements OnInit, OnDestroy{
       this.thisHistory = {Date:'No friend selected yet', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}
       this.minusLength = 1;
       this.isNeg1 = false;
+      this.selectedFriend = {UserId:'', UserProfile:<Profile>{}, Workout:[], CurrentWorkout:'', Password:'', AvailableExercises:[], Today:<TotalToday>{}, WorkoutHistory:[], Friend:<Friends>{}};
     }
 
     
@@ -99,6 +105,7 @@ export class ShareComponent implements OnInit, OnDestroy{
   }
   
   selectFriend(friend: User) {
+    this.selectedFriend = friend;
     //Friend should have a -1 array element that shows that there's no more history.
     if(friend.WorkoutHistory.length == 0)
       this.thisHistory = {Date:'Your friend has no history yet', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}
@@ -111,12 +118,12 @@ export class ShareComponent implements OnInit, OnDestroy{
     this.result = this._Tracker.getAllMembers()
         .subscribe(data => {
           this.Members = data;
-            var myFriends = this.Members.filter(x=> 
+            /* var myFriends = this.Members.filter(x=> 
                 x.UserId != this.Me.UserId &&
                 !this.Me.Friend.Friends.find(y=> x.UserId == y) &&
                 !this.Me.Friend.MyRequests.find(y=> x.UserId == y) &&
                 !this.Me.Friend.RequestsToMe.find(y=> x.UserId == y))
-            this.ShowList = myFriends;
+            this.ShowList = myFriends; */
 
 
 
@@ -127,6 +134,10 @@ export class ShareComponent implements OnInit, OnDestroy{
         // this.myReq = this.Me.Friend.MyRequests;
         // this.reqToMo = this.Me.Friend.RequestsToMe;
             
+    })
+
+    this._Tracker.getShowList().subscribe(data => {
+          this.ShowList = data;
     })
 
     this._Tracker.reGiveMe().subscribe(data=> {
