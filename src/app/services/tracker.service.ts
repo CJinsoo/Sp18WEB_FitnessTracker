@@ -265,7 +265,7 @@ export class TrackerService {
         this.Users.splice(index, 1);
      
     }) */
-   return this.http.get(this._api + "/returnMember", { })
+   return this.http.get(this._api + "/returnMember", {params:{UserId:this.Me.UserId}})
     .map((response:Response) => response.json());
      /* .subscribe(data=> {
       this.Users = data.json();
@@ -296,7 +296,8 @@ export class TrackerService {
   }
 
   sendFriendReq(userId:string) {
-    
+    if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
+      return;
     this.Me.Friend.MyRequests.push(userId);
     console.log('UserId passed from component ts')
     console.log(userId)

@@ -15,6 +15,7 @@ function Tracker() {
         this.Members = [];
         this.UserProfile;
         this.Tips = null;
+        this.PossibleFriends = [];
  
         //this.SetProfile
 
@@ -101,8 +102,41 @@ function Tracker() {
             //console.log(thisUser.UserProfile.ProfileImg)
         } 
         
-        this.ReturnMember = () => {
-            return this.Members;
+        this.ReturnMember = (userId) => {
+            
+            //return this.Members;
+            var thisUser = this.Members.find( x => x.UserId == userId );
+            
+            var i;
+            for(i in this.Members)
+                this.PossibleFriends.push(this.Members[i].UserId);
+            //console.log(thisUser.PossibleFriends)
+            var index = this.PossibleFriends.findIndex(x=>x.UserId == userId)
+            this.PossibleFriends.splice(index, 1)
+            var a;
+            for (a in thisUser.Friend.Friends) {
+                var exist = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.Friends[a])
+                if(exist){
+                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.Friends[a]), 1 );
+                }
+            }
+            var b;
+            for (b in thisUser.Friend.MyRequests) {
+                var existb = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.MyRequests[b])
+                if(existb){
+                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.MyRequests[b]), 1 );
+                }
+            }
+            var c;
+            for (c in thisUser.Friend.RequestsToMe) {
+                var existc = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.RequestsToMe[c])
+                if(existc){
+                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.RequestsToMe[c]), 1 );
+                }
+            }
+
+            //console.log(this.PossibleFriends) 
+            return this.PossibleFriends
         }
 
         /* this.PropagateFriend = (userId) => {

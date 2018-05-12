@@ -1,14 +1,14 @@
 export class Tracker{
     
     Members: User[] = [];
-    
+    PossibleFriends: User[] = new Array();
     Tips:{
         url: string
     };
 }
 
 export class User {
-    //PossibleFriends:User[];
+    //PossibleFriends:User[] = [];
     UserId:string;
     UserProfile: Profile;
     Workout: Activity[];

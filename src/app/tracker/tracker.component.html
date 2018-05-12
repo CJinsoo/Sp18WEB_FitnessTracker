@@ -79,4 +79,32 @@
             </div>
         </div>
     </div>
+    <div class = "row" >
+            <div class = "col" >
+                <div class="card border-success mb-3">
+                    <div class="card-body text-success">
+                        <h5 class="card-title">Workout History</h5>
+                        <p class="card-text">Click on the date to expand your workout history</p>
+                    </div>   
+                    <ul class="list-group list-group-flush text-info">
+                        <li class="list-group-item" *ngFor = "let history of Me.WorkoutHistory; let i = index"
+                            (click)="hideme[i] = !hideme[i]"
+                            [ngClass] = "{hide: history.Date == today}">
+                            <h6 class="card-subtitle mb-2 text-muted">{{history.Date}}</h6>
+                            <div [hidden]="!hideme[i]">
+                                <span *ngFor = "let workout of history.TotalWorkout">
+                                    {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times<br>
+                                </span>
+                                <div class="card-body text-success">
+                                    <p class="card-text">Total Workout Time of {{history.Date}}: {{history.TotalTime}} minutes</p>
+                                    <p class="card-text">Total Number of Exercises : {{history.TotalWorkoutType}} </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+            
+                </div>
+            </div>
+        </div>
 </div>

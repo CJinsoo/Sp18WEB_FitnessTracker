@@ -18,11 +18,13 @@ export class TrackerComponent implements OnInit {
   //initiation:boolean = false;
   date:Date;
   today:string;
+  hideme=[];
   
   //today = "" + this.date.getMonth() + this.date.getDate() + this.date.getUTCMonth;
 
   private _api = "http://localhost:8080/fitTracker";
   constructor(private http:Http, private _Tracker: TrackerService, private _Router:Router) { 
+  
     this.messages = ['Choose activities and start recording your workout results']
     //http.get(this._api + "/exercises/getExercises").subscribe(data=> this.Me.MyQuotes = data.json())
     this.Me = _Tracker.Me;
@@ -38,12 +40,13 @@ export class TrackerComponent implements OnInit {
    //this.today = 
    //this.initListeners();
     if(this.Me){
-      this.putHistory();
+      //this.putHistory();
       this._Tracker.Me.WorkoutHistory[-1] = {Date: '', TotalTime:0, TotalWorkoutType: 0, TotalWorkout: []};
-      console.log(this.Me.WorkoutHistory[length-1].Date)
+      console.log(this.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1].Date)
       console.log(this.today)
-      if(this._Tracker.Me.WorkoutHistory[length-1].Date != this.today){
+      if(this._Tracker.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1].Date != this.today){
         this._Tracker.Me.Today = {Date:'', TotalTime: 0, TotalWorkoutType:0, TotalWorkout:[]}
+        this._Tracker.Me.Workout = [];
         console.log('reset complete')
         console.log(this._Tracker.Me.Today)
       }

@@ -9,19 +9,15 @@
             <div>
               <ul class="list-group list-group-flush">
                 <li *ngFor = "let user of Users" 
-                  [hidden] = "inRequestToMe(user.UserId)"
-                  [hidden] = "inMyRequests(user.UserId)"
+                  [ngClass] = "{hide: inRequestToMe(user.UserId) || inMyRequests(user.UserId)}"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <img class="rounded" [src]="user.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
-                    
                     {{user.UserId}}
-                    <form>
                   <button (click) = "sendFriendReq($event, user.UserId)"
                   
                   class = "btn btn-sm btn-primary">
                   Request Friend
                   </button>
-                </form>
                 </li>
               </ul>
             </div>

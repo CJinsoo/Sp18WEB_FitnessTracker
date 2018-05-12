@@ -30,7 +30,7 @@ export class ShareComponent implements OnInit, OnDestroy{
 
     if(this.Me){
      
-      console.log(this._Tracker.Users)
+      //console.log(this._Tracker.Users)
       //this.reReceiveMe();
       //this.getAllMember();
       this.getFriends();
@@ -41,7 +41,7 @@ export class ShareComponent implements OnInit, OnDestroy{
     this.result.unsubscribe();
     this.result1.unsubscribe();
     clearInterval(this.interval);
-}
+  }
 
   ngOnInit() {
 
@@ -73,20 +73,37 @@ export class ShareComponent implements OnInit, OnDestroy{
         if(index != -1)
           this.Users.splice(index, 1);
         
+        
             
-        })
+    })
 
     this._Tracker.reGiveMe().subscribe(data=> {
       if(!data)
         return;
       this.Me = data;
-      /* var a;
+     /*  var a;
       for (a in this.Me.Friend.Friends) {
         var exist = this.Users.find(x => x.UserId == this.Me.Friend.Friends[a])
         if(exist){
           this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.Friends[a]), 1 );
         }
-      }  */
+      } 
+
+      var b;
+      for (b in this.Me.Friend.MyRequests) {
+        var exist1 = this.Users.find(x => x.UserId == this.Me.Friend.MyRequests[b])
+        if(exist1){
+          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.MyRequests[b]), 1 );
+        }
+      }
+
+      var c;
+      for (c in this.Me.Friend.RequestsToMe) {
+        var exist2 = this.Users.find(x => x.UserId == this.Me.Friend.RequestsToMe[c])
+        if(exist2){
+          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[c]), 1 );
+        }
+      } */
     })
 
     
@@ -108,6 +125,8 @@ export class ShareComponent implements OnInit, OnDestroy{
   }
 
   sendFriendReq(e:MouseEvent, userId:string) {
+    var index = this.Users.findIndex(x => x.UserId == userId);
+    this.Users.splice(index, 1);
     if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
       return;    
     this._Tracker.sendFriendReq(userId).subscribe(data => {
