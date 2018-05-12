@@ -102,10 +102,10 @@ function Tracker() {
             //console.log(thisUser.UserProfile.ProfileImg)
         } 
         
-        this.ReturnMember = (userId) => {
+        this.ReturnMember = () => {
             
-            //return this.Members;
-            var thisUser = this.Members.find( x => x.UserId == userId );
+            return this.Members;
+            /* var thisUser = this.Members.find( x => x.UserId == userId );
             
             var i;
             for(i in this.Members)
@@ -136,7 +136,7 @@ function Tracker() {
             }
 
             //console.log(this.PossibleFriends) 
-            return this.PossibleFriends
+            return this.PossibleFriends */
         }
 
         /* this.PropagateFriend = (userId) => {

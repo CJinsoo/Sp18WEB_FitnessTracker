@@ -35,6 +35,9 @@ export class ShareComponent implements OnInit, OnDestroy{
       //this.getAllMember();
       this.getFriends();
     }
+
+    setInterval(() => 
+        this.refreshData(), 1000);
   }
 
   ngOnDestroy() {
@@ -45,10 +48,7 @@ export class ShareComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
 
-    this.refreshData();
-    this.interval = setInterval(() => { 
-        this.refreshData(); 
-    }, 1000);
+    
     
     /* this._Tracker.getAllMembers().subscribe(data => {
       this.Users = data;
@@ -81,7 +81,7 @@ export class ShareComponent implements OnInit, OnDestroy{
       if(!data)
         return;
       this.Me = data;
-     /*  var a;
+       var a;
       for (a in this.Me.Friend.Friends) {
         var exist = this.Users.find(x => x.UserId == this.Me.Friend.Friends[a])
         if(exist){
@@ -103,7 +103,7 @@ export class ShareComponent implements OnInit, OnDestroy{
         if(exist2){
           this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[c]), 1 );
         }
-      } */
+      } 
     })
 
     

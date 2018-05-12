@@ -265,7 +265,7 @@ export class TrackerService {
         this.Users.splice(index, 1);
      
     }) */
-   return this.http.get(this._api + "/returnMember", {params:{UserId:this.Me.UserId}})
+   return this.http.get(this._api + "/returnMember", {})
     .map((response:Response) => response.json());
      /* .subscribe(data=> {
       this.Users = data.json();
