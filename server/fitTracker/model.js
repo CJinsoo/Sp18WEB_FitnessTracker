@@ -15,7 +15,8 @@ function Tracker() {
         this.Members = [];
         this.UserProfile;
         this.Tips = null;
-        this.PossibleFriends = [];
+        //this.PossibleFriends = [];
+        this.Friends = [];
  
         //this.SetProfile
 
@@ -25,10 +26,17 @@ function Tracker() {
             else
                 return true;
         }
-        this.SignUp = ( user) => {
+        this.SignUp = ( user, userFriend) => {
             //user.Friend = Friends[this.Members.len]
-            var len = this.Members.push(user);
-            return this.Members[len-1];
+            
+            this.Members.push(user)
+            var x;
+            for(x in this.Friends)
+                this.Friends[x].PossibleFriends.push(user);
+            userFriend.PossibleFriends = this.Members;
+            userFriend.PossibleFriends.splice(userFriend.PossibleFriends.findIndex(x=>x.UserId == user.UserId), 1);
+            this.Friends.push(userFriend);
+            return userFriend.PossibleFriends;
             /* if(this.Members.some(x=> x.UserId == userId)){
                 //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
                 return this.Members.find(function (obj) {return obj.UserId === userId;});
@@ -102,41 +110,41 @@ function Tracker() {
             //console.log(thisUser.UserProfile.ProfileImg)
         } 
         
-        this.ReturnMember = () => {
+        this.ReturnMember = (userId) => {
             
-            return this.Members;
-            /* var thisUser = this.Members.find( x => x.UserId == userId );
+            //return this.Members;
+            var thisUser = this.Friends.find( x => x.UserId == userId );
             
-            var i;
+            /* var i;
             for(i in this.Members)
                 this.PossibleFriends.push(this.Members[i].UserId);
             //console.log(thisUser.PossibleFriends)
             var index = this.PossibleFriends.findIndex(x=>x.UserId == userId)
-            this.PossibleFriends.splice(index, 1)
+            this.PossibleFriends.splice(index, 1) */
             var a;
-            for (a in thisUser.Friend.Friends) {
-                var exist = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.Friends[a])
+            for (a in thisUser.Friends) {
+                var exist = thisUser.PossibleFriends.find(x => x.UserId == thisUser.Friends[a])
                 if(exist){
-                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.Friends[a]), 1 );
+                  thisUser.PossibleFriends.splice( thisUser.PossibleFriends.findIndex(x => x.UserId == thisUser.Friends[a].UserId), 1 );
                 }
             }
             var b;
-            for (b in thisUser.Friend.MyRequests) {
-                var existb = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.MyRequests[b])
+            for (b in thisUser.MyRequests) {
+                var existb = thisUser.PossibleFriends.find(x => x.UserId == thisUser.MyRequests[b])
                 if(existb){
-                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.MyRequests[b]), 1 );
+                  thisUser.PossibleFriends.splice( thisUser.PossibleFriends.findIndex(x => x.UserId == thisUser.MyRequests[b].UserId), 1 );
                 }
             }
             var c;
-            for (c in thisUser.Friend.RequestsToMe) {
-                var existc = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.RequestsToMe[c])
+            for (c in thisUser.RequestsToMe) {
+                var existc = thisUser.PossibleFriends.find(x => x.UserId == thisUser.RequestsToMe[c].UserId)
                 if(existc){
-                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.RequestsToMe[c]), 1 );
+                  thisUser.PossibleFriends.splice( thisUser.PossibleFriends.findIndex(x => x.UserId == thisUser.RequestsToMe[c].UserId), 1 );
                 }
             }
 
             //console.log(this.PossibleFriends) 
-            return this.PossibleFriends */
+            return thisUser.PossibleFriends 
         }
 
         /* this.PropagateFriend = (userId) => {
@@ -165,17 +173,11 @@ function Tracker() {
             //return thisUser;
         }
 
-        this.SendFriendReq = ( userId, myId, myRequests ) => {
-            //console.log(this.Members)
-            var thisUser = this.Members.find( x => x.UserId == myId );
-            var otherUser = this.Members.find( x => x.UserId == userId );
-            //console.log(thisUser)
-            //console.log('otheruser found with j')
-            //console.log(otherUser)
-                //console.log(otherUser)
-            otherUser.Friend.RequestsToMe.push(myId);
-            thisUser.Friend.MyRequests = myRequests;
-            //console.log()
+        this.SendFriendReq = ( user, myUser, myRequests ) => {
+            var thisUser = this.Friends.find( x => x.UserId == myUser.UserId );
+            var otherUser = this.Friends.find( x => x.UserId == user.UserId );
+            otherUser.RequestsToMe.push(myUser);
+            thisUser.MyRequests = myRequests;
             return thisUser;
         }
 

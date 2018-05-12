@@ -1,10 +1,11 @@
 export class Tracker{
     
     Members: User[] = [];
-    PossibleFriends: User[] = new Array();
+    //PossibleFriends: User[] = new Array();
     Tips:{
         url: string
     };
+    Friends: Friends[];
 }
 
 export class User {
@@ -17,14 +18,16 @@ export class User {
     AvailableExercises :string[];
     Today:TotalToday;
     WorkoutHistory: TotalToday[];
-    Friend: Friends;
+    //Friend: Friends;
     // Friend:Friends[];
 }
 
 export class Friends {
-    Friends:string[];
-    MyRequests:string[];
-    RequestsToMe:string[];
+    UserId:string;
+    PossibleFriends: User[];
+    Friends:User[];
+    MyRequests:User[];
+    RequestsToMe:User[];
 }
 
 /* export class Friends {

@@ -7,7 +7,7 @@ var tracker = new Tracker();
 module.exports = app 
     .post('/join', (req, res) =>{
         try{
-            res.send( tracker.SignUp(req.body.User));
+            res.send( tracker.SignUp(req.body.User, req.body.Friends));
             //res.send( { success: true });
         } catch(error) {
             res.status(403).send({ success: false, message: error.message });
@@ -43,8 +43,8 @@ module.exports = app
     })
     .post('/uploadImg', (req, res) => res.send( tracker.UploadImg(req.body.UserId, req.body.ProfileImg)))
     .post('/putHistory', (req, res) => tracker.PutHistory(req.body.UserId, req.body.History))
-    .get('/returnMember', (req, res) => res.send( tracker.ReturnMember()))
-    .post('/friend/req', (req, res) => res.send(tracker.SendFriendReq( req.body.UserId, req.body.MyUserId , req.body.MyRequests)))
+    .post('/returnMember', (req, res) => res.send( tracker.ReturnMember(req.body.UserId)))
+    .post('/friend/req', (req, res) => res.send(tracker.SendFriendReq( req.body.User, req.body.MyUser , req.body.MyRequests)))
     .get('/giveMe', (req, res) => res.send( tracker.GiveMe(req.query.UserId) ))
     .post('/friend/accept', (req, res) => res.send(tracker.AcceptFriend(req.body.UserId, req.body.MyUserId, req.body.RequestsToMe)))
     //.post('/propagateFriend', (req, res) => res.send(tracker.PropagateFriend(req.body.UserId)))

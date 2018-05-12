@@ -19,6 +19,7 @@ export class ShareComponent implements OnInit, OnDestroy{
   result1:Subscription = new Subscription();
   //isSelectedFriend:boolean = false;
   thisFriend:string;
+  myFriends:User[];
   public selectedFriend:User;
 
   constructor(private _Tracker: TrackerService, private _Router:Router) { 
@@ -29,15 +30,16 @@ export class ShareComponent implements OnInit, OnDestroy{
     }
 
     if(this.Me){
-     
+      //console.log(_Tracker.myFriend.PossibleFriends)
+      setInterval(() => 
+      this.refreshData(), 1000);
       //console.log(this._Tracker.Users)
       //this.reReceiveMe();
       //this.getAllMember();
-      this.getFriends();
+      //this.getFriends();
     }
 
-    setInterval(() => 
-        this.refreshData(), 1000);
+    
   }
 
   ngOnDestroy() {
@@ -66,12 +68,10 @@ export class ShareComponent implements OnInit, OnDestroy{
   refreshData(){
     this.result = this._Tracker.getAllMembers()
         .subscribe(data => {
-          this.Users = data;
-        //console.log(this.Users)
-        var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
-        //console.log(index)
+          this._Tracker.myFriend.PossibleFriends = data;
+        /* var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
         if(index != -1)
-          this.Users.splice(index, 1);
+          this.Users.splice(index, 1); */
         
         
             
@@ -82,7 +82,7 @@ export class ShareComponent implements OnInit, OnDestroy{
         return;
       this.Me = data;
        var a;
-      for (a in this.Me.Friend.Friends) {
+      /* for (a in this.Me.Friend.Friends) {
         var exist = this.Users.find(x => x.UserId == this.Me.Friend.Friends[a])
         if(exist){
           this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.Friends[a]), 1 );
@@ -103,7 +103,7 @@ export class ShareComponent implements OnInit, OnDestroy{
         if(exist2){
           this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[c]), 1 );
         }
-      } 
+      }  */
     })
 
     
@@ -124,19 +124,19 @@ export class ShareComponent implements OnInit, OnDestroy{
     this._Tracker.reGiveMe();
   }
 
-  sendFriendReq(e:MouseEvent, userId:string) {
-    var index = this.Users.findIndex(x => x.UserId == userId);
+  sendFriendReq(e:MouseEvent, user:User) {
+    /* var index = this.Users.findIndex(x => x.UserId == userId);
     this.Users.splice(index, 1);
     if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
-      return;    
-    this._Tracker.sendFriendReq(userId).subscribe(data => {
+      return;  */   
+    this._Tracker.sendFriendReq(user).subscribe(data => {
       //var index = this.Users.findIndex(x => x.UserId == this.thisFriend);
-        this.Users.splice( this.Users.findIndex(x => x.UserId == this.thisFriend), 1);
+        //this.Users.splice( this.Users.findIndex(x => x.UserId == this.thisFriend), 1);
       })
     //this.thisFriend = userId;
   }
 
-  acceptFriendReq(e:MouseEvent, userId:string) {
+  /* acceptFriendReq(e:MouseEvent, userId:string) {
     this._Tracker.acceptFriendReq(userId);    
   }
 
@@ -159,10 +159,17 @@ export class ShareComponent implements OnInit, OnDestroy{
       this.selectedFriend.UserId == friend 
     }
 
+
+  returnMyFriends = () => {
+    var x;
+    for(x in this.Me.Friend.Friends){
+      //this.myFriends.push( this.Me.Friend.Friends)
+    }
+  }
   inRequestToMe = (userId) => (this.Me.Friend.RequestsToMe.includes(userId))
   
   inMyRequests = (userId) => (this.Me.Friend.MyRequests.includes(userId))
-  /* select(e:MouseEvent, user:User) {
+   *//* select(e:MouseEvent, user:User) {
     this._Tracker.selectFriend(user);
   } */
 }
