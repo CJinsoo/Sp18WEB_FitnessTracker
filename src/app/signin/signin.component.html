@@ -1,3 +1,5 @@
+<span style = "text-align: center"><ngb-alert *ngIf="!staticAlertClosed && !Me" [dismissible]="false">Oops! Looks like you haven't signed in</ngb-alert></span>
+
 <div class = "container">
     <div class = "row justify-content-center" *ngIf = "!Me">
         <div class = "col-md-4" style = "padding-top: 6rem">
@@ -14,7 +16,7 @@
                             <input #Password class="form-control" placeholder = "Password" type="password">
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-sm" style = "float:right" (click) = "login(Name.value, Password.value)" >Sign in</button> 
+                    <button class="btn btn-primary btn-sm" style = "float:right" (click) = "login(Name.value, Password.value)" (click) = "isLoginSuccess()">Sign in</button> 
                     <p *ngIf = !success class="text-danger" style="padding-left:15px; margin-bottom:0">Log in failed</p>
                     <div>
                         <p style = "clear:right; padding-top:15px; margin-bottom: 0; margin-left:15px">Don't have account yet?</p>

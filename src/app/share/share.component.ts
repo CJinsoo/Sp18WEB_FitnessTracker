@@ -3,6 +3,9 @@ import { TrackerService } from '../services/tracker.service';
 import { Router } from '@angular/router';
 import { User, TotalToday, Friends, Profile } from '../model/tracker';
 import { Subscription } from 'rxjs/Subscription';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import { MessagesService } from '../services/messages.service';
 
 @Component({
   selector: 'app-share',
@@ -11,6 +14,11 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ShareComponent implements OnInit, OnDestroy{
 
+  messages:string[];
+  /* private _success = new Subject<string>();
+
+  staticAlertClosed = false;
+  successMessage: string; */
   Me:User;
   Members:User[];
   ShowList:any[] = [];
@@ -30,9 +38,11 @@ export class ShareComponent implements OnInit, OnDestroy{
   isNeg1:boolean = false;
 
 
-  constructor(private _Tracker: TrackerService, private _Router:Router) { 
+  constructor(private _Tracker: TrackerService, private _Router:Router, private _Messages: MessagesService) { 
     this.Me = _Tracker.Me;
     this.selectedFriend = this.Me;
+    this.messages = ['Become friends, Share with your friends']
+
     if(!this.Me ){
       _Router.navigate(['/signin']);
     }
@@ -66,6 +76,13 @@ export class ShareComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
 
+   /*  setTimeout(() => this.staticAlertClosed = true, 20000);
+
+    this._success.subscribe((message) => this.successMessage = message);
+    this._success.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.successMessage = null); */
+
     
     
     /* this._Tracker.getAllMembers().subscribe(data => {
@@ -81,6 +98,15 @@ export class ShareComponent implements OnInit, OnDestroy{
   }
 
 
+  public requestSuccessMessage(userId:string) {
+    // this._Messages._success.next(`Your request was successfully sent to ` + userId + "!");
+    this._Messages.requestSuccessMessage(userId);
+  }
+
+  public acceptSuccessMessage(userId:string) {
+    // this._Messages._success.next(`You accepted ` + userId + "'s Friend request! Now you can see " + userId+"'s workout log");
+    this._Messages.acceptSuccessMessage(userId);
+  }
 
   showPrev(friend:User) {
     this.minusLength += 1;
@@ -150,6 +176,7 @@ export class ShareComponent implements OnInit, OnDestroy{
       //console.log(this.ShowList[0].User.UserId)
       this.reqToMe = data.filter(x=> x.isRequestsToMe)
       this.myFriends = data.filter(x=> x.isFriend)
+      this.myReq = data.filter(x=> x.isMyRequest)
       //console.log(this.reqToMe)
     })
 

@@ -3,6 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { User, Tracker, Profile, TotalToday, Friends } from '../model/tracker';
 import 'rxjs/add/operator/map';
+import { MessagesService } from './messages.service';
 
 @Injectable()
 export class TrackerService {
@@ -13,7 +14,7 @@ export class TrackerService {
   success: boolean = true;
   myFriend: User[] = [];
 
-  constructor(private http:Http, private _Router:Router) { 
+  constructor(private http:Http, private _Router:Router, private _Messages:MessagesService) { 
 
     //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
   }
@@ -25,8 +26,8 @@ export class TrackerService {
       .subscribe()
   } */
 
-  isIdTaken(name: string, password:string) {
-    this.http.get(this._api + "/join/taken", { params: { UserId:name, Password:password}})
+  isIdTaken(name: string) {
+    this.http.get(this._api + "/join/taken", { params: { UserId:name}})
     .subscribe(data => {
       /* if(!data.json()){
         alert('UserId already exists');
@@ -47,9 +48,11 @@ export class TrackerService {
       this.http.post(this._api + "/join", {User:this.Me})
         .subscribe(data =>{
           console.log('successful sign up')
+
           //this.Me.Friend = Friends[data.json()]
           //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
-            
+            this._Messages.signUpSuccessMessage(this.Me.UserId);
+
             //this.Me = data.json();//Me becomes nothing
             //this.Me.AvailableExercises = [];
             this.getExercisesList();
@@ -68,17 +71,20 @@ export class TrackerService {
     this.http.get(this._api + "/login", { params : {  name:name, password:password} })
     .subscribe(data=> {      
       if(!data.json()){
-        this.success = false;
-        console.log('in datajson ' + this.success)
+        this._Messages.logInFailMessage();
+        // this.success = false;
+        // console.log('in datajson ' + this.success)
         return;
       }
       this.Me = data.json()
       //this.Me.AvailableExercises = [];
-      this._Router.navigate(['/home'])
       this.success = true;
-      console.log('when is correct ' + this.success)
+      this._Router.navigate(['/home'])
+      this._Messages.logInSuccessMessage(this.Me.UserId);
+      
+      // console.log('when is correct ' + this.success)
     })
-    console.log('after all ' + this.success)
+    // console.log('after all ' + this.success)
   }
 
   uploadImage(url:string){
@@ -154,6 +160,7 @@ export class TrackerService {
     console.log(this.Me.CurrentWorkout)
   }
 
+  //just send thisExercise
   submitExercise(duration:number, cycle:number){
     var thisExercise = this.Me.Workout.find( x => x.ActivityName == this.Me.CurrentWorkout);
         if(thisExercise){
@@ -164,7 +171,7 @@ export class TrackerService {
             this.Me.Workout.push(thisExercise)
         } 
     //this.Me.Workout.push({ActivityName:this.Me.CurrentWorkout, Duration: duration, Cycle:cycle});
-    this.http.post(this._api + "/exercises/submitExercise",{ Workout:this.Me.Workout, UserId:this.Me.UserId })
+    this.http.post(this._api + "/exercises/submitExercise",{ Workout:thisExercise, UserId:this.Me.UserId })
         .subscribe(data => {
           ///this.Me = data.json();  
           //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted

@@ -1,5 +1,2 @@
-<div id = "messages">
-  <div class = "alert alert-success">
-      {{messages[0]}}
-  </div>
-</div>
+<span style = "text-align: center"><ngb-alert *ngIf="Messages.successMessage" type="danger" [dismissible]="false">{{ Messages.successMessage }}</ngb-alert></span>
+

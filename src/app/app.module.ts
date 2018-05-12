@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { SigninComponent } from './signin/signin.component';
 import { TrackerService } from './services/tracker.service';
 import { SignupComponent } from './signup/signup.component';
+import { MessagesService } from './services/messages.service';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { SignupComponent } from './signup/signup.component';
     SignupComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpModule,
@@ -42,7 +45,7 @@ import { SignupComponent } from './signup/signup.component';
       {path: 'signup', component: SignupComponent}
     ])
   ],
-  providers: [TrackerService],
+  providers: [MessagesService, TrackerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

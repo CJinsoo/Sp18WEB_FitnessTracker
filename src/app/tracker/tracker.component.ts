@@ -26,7 +26,7 @@ export class TrackerComponent implements OnInit {
   private _api = "http://localhost:8080/fitTracker";
   constructor(private http:Http, private _Tracker: TrackerService, private _Router:Router) { 
   
-    this.messages = ['Choose activities and start recording your workout results']
+    // this.messages = ['Choose activities and start recording your workout results']
     this.Me = _Tracker.Me;
     
     if(!this.Me ){

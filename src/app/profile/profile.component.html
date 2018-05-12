@@ -1,11 +1,11 @@
 <div id = "messages">
-    <div class = "alert alert-info">
-        {{messages[0]}}
+    <div class = "alert alert-info" style = "text-align: center">
+        Hi <strong>{{this.Me.UserId}}</strong>, View and Edit your profile here
     </div>
 </div>
 <div class="container">
   <div class = "row">
-    <div class = "col-5">
+    <div class = "col-md-5">
       <div class="card border-info" >
         <div class = "card-body text-info " >
           <div>
@@ -29,10 +29,10 @@
       </div>
     </div>
 
-    <div class = "col-7" *ngIf = !isEdit>
+    <div class = "col-md-7" *ngIf = !isEdit>
         <div class="card border-info " >
             <div class = "card-body text-info">
-                <h5 class="card-title" style = "text-align: center">{{Me.UserProfile.Name}}'s Profile</h5>
+                <h5 class="card-title" style = "text-align: center">{{Me.UserId}}'s Profile</h5>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">User Id: {{Me.UserId}}</li>
                     <li class="list-group-item">Name: {{Me.UserProfile.Name}}</li>
@@ -54,7 +54,7 @@
     
       <!--<a href="#" class="btn btn-primary btn-sm" style = "float:right">Edit</a>-->
     
-    <div class = "col-7" *ngIf = isEdit>
+    <div class = "col-md-7" *ngIf = isEdit>
         <div class="card border-info " >
             <div class = "card-body text-info">
                 <h5 class="card-title" style = "text-align: center">Edit your profile</h5>

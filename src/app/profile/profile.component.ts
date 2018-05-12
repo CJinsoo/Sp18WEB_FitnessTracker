@@ -13,18 +13,20 @@ export class ProfileComponent implements OnInit {
  
   //Model = new Tracker();
   Me:User;
-  messages:string[];
+  // messages:string[];
   selectedFile: File;
   url:string = '';
   //private _api = "http://localhost:8080/profile";
   isEdit:boolean = false;
 
   constructor(private http: Http, private _Tracker: TrackerService, private _Router:Router) {
-    this.messages = ['Hi, View your profile and edit here']
     this.Me = _Tracker.Me;
     if(!this.Me ){
-      _Router.navigate(['/signin']);
-    }
+      _Router.navigate(['/signin']);}
+    // }else{
+    //   this.messages = ['Hi ' + this.Me.UserId + ', View your profile and edit here']
+
+    // }
 
     
  

@@ -1,11 +1,11 @@
 <div id = "messages">
-    <div class = "alert alert-info">
-        {{messages[0]}}
+    <div class = "alert alert-info" style = "text-align: center">
+        Choose activities and start recording your workout results
     </div>
 </div>
 <div class = "container">
     <div class = "row">
-        <div class = "col-3">
+        <div class = "col-md-3">
                 <div class="card text-white bg-info mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Name: {{Me.UserProfile.Name}}</h5>
@@ -18,7 +18,7 @@
                     </ul>
                 </div>
         </div>
-        <div class = "col-5">
+        <div class = "col-md-5">
             <div class="card border-primary mb-3">
                     <div class="card-body text-primary">
                         <h5 class="card-title">Select Your Workout</h5>
@@ -34,7 +34,7 @@
                     </div>
             </div>
         </div>
-        <div class = "col-4" style = "padding-bottom: 2rem">
+        <div class = "col-md-4" style = "padding-bottom: 2rem">
             <div class="card border-info mb-3">
                     <div class="card-body text-info">
                         <h5 class="card-title">Selected Workout</h5>
@@ -59,7 +59,7 @@
         </div>       
     </div>
     <div class = "row" >
-        <div class = "col" >
+        <div class = "col-md-12" >
             <div class="card border-success mb-3">
                 <div class="card-header" style="text-align: right">
                     <button [disabled] = "_Tracker.Me.WorkoutHistory.length - this.minusLength == -1" type="button" class="btn btn-dark" (click) = "showPrev()">Prev</button>

@@ -83,7 +83,14 @@ function Tracker() {
 
         this.SubmitExercise = (workout, userId) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
-            thisUser.Workout = workout;
+            var thisExercise = thisUser.Workout.find( x => x.ActivityName == workout.ActivityName);
+            if(thisExercise){
+                thisExercise.Duration += workout.duration;
+                thisExercise.Cycle += workout.cycle;
+            }else{
+                thisUser.Workout.push(workout)
+            } 
+            // thisUser.Workout = workout;
             //Should I just push here as well?
 
             /* var thisExercise = thisUser.Workout.find( x => x.ActivityName == activityName);
@@ -117,7 +124,7 @@ function Tracker() {
             var thisUser = this.Members.find(x=>x.UserId == userId)
             // console.log(thisUser.Friend)
             var myFriends = this.Members.map(x=> ({
-                User: { UserId: x.UserId, UserProfile:{ ProfileImg: x.UserProfile.ProfileImg}, WorkoutHistory:x.WorkoutHistory },
+                User: { UserId: x.UserId, UserProfile:{ ProfileImg: x.UserProfile.ProfileImg, Name: x.UserProfile.Name, Age: x.UserProfile.Age, Email: x.UserProfile.Email}, WorkoutHistory:x.WorkoutHistory },
                 isMe: x.UserId == userId,
                 isFriend: thisUser.Friend.Friends.some(y=> x.UserId == y),
                 isMyRequest: thisUser.Friend.MyRequests.some(y=> x.UserId == y),

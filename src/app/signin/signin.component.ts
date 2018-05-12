@@ -3,6 +3,8 @@ import { Http } from "@angular/http";
 import { User, Tracker } from '../model/tracker';
 import { TrackerService } from '../services/tracker.service';
 import { Router } from '@angular/router';
+import {Subject} from 'rxjs';
+
 
 @Component({
   selector: 'app-signin',
@@ -14,6 +16,7 @@ export class SigninComponent implements OnInit {
   Me:User;
   private _api = "http://localhost:8080/fitTracker";
   success:boolean = true;
+  staticAlertClosed = false;
 
   constructor(private http: Http, private _Tracker: TrackerService, private _Router: Router) { 
     this.Me = _Tracker.Me;
@@ -22,6 +25,12 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
+      setTimeout(() => this.staticAlertClosed = true, 5000);
+ /* 
+    this._success.subscribe((message) => this.successMessage = message);
+    this._success.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.successMessage = null); */
   }
 
   login(name: string, password: string){
@@ -33,4 +42,10 @@ export class SigninComponent implements OnInit {
     
   }
 
+  isLoginSuccess(){
+    if(this.Me)
+      this.success = true;
+    else  
+      this.success = false;
+  }
 }
