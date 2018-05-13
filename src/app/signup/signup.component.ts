@@ -18,25 +18,32 @@ export class SignupComponent implements OnInit {
 
   constructor(private http: Http, private _Tracker: TrackerService) { 
     this.Me = _Tracker.Me;
-
+    this._Tracker.isIdAvailable = false;
     
   }
 
   ngOnInit() {
   }
 
-  signup(name: string, password: string){
-    this._Tracker.signup(name, password);//delegate to service
   
+
+  signup(name: string, password: string){
+      this._Tracker.signup(name, password);//delegate to service
+      // this._Tracker.isIdAvailable = false;
   }
 
   
+  isIdTaken(userId: string){
+    this._Tracker.isIdTaken(userId);
+
+  }
 
   submitInitialProfile(e: MouseEvent, name:string, age:number, heightft:number, heightin:number, weight:number, email:string) {
-    e.preventDefault();
-    var bmi = this.bmiCalculator(heightft, heightin, weight);
-    this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, bmi, email);
-    console.log('initialization success')
+      e.preventDefault();
+      var bmi = this.bmiCalculator(heightft, heightin, weight);
+      this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, bmi, email);
+      console.log('initialization success')
+    
   }//need to do something here, or the profile won't work.
 
   toggleSignup(){
@@ -50,8 +57,4 @@ export class SignupComponent implements OnInit {
     //console.log('user bmi ' + this.Me.UserProfile.Age)
   }
 
-  isIdTaken(name: string, password:string) {
-   
-  }
-  
 }

@@ -13,6 +13,7 @@ export class TrackerService {
   Users:User[] = [];
   success: boolean = true;
   myFriend: User[] = [];
+  isIdAvailable:boolean = false;
 
   constructor(private http:Http, private _Router:Router, private _Messages:MessagesService) { 
 
@@ -26,9 +27,31 @@ export class TrackerService {
       .subscribe()
   } */
 
+  signOut(){
+    this.Me = null;
+    this._Messages.signOutSuccessMessage();
+  }
+
+  onReadOnly() {
+    document.getElementById('userIdInput').setAttribute("readonly", "true");
+  }
+
+  isLoginFail(text:string) {
+    document.getElementById('isLoginFail').textContent= text;
+
+  }
+
   isIdTaken(name: string) {
     this.http.get(this._api + "/join/taken", { params: { UserId:name}})
     .subscribe(data => {
+      if(!data.json()){
+        alert('User name already taken');
+        this.isIdAvailable = false;
+      }
+      else{
+        this.isIdAvailable = true;
+        this.onReadOnly();
+      }
       /* if(!data.json()){
         alert('UserId already exists');
         return;
@@ -74,11 +97,15 @@ export class TrackerService {
         this._Messages.logInFailMessage();
         // this.success = false;
         // console.log('in datajson ' + this.success)
+        this.isLoginFail("Log in Failed");
+        setTimeout(() => this.isLoginFail(""), 3000);
         return;
       }
       this.Me = data.json()
       //this.Me.AvailableExercises = [];
-      this.success = true;
+      // this.success = true;
+      // document.getElementById('isLoginFail').textContent= "";
+
       this._Router.navigate(['/home'])
       this._Messages.logInSuccessMessage(this.Me.UserId);
       
@@ -120,17 +147,10 @@ export class TrackerService {
     });
   }
 
-  saveProfile(name:string, age:number, heightft:number, heightin:number, weight:number, goal:string, bmi:number, email:string){
-    this.Me.UserProfile.Name = name;
-    this.Me.UserProfile.Age = age;
-    this.Me.UserProfile.Heightft = heightft;
-    this.Me.UserProfile.Heightin = heightin;
-    this.Me.UserProfile.Weight = weight;
-    this.Me.UserProfile.Goal = goal;
-    this.Me.UserProfile.Bmi = bmi;
-    this.Me.UserProfile.Email = email;
+  saveProfile(me:User){
+    
  
-    this.http.post(this._api + "/saveProfile", { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
+    this.http.post(this._api + "/saveProfile", { UserProfile:me.UserProfile, UserId: this.Me.UserId } )
     .subscribe(data=> {
       //this.Me = data.json();
       //this.Me = obj;

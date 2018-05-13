@@ -61,8 +61,8 @@ export class ShareComponent implements OnInit, OnDestroy{
       //this.getFriends();
       this.thisHistory = {Date:'No friend selected yet', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}
       this.minusLength = 1;
-      this.isNeg1 = false;
-      this.selectedFriend = {UserId:'', UserProfile:<Profile>{}, Workout:[], CurrentWorkout:'', Password:'', AvailableExercises:[], Today:<TotalToday>{}, WorkoutHistory:[], Friend:<Friends>{}};
+      this.isNeg1 = true;
+      this.selectedFriend = {UserId:'Selected Friend', UserProfile:<Profile>{ProfileImg:''}, Workout:[], CurrentWorkout:'', Password:'', AvailableExercises:[], Today:<TotalToday>{}, WorkoutHistory:[], Friend:<Friends>{}};
     }
     //console.log(this.ShowList.length)
     
@@ -112,7 +112,7 @@ export class ShareComponent implements OnInit, OnDestroy{
     this.minusLength += 1;
     console.log(this._Tracker.Me.WorkoutHistory.length)
     console.log(this._Tracker.Me.WorkoutHistory.length - this.minusLength)
-    if(friend.WorkoutHistory.length - this.minusLength == -1){
+    if(friend.WorkoutHistory.length - this.minusLength < 0){
       this.isNeg1 = true;
       // return;
     }
@@ -133,10 +133,14 @@ export class ShareComponent implements OnInit, OnDestroy{
   selectFriend(friend: User) {
     this.selectedFriend = friend;
     //Friend should have a -1 array element that shows that there's no more history.
-    if(friend.WorkoutHistory.length == 0)
+    if(friend.WorkoutHistory.length == 0){
       this.thisHistory = {Date:'Your friend has no history yet', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}
-    else
+      this.isNeg1= true;
+    }
+    else{
       this.thisHistory = friend.WorkoutHistory[friend.WorkoutHistory.length-1];
+      this.isNeg1 = false;
+    }
     console.log(this.thisHistory)
   }
 

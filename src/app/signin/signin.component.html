@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary btn-sm" style = "float:right" (click) = "login(Name.value, Password.value)" (click) = "isLoginSuccess()">Sign in</button> 
-                    <p *ngIf = !success class="text-danger" style="padding-left:15px; margin-bottom:0">Log in failed</p>
+                    <p id = "isLoginFail" class="text-danger" style="padding-left:15px; margin-bottom:0"></p>
                     <div>
                         <p style = "clear:right; padding-top:15px; margin-bottom: 0; margin-left:15px">Don't have account yet?</p>
                         <a class="nav-link" routerLink="/signup" routerLinkActive="active" style = "text-decoration: underline;">Sign up</a>
@@ -27,6 +27,6 @@
         </div>
     </div>
     <div class = "row justify-content-center" *ngIf = "Me">
-        <h1>Already signed in</h1>
+        <h3>Thank you for using our service. You are already signed in</h3>
     </div>
 </div>

@@ -77,6 +77,11 @@ export class ProfileComponent implements OnInit {
   }
   //this.weight / (this.heightft * 12 + this.heightin)*(this.heightft * 12 + this.heightin)) * 703
 
+
+/*   onSelectionChange(entry) {
+    this.selectedEntry = entry;
+  } */
+
   toggleEdit(){ 
     this.isEdit = !this.isEdit;
   }
@@ -88,11 +93,11 @@ export class ProfileComponent implements OnInit {
 
   }*/
 
-  saveProfile(e: MouseEvent, name:string, age:number, heightft:number, heightin:number, weight:number, goal:string, email:string){
+  saveProfile(e: MouseEvent){
     e.preventDefault();
-    var height = heightft*12 + heightin;
-    var bmi = this.bmiCalculator(heightft, heightin, weight);
-    this._Tracker.saveProfile(name, age, heightft, heightin, weight, goal, bmi, email);
+    var height = this.Me.UserProfile.Heightft*12 + this.Me.UserProfile.Heightin;
+    var bmi = this.bmiCalculator(this.Me.UserProfile.Heightft, this.Me.UserProfile.Heightin, this.Me.UserProfile.Weight);
+    this._Tracker.saveProfile(this.Me);
     //this.Me.UserProfile = 
   }
 

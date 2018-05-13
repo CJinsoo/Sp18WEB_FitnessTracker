@@ -43,6 +43,9 @@ export class MessagesService {
     public logInFailMessage() {
         this._success.next('Your email/password is not found in the server');
     }
+    public signOutSuccessMessage() {
+      this._success.next('Thanks for using our service. You have been signed out successfully.');
+  }
 }
 
 

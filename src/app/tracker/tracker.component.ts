@@ -118,8 +118,8 @@ export class TrackerComponent implements OnInit {
           console.log(err);
         }); */
     //this.Me.CurrentWorkout = text;
-    this.choice = false;
-    this.Me.CurrentWorkout = 'not selected';
+    // this.choice = false;
+    // this.Me.CurrentWorkout = 'not selected';
   }
 
   calculateTotalToday(e:MouseEvent) {

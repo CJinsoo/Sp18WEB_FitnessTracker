@@ -20,8 +20,9 @@
           <a class="nav-link" routerLink="/share" routerLinkActive="active">Share</a>
         </li>
       </ul>
-      <span class="nav-item justify-content:between"><a class="nav-link" routerLink="/signup" routerLinkActive="active">Sign up</a></span>
-      <span class="nav-item justify-content:between"><a class="nav-link" routerLink="/signin" routerLinkActive="active">Sign in</a></span>
+      <span *ngIf = "!_Tracker.Me" class="nav-item justify-content:between"><a class="nav-link" routerLink="/signup" routerLinkActive="active">Sign up</a></span>
+      <span *ngIf = "!_Tracker.Me" class="nav-item justify-content:between"><a class="nav-link" routerLink="/signin" routerLinkActive="active">Sign in</a></span>
+      <span *ngIf = "_Tracker.Me" class="nav-item justify-content:between"><a class="nav-link" routerLink="/home" routerLinkActive="active" (click) = "signOut()">Sign out</a></span>
     </div>
   </div>
 </nav>

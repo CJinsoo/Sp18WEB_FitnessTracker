@@ -52,7 +52,11 @@
                                     <input #Cycle = "ngModel" class="form-control" name = "cycle" [(ngModel)] = "cycle" placeholder = "time(s)" type="number" required>
                                 </div>
                             </div>
-                            <button [disabled] = "!duration || !cycle || !choice" class="btn btn-primary btn-sm" style = "float:right" (click) = "submitWorkout($event, Duration.value, Cycle.value)" (click) = "calculateTotalToday($event)" (click) = "putHistory()"> Save</button>
+                            <button type = "button" [disabled] = "!duration || !cycle || !choice" 
+                                class="btn btn-primary btn-sm" style = "float:right" 
+                                (click) = "submitWorkout($event, Duration.value, Cycle.value);myForm.reset();calculateTotalToday($event);putHistory()"> 
+                                Save
+                            </button>
                         </form>
                     </div>
             </div>

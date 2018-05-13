@@ -100,11 +100,11 @@
         </div>       
     </div>
     <div class = "row">
-        <div class = "col-md-3">
+        <div class = "col-md-4">
             <div class="card text-white bg-info mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Selected Friend</h5>
-                    <h6 class="card-subtitle mb-2 text-white">Id: {{selectedFriend.UserId}}</h6>
+                    <h6 class="card-subtitle mb-2 text-white">Id: <span *ngIf = "selectedFriend.UserId != 'Selected Friend'">{{selectedFriend.UserId}}</span></h6>
                     <img class="rounded col-md-12" [src]="selectedFriend.UserProfile.ProfileImg" alt="">
                 </div>
                 <ul class="list-group list-group-flush text-info">
@@ -114,7 +114,7 @@
                 </ul>
             </div>
         </div>
-        <div class = "col-md-9">
+        <div class = "col-md-8">
             <div class="card border-success mb-3" >
                 <div class="card-header" style = "text-align: right" >
                 
@@ -122,18 +122,18 @@
                     <button [disabled] = "selectedFriend.WorkoutHistory.length - this.minusLength == selectedFriend.WorkoutHistory.length-1" type="button" class="btn btn-dark" (click) = "showNext(list)">Next</button>
                 </div>
                 <div class="card-body text-success">
-                    <h5 class="card-title">Workout Summary</h5>
+                    <h5 class="card-title"><strong>{{selectedFriend.UserId}}</strong>'s Workout History</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{thisHistory.Date}}</h6>
                     <p class="card-text"></p>
                 </div>   
                 <ul class="list-group list-group-flush text-info" *ngIf = "!isNeg1">
                     <li class="list-group-item" *ngFor = "let workout of thisHistory.TotalWorkout">
-                        {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
+                        <strong>{{workout.ActivityName}}</strong> <br> <span style = "padding-left: 20px">Duration: {{workout.Duration}} minutes</span> <br><span style = "padding-left: 20px">Cycles: {{workout.Cycle}} times</span>
                     </li>
                 </ul>
                 <div class="card-body text-success" *ngIf = "!isNeg1">
-                    <p class="card-text">Total Workout Time of the day: {{thisHistory.TotalTime}} minutes</p>
-                    <p class="card-text">Total Number of Exercises of the day: {{thisHistory.TotalWorkoutType}} </p>
+                    <p class="card-text">Total Workout Time of <strong>{{thisHistory.Date}}</strong>: {{thisHistory.TotalTime}} minutes</p>
+                    <p class="card-text">Total Number of Exercises of <strong>{{thisHistory.Date}}</strong>: {{thisHistory.TotalWorkoutType}} </p>
                 </div>
             
             </div>
