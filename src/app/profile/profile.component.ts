@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from "@angular/http";
 import { User, Tracker } from '../model/tracker';
 import { TrackerService } from '../services/tracker.service';
 import { Router } from '@angular/router';
+import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +12,9 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
  
+  @ViewChild('t') public tooltip: NgbTooltip;
+  greeting = {};
+  // name = 'World';
   //Model = new Tracker();
   Me:User;
   // messages:string[];
@@ -22,14 +26,24 @@ export class ProfileComponent implements OnInit {
   constructor(private http: Http, private _Tracker: TrackerService, private _Router:Router) {
     this.Me = _Tracker.Me;
     if(!this.Me ){
-      _Router.navigate(['/signin']);}
+      _Router.navigate(['/signin']);
+    }
     // }else{
     //   this.messages = ['Hi ' + this.Me.UserId + ', View your profile and edit here']
 
     // }
-
     
  
+  }
+
+
+  public changeMsg(msg: any): void {
+    const isOpen = this.tooltip.isOpen();
+    this.tooltip.close();
+    if (msg !== this.greeting || !isOpen) {
+      this.greeting = msg;
+      this.tooltip.open(msg);
+    }
   }
 
   onFileChanged(event) {
@@ -38,10 +52,11 @@ export class ProfileComponent implements OnInit {
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (event) => {
       this.Me.UserProfile.ProfileImg = reader.result;
-      //console.log(this.url)
+     
     }
+
     console.log(this.selectedFile)
-    
+   
   }
 
   onUpload() {

@@ -5,17 +5,34 @@
 </div>
 <div class="container">
   <div class = "row">
-    <div class = "col-md-5">
+    <div class = "col-md-5" >
       <div class="card border-info" >
         <div class = "card-body text-info " >
-          <div>
-            <img class="card-img-top" [src] = "Me.UserProfile.ProfileImg" alt="Card image cap">
+          <button type="button" class="btn btn-outline-secondary mr-2" (click)="fileInput.click();changeMsg({ greeting: 'Don\'t forget to upload!'})" placement="bottom" ngbTooltip="Choose a file to upload">
+            Select File
+          </button>
+          <ng-template #tipContent let-greeting="greeting">{{greeting}}</ng-template>
+          <button [ngbTooltip]="tipContent" #t="ngbTooltip" triggers="manual" type="button" class="btn btn-outline-secondary mr-2" (click)="onUpload()" (click)="t.close()" placement="right">
+            Upload!
+          </button>
+          <!-- <div class = "trim" > -->
+            
+            <img class="card-img-top" [src] = "Me.UserProfile.ProfileImg" alt="Card image cap" >
                 <input 
                   style="display: none" 
                   type="file" (change)="onFileChanged($event)" 
                   #fileInput>
-                <button class='btn btn-primary' (click)="fileInput.click()">Select File</button>
-                <button class='btn btn-primary' (click)="onUpload()">Upload!</button>
+                
+
+                <!-- <ng-template #tipContent let-greeting="greeting">{{uploadMessage}}</ng-template>
+                <p>
+                  How would you like to greet <strong [ngbTooltip]="tipContent" #t="ngbTooltip" triggers="manual">me</strong>?
+                </p>
+                <button type="button" class="btn btn-outline-secondary mr-2" (click)="changeGreeting({ greeting: 'Bonjour' })">
+                  French
+                </button> -->
+                <!-- <button class='btn btn-primary' (click)="fileInput.click()">Select File</button> -->
+                <!-- <button class='btn btn-primary' (click)="onUpload()">Upload!</button> -->
             <!--<div style="position:relative;">
               <a class='btn btn-primary' href='javascript:;'>
                   Choose File...
@@ -24,7 +41,7 @@
               &nbsp;
               <span class='label label-info' id="upload-file-info"></span>
             </div>-->
-          </div>
+          <!-- </div> -->
         </div>
       </div>
     </div>
