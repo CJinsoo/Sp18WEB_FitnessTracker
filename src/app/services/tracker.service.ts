@@ -41,6 +41,11 @@ export class TrackerService {
 
   }
 
+  getHomePics() {
+    return this.http.get(this._api + "/getPic", {})
+      .map((response:Response) => response.json());
+  }
+
   isIdTaken(name: string) {
     this.http.get(this._api + "/join/taken", { params: { UserId:name}})
     .subscribe(data => {

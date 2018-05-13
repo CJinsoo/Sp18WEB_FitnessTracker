@@ -7,14 +7,31 @@ const ExerciseStack = [
     "Bench Press", "Chest fly", "Push Up", "Pull Down", "Pull Up", "Shoulder Press", "Triceps Extension", "Biceps Curl",
     "Crunch", "Lunge", "Plank", "Running", "Mild Walking", "Fast Walking", "Yoga", "Tabata", "Dance", "Step"
 ]
-var TipsStack = [
-];
-var iCurrentTips = 0;
+const PicStack = [
+    "https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bb4481aac50fea7917a2c6ad4617c94f&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539?ixlib=rb-0.3.5&s=e0412f6131d734fc08414df85c30fec9&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1517498559795-28a423c31125?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d40d06e284aae2df1f87cd17be6e68f7&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c15305e72c1ead61b6b23d4b0041de66&auto=format&fit=crop&w=2102&q=80",
+    "https://images.unsplash.com/photo-1427384906349-30452365b5e8?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1259fd925b084840234a8d8d43e842b8&auto=format&fit=crop&w=2167&q=80",
+    "https://images.unsplash.com/photo-1484583066749-c2129489f52f?ixlib=rb-0.3.5&s=08a5c659fcc4b2d3a6b5d5441b37702c&auto=format&fit=crop&w=2090&q=80",
+    "https://images.unsplash.com/photo-1468471463214-871d4633005d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6937b5dfece3f5c1d7346609d515ef33&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1487161874013-35eede6cca03?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74c90c952406cf3550fb25729c749d53&auto=format&fit=crop&w=2089&q=80",
+    "https://images.unsplash.com/photo-1480264104733-84fb0b925be3?ixlib=rb-0.3.5&s=25ec5368a0f13e529c1f04c9878d6682&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1516922654979-6833a58a1b83?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=81c8acc08372891e76bd00e973bbbeb7&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1434596922112-19c563067271?ixlib=rb-0.3.5&s=a6c1d04bc196c7f04da02f525e696fae&auto=format&fit=crop&w=2100&q=80",
+    "https://images.unsplash.com/photo-1507761906261-d31a39975ce4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8a9c332b97c7de0174f4fc9c8057f140&auto=format&fit=crop&w=2100&q=80"
+    ];
+
 function Tracker() {
   
         this.Members = [];
-        this.UserProfile;
-        this.Tips = null;
+
+        this.ReturnHomePics = () => {
+            return [1, 2, 3, 4, 5].map(() => {
+                const randomId = PicStack[Math.floor(Math.random() * PicStack.length)];
+                return randomId;
+            });        
+        }
 
         this.IsIdTaken = (userId, password) => {
             if(this.Members.find( x => x.UserId == userId ))

@@ -43,3 +43,4 @@ module.exports = app
     .post('/friend/accept', (req, res) => res.send(tracker.AcceptFriend(req.body.UserId, req.body.MyUserId, req.body.RequestsToMe)))
     //.post('/propagateFriend', (req, res) => res.send(tracker.PropagateFriend(req.body.UserId)))
     .get('/getFriendsData', (req, res) => res.send(tracker.FriendData(req.query.Friend)))
+    .get('/getPic', (req, res) => res.send(tracker.ReturnHomePics()))
