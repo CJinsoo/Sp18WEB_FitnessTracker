@@ -7,7 +7,7 @@
 - Model is tracker.ts which has Memebers as the entire structure.
 
 ### Important notice:
-- If nothing happens after a button click or selection from an option, it may be the button/selection did not actually get clicked. **In that case, please try clicking one more time.** For some reason, these buttons want to be clicked all the way through. If the buttons are clicked properly, the app will work as expected. Thank you.
+- **If nothing happens after a button click or selection from an option, it may be the button/selection did not actually get clicked. In that case, please try clicking one more time.** For some reason, these buttons want to be clicked all the way through. If the buttons are clicked properly, the app will work as expected. Thank you.
 - You can run the app by ```ng serve``` and ```npm run server```
 
 ### There are key features that I focused on building up during the development of the tracker app:
@@ -79,12 +79,12 @@
 
 
 
-##Project plan:
+## Project plan:
 
 This project is about building a fitness tracker. 
 It will have at least three complete sub-systems – 1) profile management, 2) exercise log, 3) Sharing with friends. 
 
-###Key features :
+### Key features :
 **1) Exercise Log**
 
 - log exercise and keep track of the history.
