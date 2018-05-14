@@ -1,61 +1,89 @@
+<span style = "text-align: center">
+    <ngb-alert *ngIf="!staticAlertClosed && !Me" [dismissible]="false">
+        New to our app? Welcome! Create your account and enjoy workout with our tracker!
+    </ngb-alert>
+</span>
 <div class = "container">
-    <div class = "row justify-content-center" *ngIf = "!Me">
+    <div class = "row justify-content-center">
+
         <div class = "col-md-4" style = "padding-top: 6rem">
+            <!-- card beginning -->
             <div class="card border-info">
                 <div class = "card-body text-info">
                     <h5 class="card-title" style = "text-align: center">Create account</h5>
                     <form #form = "ngForm">
                         <div class="form-group">
                             <div class="col-12">
-                                <input id = "userIdInput" class="form-control" type="text" name = "input" [(ngModel)]="input" placeholder = "User Name" #Id required>
+                                <input id = "userIdInput" class="form-control" type="text" name = "input" 
+                                    [(ngModel)]="input" placeholder = "User Name" #Id required>
                             </div>
                         </div>
                         <div class="form-group"> 
                             <div class="col-12">
-                                <input #Password="ngModel" class="form-control" name = "password" [(ngModel)]="password" placeholder = "Password" type="password" required>
+                                <input #Password="ngModel" class="form-control" name = "password" 
+                                    [(ngModel)]="password" placeholder = "Password" type="password" required>
                             </div>
                         </div>
-                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" *ngIf = !_Tracker.isIdAvailable  (click) = "isIdTaken(Id.value);" >Create</button> 
+                        <button [disabled]="!input || !password" class="btn btn-primary btn-sm" style = "float:right" 
+                            *ngIf = !_Tracker.isIdAvailable  (click) = "isIdTaken(Id.value);" >
+                                Create
+                        </button> 
                     </form>
+
                     <div *ngIf = _Tracker.isIdAvailable>
                         <form #form = "ngForm">
                             <div class="form-group">
                                 <div class="col-12">
-                                    <input #Name class="form-control" placeholder = "Name" type="text" [(ngModel)]="name" name = "name" required>
+                                    <input #Name class="form-control" placeholder = "Name" type="text" 
+                                        [(ngModel)]="name" name = "name" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-12">
-                                    <input #Age class="form-control" placeholder = "Age" type="number" [(ngModel)]="age" name = "age" required>
+                                    <input #Age class="form-control" placeholder = "Age" type="number" 
+                                        [(ngModel)]="age" name = "age" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-12">
-                                    <input #Heightft class="form-control" placeholder = "Height ft" type="number" [(ngModel)]="heightft" name = "heightft" required>
+                                    <input #Heightft class="form-control" placeholder = "Height ft" type="number" 
+                                        [(ngModel)]="heightft" name = "heightft" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-12">
-                                    <input #Heightin class="form-control" placeholder = "Height in" type="number" [(ngModel)]="heightin" name = "heightin" required>
+                                    <input #Heightin class="form-control" placeholder = "Height in" type="number" 
+                                        [(ngModel)]="heightin" name = "heightin" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-12">
-                                    <input #Weight class="form-control" placeholder = "Weight lb" type="number" [(ngModel)]="weight" name = "weight" required>
+                                    <input #Weight class="form-control" placeholder = "Weight lb" type="number" 
+                                        [(ngModel)]="weight" name = "weight" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-12">
-                                    <input #Email class="form-control" placeholder = "example@gmail.com" type="text" [(ngModel)]="email" name = "email" required>
+                                    <input #Email class="form-control" placeholder = "example@gmail.com" type="text" 
+                                        [(ngModel)]="email" name = "email" required>
                                 </div>
                             </div>
-                            <button [disabled]="!name || !age || !heightft || !heightin || !weight || !email" class="btn btn-primary btn-sm" style = "float:right" (click) = "signup(Id.value, Password.value);submitInitialProfile($event, Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">Submit</button> 
+                            <p class="text-danger" style="padding-left:15px; margin-bottom:0">* All fields required</p>
+                            <button [disabled]="!name || !age || !heightft || !heightin || !weight || !email" 
+                                class="btn btn-primary btn-sm" style = "float:right" 
+                                (click) = "signup(Id.value, Password.value);submitInitialProfile($event, Name.value, Age.value, Heightft.value, Heightin.value, Weight.value, Email.value)">
+                                    Submit
+                            </button> 
                         </form>
                     </div>
+
                 </div>
             </div>
+            <!-- end card -->
         </div>
+        
     </div>
+
     <div class = "row justify-content-center" *ngIf = "Me">
         <h3>Thank you for using our service. You are already signed in</h3>
     </div>

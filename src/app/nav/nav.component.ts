@@ -3,24 +3,26 @@ import { TrackerService } from '../services/tracker.service';
 import { User } from '../model/tracker';
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+    selector: 'app-nav',
+    templateUrl: './nav.component.html',
+    styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  public isCollapsed = true;
-  Me:User;
-  constructor(private _Tracker: TrackerService) { 
-    // this.Me = this._Tracker.Me;
-  }
+  
+    Me:User;
+    public isCollapsed = true;
 
-  ngOnInit() {
-  }
+    constructor(private _Tracker: TrackerService) {}
 
-  signOut(){
-    if(confirm("Are you sure you want to sign out?"))
-      this._Tracker.signOut();
-    else
-      return;
-  }
+    ngOnInit() {
+    }
+
+    // let user sign out after asking for a confirmation. Calls signOut() from service.
+    // if they cancel, it doesn't do anything.
+    signOut(){
+        if(confirm("Are you sure you want to sign out?"))
+            this._Tracker.signOut();
+        else
+            return;
+    }
 }

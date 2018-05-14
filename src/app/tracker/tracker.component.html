@@ -4,120 +4,118 @@
     </div>
 </div>
 <div class = "container">
+    <!-- start first row -->
     <div class = "row">
+
         <div class = "col-md-3">
-                <div class="card text-white bg-info mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Name: {{Me.UserProfile.Name}}</h5>
-                        <h6 class="card-subtitle mb-2 text-white">Id: {{Me.UserId}}</h6>
-                    </div>
-                    <ul class="list-group list-group-flush text-info">
-                        <li class="list-group-item">Weight: {{Me.UserProfile.Weight}} lb</li>
-                        <li class="list-group-item">BMI: {{Me.UserProfile.Bmi}} </li>
-                        <li class="list-group-item">Email: {{Me.UserProfile.Email}} </li>
-                    </ul>
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{Me.UserProfile.Name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-white">Id: {{Me.UserId}}</h6>
                 </div>
+                <ul class="list-group list-group-flush text-info">
+                    <li class="list-group-item">Weight: {{Me.UserProfile.Weight}} lb</li>
+                    <li class="list-group-item">BMI: {{Me.UserProfile.Bmi}} </li>
+                    <li class="list-group-item">Email: {{Me.UserProfile.Email}} </li>
+                </ul>
+            </div>
         </div>
+
         <div class = "col-md-5">
             <div class="card border-primary mb-3">
-                    <div class="card-body text-primary">
-                        <h5 class="card-title">Select Your Workout</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Choose completed workout</h6>
-                        <div class="form-group">
-                                <select multiple class="form-control" id="exampleFormControlSelect2">
-                                    <option *ngFor = "let item of Me.AvailableExercises"
-                                        (click) = "selectExercise($event, item)">
-                                        {{item}}
-                                    </option>
-                                </select>
-                            </div>
+                <div class="card-body text-primary">
+                    <h5 class="card-title">Select Your Workout</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Choose completed workout</h6>
+                    <div class="form-group">
+                        <select multiple class="form-control" id="exampleFormControlSelect2">
+                            <option *ngFor = "let item of Me.AvailableExercises"
+                                (click) = "selectExercise($event, item)">
+                                {{item}}
+                            </option>
+                        </select>
                     </div>
+                </div>
             </div>
         </div>
+
         <div class = "col-md-4" style = "padding-bottom: 2rem">
             <div class="card border-info mb-3">
-                    <div class="card-body text-info">
-                        <h5 class="card-title">Selected Workout</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">: {{Me.CurrentWorkout}}</h6>
-                        <form #myForm = "ngForm">
-                            <p>Duration</p>
-                            <div class="form-group">
-                                <div class="col-12">
-                                    <input #Duration = "ngModel" class="form-control" name = "duration" [(ngModel)] = "duration" placeholder = "minutes" type="number" required>
-                                </div>
+                <div class="card-body text-info">
+                    <h5 class="card-title">Selected Workout</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">: {{Me.CurrentWorkout}}</h6>
+                    <form #myForm = "ngForm">
+                        <p>Duration</p>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Duration = "ngModel" class="form-control" name = "duration" 
+                                    [(ngModel)] = "duration" placeholder = "minutes" type="number" required>
                             </div>
-                            <p>Cycle(s)</p>
-                            <div class="form-group">
-                                <div class="col-12">
-                                    <input #Cycle = "ngModel" class="form-control" name = "cycle" [(ngModel)] = "cycle" placeholder = "time(s)" type="number" required>
-                                </div>
+                        </div>
+                        <p>Cycle(s)</p>
+                        <div class="form-group">
+                            <div class="col-12">
+                                <input #Cycle = "ngModel" class="form-control" name = "cycle" 
+                                    [(ngModel)] = "cycle" placeholder = "time(s)" type="number" required>
                             </div>
-                            <button type = "button" [disabled] = "!duration || !cycle || !choice" 
-                                class="btn btn-primary btn-sm" style = "float:right" 
-                                (click) = "submitWorkout($event, Duration.value, Cycle.value);myForm.reset();calculateTotalToday($event);putHistory()"> 
+                        </div>
+                        <button type = "button" [disabled] = "!duration || !cycle || !choice" 
+                            class="btn btn-primary btn-sm" style = "float:right" 
+                            (click) = "submitWorkout($event, Duration.value, Cycle.value);myForm.reset();calculateTotalToday($event);putHistory()"> 
                                 Save
-                            </button>
-                        </form>
-                    </div>
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>       
+        </div>
+
     </div>
+    <!-- end first row -->
+
+    <!-- start second row -->
     <div class = "row" >
         <div class = "col-md-12" >
             <div class="card border-success mb-3">
                 <div class="card-header" style="text-align: right">
-                    <button [disabled] = "_Tracker.Me.WorkoutHistory.length - this.minusLength == -1" type="button" class="btn btn-dark" (click) = "showPrev()">Prev</button>
-                    <button [disabled] = "_Tracker.Me.WorkoutHistory.length - this.minusLength == _Tracker.Me.WorkoutHistory.length-1" type="button" class="btn btn-dark" (click) = "showNext()">Next</button>
+                    <button [disabled] = "Me.WorkoutHistory.length - this.minusLength == -1" 
+                        type="button" class="btn btn-dark" (click) = "showPrev()">
+                            Prev
+                    </button>
+                    <button [disabled] = "Me.WorkoutHistory.length - this.minusLength == Me.WorkoutHistory.length-1" 
+                        type="button" class="btn btn-dark" (click) = "showNext()">
+                            Next
+                    </button>
                 </div>
                 <div class="card-body text-success">
                     <h5 class="card-title">Workout Summary</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{thisHistory.Date}}<span *ngIf = "today == thisHistory.Date">Today</span></h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {{thisHistory.Date}}
+                        <span class="badge badge-pill badge-primary" style = "margin-left: 5%" *ngIf = "today == thisHistory.Date">
+                            Today
+                        </span>
+                    </h6>
                 </div>   
-                <ul class="list-group list-group-flush text-info" *ngIf = "!isNeg1">
-                    <li class="list-group-item" *ngFor = "let workout of thisHistory.TotalWorkout">
-                        {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times
+                <ul class="list-group list-group-flush text-info" *ngIf = "!isNoPrev">
+                    <li class="list-group-item" *ngFor = "let workout of thisHistory.TotalWorkout; let i = index">
+                        <span class="badge badge-secondary">{{i+1}}</span>
+                        <strong>{{workout.ActivityName}}</strong><br> 
+                        <div style = "margin-left: 5%;">
+                            <span style = "padding-left: 15px">Duration: {{workout.Duration}} minutes</span> <br>
+                            <span style = "padding-left: 15px">Cycles: {{workout.Cycle}} times</span>
+                        </div>
                     </li>
                 </ul>
-                <div class="card-body text-success" *ngIf = "!isNeg1">
-                    <p class="card-text">Total Workout Time Today: {{thisHistory.TotalTime}} minutes</p>
-                    <p class="card-text">Total Number of Exercises : {{thisHistory.TotalWorkoutType}} </p>
+                <div class="card-body text-success" *ngIf = "!isNoPrev">
+                    <p class="card-text">
+                        Total Workout Time of <span *ngIf = "today == thisHistory.Date"><strong>Today</strong></span>
+                        <strong *ngIf = "today != thisHistory.Date">{{thisHistory.Date}}</strong>: {{thisHistory.TotalTime}} minutes
+                    </p>
+                    <p class="card-text">
+                        Total Number of Exercises of <span *ngIf = "today == thisHistory.Date"><strong>Today</strong></span>
+                        <strong *ngIf = "today != thisHistory.Date">{{thisHistory.Date}}</strong>: {{thisHistory.TotalWorkoutType}} 
+                    </p>
                 </div>
-        
             </div>
         </div>
     </div>
-    <!-- <div class = "row" >
-            <div class = "col" >
-                <div class="card border-success mb-3">
-                        <div class="card-header" style="text-align: right">
-                                <button type="button" class="btn btn-dark" (click) = "showPrev()">Prev</button>
-                                <button type="button" class="btn btn-dark" (click) = "showNext()">Next</button>
-                            </div>
-                    <div class="card-body text-success">
-                        
-                        <h5 class="card-title">Workout History</h5>
-                        <p class="card-text">Click on the date to expand your workout history</p>
-                    </div>   
-                    <ul class="list-group list-group-flush text-info">
-                        <li class="list-group-item" *ngFor = "let history of Me.WorkoutHistory; let i = index"
-                            (click)="hideme[i] = !hideme[i]"
-                            [ngClass] = "{hide: history.Date == today}">
-                            <h6 class="card-subtitle mb-2 text-muted">{{history.Date}}</h6>
-                            <div [hidden]="!hideme[i]">
-                                <span *ngFor = "let workout of history.TotalWorkout">
-                                    {{workout.ActivityName}} Duration: {{workout.Duration}} minutes Cycles: {{workout.Cycle}} times<br>
-                                </span>
-                                <div class="card-body text-success">
-                                    <p class="card-text">Total Workout Time of {{history.Date}}: {{history.TotalTime}} minutes</p>
-                                    <p class="card-text">Total Number of Exercises : {{history.TotalWorkoutType}} </p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    
-            
-                </div>
-            </div>
-        </div> -->
+    <!-- end second row -->
 </div>

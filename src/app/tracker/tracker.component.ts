@@ -1,136 +1,112 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { Http } from "@angular/http";
-import { User, Tracker, Profile, Activity, TotalToday } from '../model/tracker';
+import { Component, OnInit } from '@angular/core';
+import { User, Profile, Activity, TotalToday } from '../model/tracker';
 import { Router } from '@angular/router';
 import { TrackerService } from '../services/tracker.service';
-//import { Observable } from 'rxjs/Observable';
+import { MessagesService } from '../services/messages.service';
 
 @Component({
-  selector: 'app-tracker',
-  templateUrl: './tracker.component.html',
-  styleUrls: ['./tracker.component.css']
+    selector: 'app-tracker',
+    templateUrl: './tracker.component.html',
+    styleUrls: ['./tracker.component.css']
 })
 export class TrackerComponent implements OnInit {
   
-  Me:User ;
-  messages:string[];
-  choice:boolean = false;
-  //initiation:boolean = false;
-  date:Date;
-  today:string;
-  hideme=[];
-  thisHistory: TotalToday;
-  minusLength:number = 1;
-  isNeg1:boolean = false;
-  
-  private _api = "http://localhost:8080/fitTracker";
-  constructor(private http:Http, private _Tracker: TrackerService, private _Router:Router) { 
-  
-    // this.messages = ['Choose activities and start recording your workout results']
-    this.Me = _Tracker.Me;
+    Me:User ;
+
+    choice:boolean = false;
+    date:Date;
+    today:string;
     
-    if(!this.Me ){
-      _Router.navigate(['/signin']);
-    }
-    if(this.Me){
-      this.getExercisesList();
-      this.Me.CurrentWorkout = 'not selected';
-    }
-    this.date = new Date();
-    this.today = this.date.toDateString();
+    hideme=[];
+    thisHistory: TotalToday; // Currently selected workout history/log via prev/next button
+    minusLength:number = 1;
+    isNoPrev:boolean = false; // Tells if there's no more previous workout history
     
-    if(this.Me){
-      this._Tracker.Me.WorkoutHistory[-1] = {Date: 'No history yet!', TotalTime:0, TotalWorkoutType: 0, TotalWorkout: []};
-      
-      if(this._Tracker.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1].Date != this.today){
-        this._Tracker.Me.Today = {Date:this.today, TotalTime: 0, TotalWorkoutType:0, TotalWorkout:[]}
-        this._Tracker.Me.Workout = [];
-        this._Tracker.Me.WorkoutHistory.push(this._Tracker.Me.Today)
-      }
-      this.thisHistory = this.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1];
+    constructor(
+        private _Tracker: TrackerService, 
+        private _Router:Router,
+        private _Messages: MessagesService
+    ) { 
+    
+        this.Me = _Tracker.Me;
+        this.date = new Date();
+        this.today = this.date.toDateString();
+
+        if(!this.Me){
+            _Router.navigate(['/signin']);
+        }
+        
+        if(this.Me){
+            // Make the AvailableExercises list populated.
+            this._Tracker.getExercisesList();
+
+            // Set initial value to CurrentWorkout
+            this.Me.CurrentWorkout = 'not selected';
+            // Create in an array -1 element to flag that the array has reached the beginning(using prev, next button).
+            this.Me.WorkoutHistory[-1] = {Date: 'No history yet!', TotalTime:0, TotalWorkoutType: 0, TotalWorkout: []};
+            
+            /* If the user's last workout history date does not match with today(actual date given by the computer system), 
+            reset the summary and workout done list to give user a new day. */
+            if(this.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1].Date != this.today){
+                this.Me.Today = {Date:this.today, TotalTime: 0, TotalWorkoutType:0, TotalWorkout:[]};
+                this.Me.Workout = [];
+                this.Me.WorkoutHistory.push(this.Me.Today);
+            }
+
+            // Set thisHistory with the user's last workout log/history(last element in the array of history).
+            this.thisHistory = this.Me.WorkoutHistory[this.Me.WorkoutHistory.length-1];
+        }
+    }
+
+    ngOnInit() {
+    }
+
+    /* Let user select exercise from the options, and it sets the CurrentWorkout with the item.
+    Submission allowed only after at least once an exercise has been selected by the user. */
+    selectExercise(e: MouseEvent, item: string){
+        e.preventDefault();
+        this.Me.CurrentWorkout = item;
+        this.choice = true;
+    }
+
+    // Let user submit exercise with duration and cycle, by calling submitExercise() from service.
+    submitWorkout(e: MouseEvent, duration:number, cycle:number, text: string){
+        this._Tracker.submitExercise(duration, cycle);
+        this._Messages.saveExerciseSuccessMessage();
+    }
+
+    /* It calculates the total summary of the workout done today by calling calculateTotalToday() 
+    from service each time save button is clicked. */
+    calculateTotalToday(e:MouseEvent) {
+        e.preventDefault();
+        this._Tracker.calculateTotalToday(this.today);
+    }
+
+    /* It pushes to the user's workout history the current day summary + workout list 
+    every time save button is clicked by calling putHistory() from service. */
+    putHistory(){
+        this._Tracker.putHistory(this.today);
+    }
+
+    /* Invoked when the user tries to see the previous day workout history.
+    The change in minusLength disables the button if there is no more previous history.
+    It switchs display to previous history if there is one. */
+    showPrev() {
+        this.minusLength += 1;
+        if(this.Me.WorkoutHistory.length - this.minusLength == -1){
+            this.isNoPrev = true;
+        }
+        this.thisHistory = this.Me.WorkoutHistory[this.Me.WorkoutHistory.length - this.minusLength];
     }
     
-  }
-
-  ngOnInit() {
-  }
-
-
-/*   getIndicatorsStream(): Observable {
-    return Observable.create((observer) => {
-      let eventSource = this.sseService
-                          .createEventSource('http://localhost:8080/fitTracker');
-      eventSource.onmessage = (event) => {
-        this.zone.run(() => observer.next(JSON.parse(event.data)));
-      };
-      eventSource.onerror = (error) => observer.error(error);
-  });
-} */
-
-  showPrev() {
-    this.minusLength += 1;
-    console.log(this._Tracker.Me.WorkoutHistory.length)
-    console.log(this._Tracker.Me.WorkoutHistory.length - this.minusLength)
-    if(this._Tracker.Me.WorkoutHistory.length - this.minusLength == -1){
-      this.isNeg1 = true;
-      // return;
+    /* Invoked when the user tries to see the next day workout history.
+    The change in minusLength enables the button if there is more previous history.
+    It switchs display to next history if there is one. */
+    showNext() {
+        this.minusLength -= 1;
+        if(this.Me.WorkoutHistory.length - this.minusLength != -1){
+            this.isNoPrev = false;
+        }
+        this.thisHistory = this.Me.WorkoutHistory[this.Me.WorkoutHistory.length - this.minusLength];
     }
-      
-    this.thisHistory = this._Tracker.Me.WorkoutHistory[this._Tracker.Me.WorkoutHistory.length - this.minusLength];
-  }
-  
-  showNext() {
-    this.minusLength -= 1;
-    if(this._Tracker.Me.WorkoutHistory.length - this.minusLength != -1){
-      this.isNeg1 = false;
-      // return;
-    }
-    this.thisHistory = this._Tracker.Me.WorkoutHistory[this._Tracker.Me.WorkoutHistory.length - this.minusLength];
-
-  }
-
-  selectExercise(e: MouseEvent, item: string){
-    e.preventDefault();
-    this._Tracker.selectExercise(item);
-    /* this.http.post(this._api + "/exercises/selectWorkout",{ ActivityName: item})
-        .subscribe(data => {//if successful, don't do anything - because it refreshes automatically
-
-        }, err => {//check error
-          console.log(err);
-        }); */
-    this.Me.CurrentWorkout = this._Tracker.Me.CurrentWorkout;
-    this.choice = true;
-    //console.log('reacting' + item)
-    //console.log()
-  }
-
-  getExercisesList(){
-    this._Tracker.getExercisesList();
-    //this.initiation = true;
-  }
-
-  submitWorkout(e: MouseEvent, duration:number, cycle:number, text: string){
-    this._Tracker.submitExercise(duration, cycle);
-    /*   this.http.post(this._api + "/exercises/selectWorkout",{ CurrentWorkout: item })
-        .subscribe(data => {
-
-        }, err => {
-          console.log(err);
-        }); */
-    //this.Me.CurrentWorkout = text;
-    // this.choice = false;
-    // this.Me.CurrentWorkout = 'not selected';
-  }
-
-  calculateTotalToday(e:MouseEvent) {
-    e.preventDefault();
-    this._Tracker.calculateTotalToday(this.today);
-    this.Me.Workout = this._Tracker.Me.Workout;
-    //return true; 
-  }
-
-  putHistory(){
-    this._Tracker.putHistory(this.today);
-  }
-
 }

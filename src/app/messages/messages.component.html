@@ -1,2 +1,6 @@
-<span style = "text-align: center"><ngb-alert *ngIf="Messages.successMessage" type="danger" [dismissible]="false">{{ Messages.successMessage }}</ngb-alert></span>
+<span style = "text-align: center">
+    <ngb-alert *ngIf="_Messages.successMessage" type="danger" [dismissible]="false">
+        {{ _Messages.successMessage }}
+    </ngb-alert>
+</span>
 

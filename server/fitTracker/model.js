@@ -1,12 +1,9 @@
-
-//var axios = require("axios");
-//axios.get(' https://wger.de/api/v2/exerciseinfo')
-//    .then( response => TipsStack = response.data.data.exerciseinfo)
 const ExerciseStack = [
     "Squat", "Leg Press", "Lunge", "Deadlift", "Leg Extension", "Leg Curl", "Standing Calf Raise", "Seated Calf Raise",
     "Bench Press", "Chest fly", "Push Up", "Pull Down", "Pull Up", "Shoulder Press", "Triceps Extension", "Biceps Curl",
     "Crunch", "Lunge", "Plank", "Running", "Mild Walking", "Fast Walking", "Yoga", "Tabata", "Dance", "Step"
 ]
+
 const PicStack = [
     "https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bb4481aac50fea7917a2c6ad4617c94f&auto=format&fit=crop&w=2100&q=80",
     "https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539?ixlib=rb-0.3.5&s=e0412f6131d734fc08414df85c30fec9&auto=format&fit=crop&w=2100&q=80",
@@ -20,12 +17,13 @@ const PicStack = [
     "https://images.unsplash.com/photo-1516922654979-6833a58a1b83?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=81c8acc08372891e76bd00e973bbbeb7&auto=format&fit=crop&w=2100&q=80",
     "https://images.unsplash.com/photo-1434596922112-19c563067271?ixlib=rb-0.3.5&s=a6c1d04bc196c7f04da02f525e696fae&auto=format&fit=crop&w=2100&q=80",
     "https://images.unsplash.com/photo-1507761906261-d31a39975ce4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8a9c332b97c7de0174f4fc9c8057f140&auto=format&fit=crop&w=2100&q=80"
-    ];
+];
 
 function Tracker() {
   
         this.Members = [];
 
+        // Returns 5 random pictures from the PicStack to ultimately home component.
         this.ReturnHomePics = () => {
             return [1, 2, 3, 4, 5].map(() => {
                 const randomId = PicStack[Math.floor(Math.random() * PicStack.length)];
@@ -33,6 +31,7 @@ function Tracker() {
             });        
         }
 
+        // Checks if the desired id is already in use and returns the result.
         this.IsIdTaken = (userId, password) => {
             if(this.Members.find( x => x.UserId == userId ))
                 return false;
@@ -40,33 +39,13 @@ function Tracker() {
                 return true;
         }
 
+        // Pushes the new user to the Members.
         this.SignUp = ( user) => {
-            /* var a=0;
-            for(a in this.Members){
-                this.Members[a].PossibleFriends.push(user.UserId);
-                console.log(this.Members[a].PossibleFriends)
-            } 
-            //console.log(this.Members[0].PossibleFriends)
-            //user.Friend = Friends[this.Members.len]
-            var b=0;
-            for(b in this.Members)
-                user.PossibleFriends.push(this.Members[b].UserId) */
-            //user.Friend = {Friends= new Array(), MyRequests = new Array(), RequestsToMe = new Array()}
             var len = this.Members.push(user);
-            // console.log(user.PossibleFriends)
-            //var thisUser = this.Members.find(x=>x.UserId == user.UserId)
             return this.Members[len-1];
-            /* if(this.Members.some(x=> x.UserId == userId)){
-                //console.log('user is' + this.Members.find(function (obj) {return obj.UserId === userId;}).UserId)
-                return this.Members.find(function (obj) {return obj.UserId === userId;});
-                
-            }else{
-                this.Members.push({ User:user });
-                //console.log('creating new user')
-            }
-            return []; */ 
-                   
         }
+
+        // Returns the requested user if the userId and password matches, otherwise return false.
         this.Login = ( name, password ) => {
             if(this.Members.find( x => x.UserId == name )){
                 var foundUser = this.Members.find( x => x.UserId == name );
@@ -82,12 +61,19 @@ function Tracker() {
                 return false;
             }
         }   
-        //this.flipWelcome = () =>
-        //this.Tips = TipsStack[iCurrentPicture = (iCurrentPicture +1) % TipsStack.length];
 
+        // Returns the whole list of exercises in the ExerciseStack.
         this.GetExercises = () => {return ExerciseStack}
         
-        this.SaveProfile = ( userProfile, id) => { 
+        // Uploads the image url to this user's ProfileImg.
+        this.UploadImg = ( userId, url ) => {
+            var thisUser = this.Members.find( x => x.UserId == userId );
+            thisUser.UserProfile.ProfileImg = url;
+            console.log('uploaded')
+        } 
+
+        // Finds the requested user and update the userProfile with the new data. 
+        this.SaveProfile = ( userProfile, id ) => { 
             if(this.Members.find( x => x.UserId == id )){
                 var thisUser = this.Members.find( x => x.UserId == id );
                 thisUser.UserProfile = userProfile;
@@ -95,9 +81,10 @@ function Tracker() {
             }else{
                 return false;
             }
-            //this.Members.push({UserId: id, Age: age, Gender:gender, Email:email, Heightft: heightft, Heightin: heighti, Weight:weight, Bmi: bmi, Goal:goal})
         }
 
+        /* Finds the requested user and either update(if is already exists) or push 
+        the new data to the Workout done list. */
         this.SubmitExercise = (workout, userId) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
             var thisExercise = thisUser.Workout.find( x => x.ActivityName == workout.ActivityName);
@@ -107,39 +94,24 @@ function Tracker() {
             }else{
                 thisUser.Workout.push(workout)
             } 
-            // thisUser.Workout = workout;
-            //Should I just push here as well?
-
-            /* var thisExercise = thisUser.Workout.find( x => x.ActivityName == activityName);
-            if(thisExercise){
-                thisExercise.Duration += duration;
-                thisExercise.Cycle += cycle;
-            }else{
-                thisUser.Workout.push({ ActivityName:activityName, Duration:duration, Cycle:cycle })
-            } 
-            //thisUser.AvailableExercises.splice( this.Me.)
-            return thisUser; */
         } 
 
+        // Update the this user's workout summary of Today with the new data.
         this.CalculateTotal = (userId, today) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
             thisUser.Today = today;
             return thisUser;
         }
 
-        this.UploadImg = (userId, url) => {
+        // Finds the user and update the workout history.
+        this.PutHistory = (userId, history) => {
             var thisUser = this.Members.find( x => x.UserId == userId );
-            thisUser.UserProfile.ProfileImg = url;
-            console.log('uploaded')
-        } 
-        
-        this.ReturnMembers = () => {
-            return this.Members;
+            thisUser.WorkoutHistory = history;
         }
 
+        // Finds the user and maps the whole Members. It returns the mapped Members.
         this.ReturnShowList = (userId) => {
             var thisUser = this.Members.find(x=>x.UserId == userId)
-            // console.log(thisUser.Friend)
             var myFriends = this.Members.map(x=> ({
                 User: { UserId: x.UserId, UserProfile:{ ProfileImg: x.UserProfile.ProfileImg, Name: x.UserProfile.Name, Age: x.UserProfile.Age, Email: x.UserProfile.Email}, WorkoutHistory:x.WorkoutHistory },
                 isMe: x.UserId == userId,
@@ -149,73 +121,24 @@ function Tracker() {
 
             }))
 
-            
-            // console.log('current myFriends')
-            // console.log(thisUser.Friend.MyRequests)
-            // console.log(myFriends)
             return myFriends;
-           
-
-            /* var thisUser = this.Members.find( x => x.UserId == userId );
-            
-            var i;
-            for(i in this.Members)
-                this.PossibleFriends.push(this.Members[i].UserId);
-            //console.log(thisUser.PossibleFriends)
-            var index = this.PossibleFriends.findIndex(x=>x.UserId == userId)
-            this.PossibleFriends.splice(index, 1)
-            var a;
-            for (a in thisUser.Friend.Friends) {
-                var exist = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.Friends[a])
-                if(exist){
-                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.Friends[a]), 1 );
-                }
-            }
-            var b;
-            for (b in thisUser.Friend.MyRequests) {
-                var existb = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.MyRequests[b])
-                if(existb){
-                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.MyRequests[b]), 1 );
-                }
-            }
-            var c;
-            for (c in thisUser.Friend.RequestsToMe) {
-                var existc = this.PossibleFriends.find(x => x.UserId == thisUser.Friend.RequestsToMe[c])
-                if(existc){
-                  this.PossibleFriends.splice( this.PossibleFriends.findIndex(x => x.UserId == thisUser.Friend.RequestsToMe[c]), 1 );
-                }
-            }
-
-            //console.log(this.PossibleFriends) 
-            return this.PossibleFriends */
         }
 
-        /* this.PropagateFriend = (userId) => {
-            var thisUser = this.Members.find( x => x.UserId == userId );
-            //console.log(thiUser)
-            var a;
-            for (a in this.Members) {
-                thisUser.Friend.push({User:this.Members[a], AreYouMyFriend:false, DidYouRequest:false, DidIRequest:false});
-            }
-        } */
-         
-        //this.CurrentExercise = (text) => this.Members.find(function obj)
-
-        this.PutHistory = (userId, history) => {
-            var thisUser = this.Members.find( x => x.UserId == userId );
-            thisUser.WorkoutHistory = history;
-            //return thisUser;
-        }
-
-        this.SendFriendReq = ( userId, myId, myRequests ) => {
+        /* Find the user and push the userId to the user's MyRequests, 
+        and find the other user(whom the user is sending request to)
+        and push this user to the other user's ReqeustsToMe. */
+        this.SendFriendReq = ( userId, myId ) => {
             var thisUser = this.Members.find( x => x.UserId == myId );
             var otherUser = this.Members.find( x => x.UserId == userId );
             otherUser.Friend.RequestsToMe.push(myId);
             thisUser.Friend.MyRequests.push(userId);
-            console.log(thisUser.Friend.MyRequests)
             return thisUser;
         }
 
+        /* Finds the user and gets rid of the other user id from this user's RequestToMe.
+        Finds the other user(who send request to this user) and gets rid of this user's id
+        from the other user's MyRequests. It pushes other user's id to this user's 
+        friend list, and pushes this user's id to other user's friend list. */
         this.AcceptFriend = (userId, myId, requests) => {
             var thisUser = this.Members.find( x => x.UserId == myId );
             var otherUser = this.Members.find( x => x.UserId == userId );
@@ -227,28 +150,7 @@ function Tracker() {
 
             var index1 = otherUser.Friend.MyRequests.findIndex( x=> x == myId);
             otherUser.Friend.MyRequests.splice(index1, 1);
-            
         }
-
-        this.FriendData = (friendList) => {
-            //console.log(friendList)
-            if(friendList != undefined){
-                var a;
-                var friends = [];
-                for (a in this.Members){
-                    friends.push(this.Members.find( x => x.UserId == friendList[a] ))
-                }
-                return friends;
-            }
-           // var friend = this.Members.find( x => x.UserId == userId );
-            return false;
-        }
-
-        this.GiveMe = (userId) => {
-            var me = this.Members.find( x=> x.UserId == userId)
-            return me;
-        }
-
 } 
 
 module.exports = Tracker;  

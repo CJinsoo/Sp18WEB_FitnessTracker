@@ -1,41 +1,42 @@
 <div class = "container">
-  <div class = "row justify-content-md-center" style = "padding-top: 5%;padding-bottom: 5%">
-    <ngb-carousel *ngIf="images" class = "col-10 ">
-        <ng-template ngbSlide>
-          <img [src]="images[0]" class = "col-12" alt="Random first slide">
-          <div class="carousel-caption">
-            <h3>15 minutes of your day can change your life</h3>
-            <p>Use our fitness tracker to utilize your healty life</p>
-          </div>
-        </ng-template>
-        <ng-template ngbSlide>
-          <img [src]="images[1]" class = "col-12" alt="Random second slide">
-          <div class="carousel-caption">
-            <h3>Log workouts, update profile, keep track of your BMI</h3>
-            <p>This fitness tracker is an excellet tool for all</p>
-          </div>
-        </ng-template>
-        <ng-template ngbSlide>
-          <img [src]="images[2]" class = "col-12" alt="Random third slide">
-          <div class="carousel-caption">
-            <h3>Eat healthy, move your body with joy!</h3>
-            <p>Your body will love you for that</p>
-          </div>
-        </ng-template>
-        <ng-template ngbSlide>
-          <img [src]="images[3]" class = "col-12" alt="Random third slide">
-          <div class="carousel-caption">
-            <h3>Make friends, share and get motivated</h3>
-            <p>You can send see your friends' workout logs</p>
-          </div>
-        </ng-template>
-        <ng-template ngbSlide>
-          <img [src]="images[4]" class = "col-12" alt="Random third slide">
-          <div class="carousel-caption">
-            <h3>Record your daily workout and keep track of it</h3>
-            <p>This fitness tracker can help you track your fitness journey</p>
-          </div>
-        </ng-template>
-      </ngb-carousel>
-  </div>
+    <h2 style = "text-align: center; padding-top: 3%">Welcome!</h2>
+    <div class = "row justify-content-md-center" style = "padding-bottom: 5%">
+        <ngb-carousel *ngIf="images" class = "col-10 ">
+            <ng-template ngbSlide>
+                <img [src]="images[0]" class = "col-12" alt="Randomly selected first slide">
+                <div class="carousel-caption">
+                    <h3>15 minutes of your day can change your life</h3>
+                    <p>Use our fitness tracker to utilize your healty life</p>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <img [src]="images[1]" class = "col-12" alt="Randomly selected second slide">
+                <div class="carousel-caption">
+                    <h3>Log workouts, update profile, keep track of your BMI</h3>
+                    <p>This fitness tracker is an excellet tool for all</p>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <img [src]="images[2]" class = "col-12" alt="Randomly selected third slide">
+                <div class="carousel-caption">
+                    <h3>Eat healthy, move your body with joy!</h3>
+                    <p>Your body will love you for that</p>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <img [src]="images[3]" class = "col-12" alt="Randomly selected fourth slide">
+                <div class="carousel-caption">
+                    <h3>Make friends, share and get motivated</h3>
+                    <p>You can send see your friends' workout logs</p>
+                </div>
+            </ng-template>
+            <ng-template ngbSlide>
+                <img [src]="images[4]" class = "col-12" alt="Randomly selected fifth slide">
+                <div class="carousel-caption">
+                    <h3>Record your daily workout and keep track of it</h3>
+                    <p>This fitness tracker can help you track your fitness journey</p>
+                </div>
+            </ng-template>
+        </ngb-carousel>
+    </div>
 </div>

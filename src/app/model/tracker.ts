@@ -1,11 +1,8 @@
 export class Tracker{
-    
     Members: User[] = [];
-    Tips:{
-        url: string
-    };
 }
 
+// User objects' model
 export class User {
     UserId:string;
     UserProfile: Profile;
@@ -18,22 +15,8 @@ export class User {
     Friend: Friends;
 }
 
-export class Friends {
-    Friends:string[];
-    MyRequests:string[];
-    RequestsToMe:string[];
-}
-
-/* export class Friends {
-    User:User;
-    AreYouMyFriend:boolean;
-    DidYouRequest:boolean;
-    DidIRequest:boolean;
-} */
-
+// Profile objects' model
 export class Profile {
-
-    //UserId:string;
     Name:string;
     Age:number;
     Gender:string;
@@ -43,32 +26,27 @@ export class Profile {
     Weight:number;
     Bmi:number;
     Goal:string;
-    ProfileImg:string;// = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-
-    constructor() {
-        this.Name = "Jane Doe";
-        this.Age = 20;
-        this.Heightft = 5;
-        this.Heightin = 1;
-        this.Weight = 100;
-        this.Email = "example@gmail.com";
-        this.Goal = "";
-    }
+    ProfileImg:string;
 }
 
+// Activity objects' model
 export class Activity {
-
     ActivityName: string;
     Duration: number;
-    //TotalToday: number;
     Cycle: number;
 }
 
+// TotalToday objects' model
 export class TotalToday {
-
     Date:string;
     TotalTime:number;
     TotalWorkoutType:number;
     TotalWorkout:Activity[];
 }
 
+// Friends objects' model
+export class Friends {
+    Friends:string[];
+    MyRequests:string[];
+    RequestsToMe:string[];
+}

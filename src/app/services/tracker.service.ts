@@ -1,338 +1,202 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
-import { User, Tracker, Profile, TotalToday, Friends } from '../model/tracker';
+import { User, Profile, TotalToday, Friends } from '../model/tracker';
 import 'rxjs/add/operator/map';
 import { MessagesService } from './messages.service';
 
 @Injectable()
 export class TrackerService {
-  private _api = "http://localhost:8080/fitTracker";
 
-  Me : User;
-  Users:User[] = [];
-  success: boolean = true;
-  myFriend: User[] = [];
-  isIdAvailable:boolean = false;
+    private _api = "http://localhost:8080/fitTracker";
 
-  constructor(private http:Http, private _Router:Router, private _Messages:MessagesService) { 
+    Me : User;
+    Users:User[] = [];
+    isIdAvailable:boolean = false;
 
-    //this.Me = { UserId:'', UserProfile: <Profile>{}, Workout: [], CurrentWorkout: '', Password:'', AvailableExercises:[]};
-  }
+    constructor(
+        private http:Http, 
+        private _Router:Router, 
+        private _Messages:MessagesService
+    ) {}
 
-  
+    // Grabs 5 random pictures from the PicStack in the server, and returns them to home component.
+    getHomePics() {
+        return this.http.get(this._api + "/getHomePic", {})
+            .map((response:Response) => response.json());
+    }
 
-  /* refresh(){
-    this.http.get(this._api + "/state")
-      .subscribe()
-  } */
+    // Checks if the user desired id is already taken or not in the server
+    isIdTaken(name: string) {
+        this.http.get(this._api + "/join/taken", { params: { UserId:name }})
+            .subscribe(data => {
+                if(!data.json()){
+                    alert('User name is already in use. Try another user name.');
+                    this.isIdAvailable = false;
+                }
+                else{
+                    this.isIdAvailable = true;
+                    this.onReadOnly();
+                }
+            });
+    }
 
-  signOut(){
-    this.Me = null;
-    this._Messages.signOutSuccessMessage();
-  }
+    // Set the userIdInput id inside signUpComponent.html to readonly once the user clicks on create.
+    onReadOnly() {
+        document.getElementById('userIdInput').setAttribute("readonly", "true");
+    }
 
-  onReadOnly() {
-    document.getElementById('userIdInput').setAttribute("readonly", "true");
-  }
-
-  isLoginFail(text:string) {
-    document.getElementById('isLoginFail').textContent= text;
-
-  }
-
-  getHomePics() {
-    return this.http.get(this._api + "/getPic", {})
-      .map((response:Response) => response.json());
-  }
-
-  isIdTaken(name: string) {
-    this.http.get(this._api + "/join/taken", { params: { UserId:name}})
-    .subscribe(data => {
-      if(!data.json()){
-        alert('User name already taken');
-        this.isIdAvailable = false;
-      }
-      else{
-        this.isIdAvailable = true;
-        this.onReadOnly();
-      }
-      /* if(!data.json()){
-        alert('UserId already exists');
-        return;
-      } */
-      return data.json();
-    });
-  }
-
-  signup(name: string, password: string) {
-
-      this.Me = { UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, 
-                  Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, 
-                  TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], 
-                  Friend:<Friends>{Friends:[], MyRequests:[], RequestsToMe:[]}};
-      //this.Me = {UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], Friend:[]};
-      console.log(this.Me.Friend)
-      this.http.post(this._api + "/join", {User:this.Me})
-        .subscribe(data =>{
-          console.log('successful sign up')
-
-          //this.Me.Friend = Friends[data.json()]
-          //if(data.json().sucess){//if there was no error, this is going to be true //passing status to the body//duplicate unneccessary
-            this._Messages.signUpSuccessMessage(this.Me.UserId);
-
-            //this.Me = data.json();//Me becomes nothing
-            //this.Me.AvailableExercises = [];
-            this.getExercisesList();
-            // console.log('in sign up in service: my possible freinds list is:')
-            // console.log(this.Me.PossibleFriends)
-          //}
-        }, err => { //handling errors -> if there was an error on the server side, this is going to be executed
-          console.log(err);//passing the status to the header
-        });
+    // Create initial Me and push it in Member in the server.
+    signup(name: string, password: string) {
+        this.Me = { UserId:name, Workout:[], CurrentWorkout:'', UserProfile: <Profile>{}, 
+                    Password: password, AvailableExercises:[], Today:{Date:'', TotalTime:0, 
+                    TotalWorkoutType:0, TotalWorkout:[]}, WorkoutHistory:[], 
+                    Friend:<Friends>{Friends:[], MyRequests:[], RequestsToMe:[]}};
         
-        
-  }
-
-  login(name: string, password: string) {
-
-    this.http.get(this._api + "/login", { params : {  name:name, password:password} })
-    .subscribe(data=> {      
-      if(!data.json()){
-        this._Messages.logInFailMessage();
-        // this.success = false;
-        // console.log('in datajson ' + this.success)
-        this.isLoginFail("Log in Failed");
-        setTimeout(() => this.isLoginFail(""), 3000);
-        return;
-      }
-      this.Me = data.json()
-      //this.Me.AvailableExercises = [];
-      // this.success = true;
-      // document.getElementById('isLoginFail').textContent= "";
-
-      this._Router.navigate(['/home'])
-      this._Messages.logInSuccessMessage(this.Me.UserId);
-      
-      // console.log('when is correct ' + this.success)
-    })
-    // console.log('after all ' + this.success)
-  }
-
-  uploadImage(url:string){
-    this.Me.UserProfile.ProfileImg = url;
-    try{    
-      this.http.post(this._api + "/uploadImg", { UserId:this.Me.UserId, ProfileImg:url }).subscribe();
-    }catch(error){
-      alert('Should be no larger than 50mb.')
+        this.http.post(this._api + "/join", {User:this.Me})
+            .subscribe(data =>{
+                console.log('successful sign up')
+                this._Messages.signUpSuccessMessage(this.Me.UserId);
+            }, err => { 
+                console.log(err);
+            });
+            
     }
-    console.log('uploadImage in service clicked')
-  }
 
-  submitInitialProfile(name:string, age:number, heightft:number, heightin:number, weight:number, bmi:number, email:string){
-    this.Me.UserProfile.Name = name;
-    this.Me.UserProfile.Age = age;
-    this.Me.UserProfile.Heightft = heightft;
-    this.Me.UserProfile.Heightin = heightin;
-    this.Me.UserProfile.Weight = weight;
-    this.Me.UserProfile.Bmi = bmi;
-    this.Me.UserProfile.Email = email; 
-    this.Me.UserProfile.ProfileImg = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-    
-    this.http.post(this._api + "/saveProfile",  { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
-    .subscribe(data=> {
-      this.Me = data.json();
-      //this.Me = obj;
-      /* if(data.json())
-        return;
-       */
-      //this.bmiCalculator();
-
-      this._Router.navigate(['/home']);
-    });
-  }
-
-  saveProfile(me:User){
-    
- 
-    this.http.post(this._api + "/saveProfile", { UserProfile:me.UserProfile, UserId: this.Me.UserId } )
-    .subscribe(data=> {
-      //this.Me = data.json();
-      //this.Me = obj;
-      /* if(data.json())
-        return;
-      */
-      //this.bmiCalculator();
-
-      //this._Router.navigate(['/home']);
-      //this.refresh();
-      
-    });
-  }
-
-  getExercisesList() {
-    this.http.get(this._api + "/exercises/getExercises", {})
-    .subscribe(data=>{
-      this.Me.AvailableExercises = data.json();
-      // this.Me.AvailableExercises.some
-    })
-  }
-
-  selectExercise(text:string) {
-    //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
-    this.Me.CurrentWorkout = text;
-    console.log(text)
-    console.log(this.Me.CurrentWorkout)
-  }
-
-  //just send thisExercise
-  submitExercise(duration:number, cycle:number){
-    var thisExercise = this.Me.Workout.find( x => x.ActivityName == this.Me.CurrentWorkout);
-        if(thisExercise){
-            thisExercise.Duration += duration;
-            thisExercise.Cycle += cycle;
-        }else{
-            thisExercise = { ActivityName:this.Me.CurrentWorkout, Duration:duration, Cycle:cycle };
-            this.Me.Workout.push(thisExercise)
-        } 
-    //this.Me.Workout.push({ActivityName:this.Me.CurrentWorkout, Duration: duration, Cycle:cycle});
-    this.http.post(this._api + "/exercises/submitExercise",{ Workout:thisExercise, UserId:this.Me.UserId })
-        .subscribe(data => {
-          ///this.Me = data.json();  
-          //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
-          //this.Me.CurrentWorkout = item[0];
-          //console.log(this.Me.Workout)
-          //}
-        }, err => {
-          console.log(err);
-        });
-      
-  } 
-
-  calculateTotalToday(date:string) {
-    this.Me.Today.TotalWorkout = this.Me.Workout;
-    this.Me.Today.TotalTime = 0;
-    this.Me.Today.TotalWorkoutType = this.Me.Today.TotalWorkout.length;
-    this.Me.Today.Date = date;
-    console.log(this.Me.Today.TotalWorkout.length)
-    var x;
-    for (x in this.Me.Today.TotalWorkout) {
-        this.Me.Today.TotalTime += this.Me.Today.TotalWorkout[x].Duration;
+    /* At the sign up, the user's initial profile is sent to the server 
+    and this user's profile is updated in the server. */
+    submitInitialProfile(name:string, age:number, heightft:number, heightin:number, 
+        weight:number, bmi:number, email:string){
+            this.Me.UserProfile.Name = name;
+            this.Me.UserProfile.Age = age;
+            this.Me.UserProfile.Heightft = heightft;
+            this.Me.UserProfile.Heightin = heightin;
+            this.Me.UserProfile.Weight = weight;
+            this.Me.UserProfile.Bmi = bmi;
+            this.Me.UserProfile.Email = email; 
+            this.Me.UserProfile.ProfileImg = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+            
+            this.http.post(this._api + "/saveProfile",  { UserProfile:this.Me.UserProfile, UserId: this.Me.UserId } )
+            .subscribe(data=> {
+                this._Router.navigate(['/home']);
+            });
     }
-    console.log(this.Me.Today.TotalTime)
-    this.http.post(this._api + "/exercises/calculateToday",{ UserId: this.Me.UserId, Today: this.Me.Today})
-        .subscribe(data => {
-          //this.Me = data.json();  
-          //var item = this.Me.AvailableExercises.splice( this.Me.AvailableExercises.indexOf(text), 1 );//Only if there's one quote submitted
-          //this.Me.CurrentWorkout = item[0];
-          //console.log('in calctoday' )
-          //console.log( this.Me.Today.TotalWorkout)
-          //}
-        }, err => {
-          console.log(err);
-        });
-  }
-  /* initListeners() {
-    this.socketSvc.socket.on('success', (data) => {
-        this.zone.run(() => {
-            this.myList = data;
-            console.log('Updated List: ', this.myList);
-        });
-    });
-} */
-  
-  putHistory(date:string) {
-    var thisDate = this.Me.WorkoutHistory.find( x => x.Date == date);
-    if(!thisDate)
-      this.Me.WorkoutHistory.push(this.Me.Today);
-    else{
-      thisDate.TotalTime = this.Me.Today.TotalTime;
-      thisDate.TotalWorkout = this.Me.Today.TotalWorkout;
-      thisDate.TotalWorkoutType = this.Me.Today.TotalWorkoutType;
-    }
-      this.http.post(this._api + "/putHistory",{ UserId: this.Me.UserId, History: this.Me.WorkoutHistory})
-        .subscribe(data => {
-          
-        }, err => {
-          console.log(err);
-        });
-      console.log(this.Me.WorkoutHistory)
-  }
 
-  getAllMembers() {
-    /* this.http.post(this._api + "/propagateFriend", { UserId: this.Me.UserId })
-    .subscribe(data=> {
-      this.Users = data.json();
-      var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
-      if(index != -1)
-        this.Users.splice(index, 1);
-     
-    }) */
-   return this.http.get(this._api + "/returnMember", { })
-    .map((response:Response) => response.json());
-     /* .subscribe(data=> {
-      this.Users = data.json();
-      //console.log(this.Users)
-      var index = this.Users.findIndex( x => x.UserId == this.Me.UserId)
-      //console.log(index)
-      if(index != -1)
-        this.Users.splice(index, 1);
-      var a;
-      for (a in this.Me.Friend.RequestsToMe) {
-        var exist = this.Users.find(x => x.UserId == this.Me.Friend.RequestsToMe[a])
-        if(exist){
-          this.Users.splice( this.Users.findIndex(x => x.UserId == this.Me.Friend.RequestsToMe[a]), 1 );
+    /* When the user logs in, it checks in the server if the id and password matches in the system. 
+    Logs the user in with the user data found using the userId if the id and password match in the system,
+    or if they don't match in the system, display an alert message. */
+    login(name: string, password: string) {
+        this.http.get(this._api + "/login", { params : { name:name, password:password } })
+        .subscribe(data=> {      
+            if(!data.json()){
+                this._Messages.logInFailMessage();
+                this.isLoginFail("Log in Failed");
+                setTimeout(() => this.isLoginFail(""), 3000);
+                return;
+            }
+            this.Me = data.json()
+            this._Router.navigate(['/home'])
+            this._Messages.logInSuccessMessage(this.Me.UserId);
+        })
+    }
+
+    // If the log in fails, insert a text into a paragraph in signin.component.html notifying that it failed.
+    isLoginFail(text:string) {
+        document.getElementById('isLoginFail').textContent= text;
+    }
+
+    // Let the user sign out and reset Me to null.
+    signOut(){
+        this.Me = null;
+        this._Messages.signOutSuccessMessage();
+    }
+
+    // Upload the user profile picture to the server.
+    uploadImage(url:string){
+        this.Me.UserProfile.ProfileImg = url;
+        this.http.post(this._api + "/uploadImg", { UserId:this.Me.UserId, ProfileImg:url }).subscribe();
+    }
+
+    // Update user profile in the server.
+    saveProfile(me:User){
+        this.http.post(this._api + "/saveProfile", { UserProfile:me.UserProfile, UserId: this.Me.UserId } )
+        .subscribe();
+    }
+
+    // Grab the exercise list from the ExerciseStack from the server.
+    getExercisesList() {
+        this.http.get(this._api + "/exercises/getExercises", {})
+        .subscribe(data=>{
+            this.Me.AvailableExercises = data.json();
+        })
+    }
+
+    /* Update the user workout done list in the server
+        :If the workout already exist in the workout done list, just update the duration and cycle.
+        :If doesn't exist, push to the workout done list. */
+    submitExercise(duration:number, cycle:number){
+        var thisExercise = this.Me.Workout.find( x => x.ActivityName == this.Me.CurrentWorkout);
+            if(thisExercise){
+                thisExercise.Duration += duration;
+                thisExercise.Cycle += cycle;
+            }else{
+                thisExercise = { ActivityName:this.Me.CurrentWorkout, Duration:duration, Cycle:cycle };
+                this.Me.Workout.push(thisExercise)
+            } 
+
+        this.http.post(this._api + "/exercises/submitExercise",{ Workout:thisExercise, UserId:this.Me.UserId })
+            .subscribe();
+    } 
+
+    // Calculat total time and workout number of today's workout, and update Today in the server.
+    calculateTotalToday(date:string) {
+        this.Me.Today.TotalWorkout = this.Me.Workout;
+        this.Me.Today.TotalTime = 0;
+        this.Me.Today.TotalWorkoutType = this.Me.Today.TotalWorkout.length;
+        this.Me.Today.Date = date;
+
+        var x;
+        for (x in this.Me.Today.TotalWorkout) {
+            this.Me.Today.TotalTime += this.Me.Today.TotalWorkout[x].Duration;
         }
-      } 
-      //console.log(this.Users)
-    })   */
 
+        this.http.post(this._api + "/exercises/calculateToday",{ UserId: this.Me.UserId, Today: this.Me.Today})
+            .subscribe();
+    }
     
-  }
+    /* Keep updating workout history as the user submits each workout if it is already submitted once, 
+    and push the new history if it hasn't been submitted. Update in the server as well. */
+    putHistory(date:string) {
+        var thisDate = this.Me.WorkoutHistory.find( x => x.Date == date);
 
-  getShowList() {
-    return this.http.get(this._api + "/returnShowList", {params: {UserId:this.Me.UserId} })
-    .map((response:Response) => response.json());
-  }
+        if(!thisDate){
+            this.Me.WorkoutHistory.push(this.Me.Today);
+        }
+        else{
+            thisDate.TotalTime = this.Me.Today.TotalTime;
+            thisDate.TotalWorkout = this.Me.Today.TotalWorkout;
+            thisDate.TotalWorkoutType = this.Me.Today.TotalWorkoutType;
+        }
 
-  acceptFriendReq(userId:string){
-    var thisReq = this.Me.Friend.RequestsToMe.findIndex( x => x == userId)
-    this.Me.Friend.RequestsToMe.splice(thisReq, 1)
-    this.http.post(this._api + "/friend/accept", { UserId: userId, MyUserId: this.Me.UserId, RequestsToMe:this.Me.Friend.RequestsToMe })
-    .subscribe(data => {
-    })
-  }
+        this.http.post(this._api + "/putHistory",{ UserId: this.Me.UserId, History: this.Me.WorkoutHistory})
+            .subscribe();
+    }
 
-  sendFriendReq(userId:string) {
-    /* if(this.Me.Friend.MyRequests.find(x => x == userId) || this.Me.Friend.Friends.find(x => x == userId))
-      return;
-    this.Me.Friend.MyRequests.push(userId); */
-    console.log('UserId passed from component ts')
-    console.log(userId)
-    return this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId, MyRequests:this.Me.Friend.MyRequests })
-    .map((response:Response) => response.json())
-    /* .subscribe(data => {
-    }) */
-  }
+    // Grabs the entire mapped Members from the server, and returns the data to the share component.
+    getShowList() {
+        return this.http.get(this._api + "/returnShowList", {params: {UserId:this.Me.UserId} })
+            .map((response:Response) => response.json());
+    }
 
-  getFriends(){
-    this.http.get(this._api + "/getFriendsData", {params: {Friend:this.Me.Friend.Friends}})
-    .subscribe(data => {
-      if(!data.json())
-        return;
-      this.myFriend = data.json();
-      console.log('in getFriends service.ts myFriend is')
-      console.log(this.myFriend)
-    });
-  }
+    // Get rid of the requested user from RequestsToMe in the server upon acceptance of a request.
+    acceptFriendReq(userId:string){
+        this.http.post(this._api + "/friend/accept", { UserId: userId, MyUserId: this.Me.UserId, RequestsToMe:this.Me.Friend.RequestsToMe })
+            .subscribe()
+    }
 
-  reGiveMe(){
-    return this.http.get(this._api + "/giveMe", {params: {UserId:this.Me.UserId}})
-    .map((response:Response) => response.json());
-    /* .subscribe(data=> {
-      if(!data.json())
-        return;
-      this.Me = data.json()
-    }) */
-  }
+    // Put the user's requested friend name to MyRequests in the server.
+    sendFriendReq(userId:string) {
+        this.http.post(this._api + "/friend/req", { UserId: userId, MyUserId: this.Me.UserId })
+            .subscribe();
+    }
 }

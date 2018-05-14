@@ -1,60 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { TrackerService } from '../services/tracker.service';
 import { User } from '../model/tracker';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
 
-  Me: User;
-  isClick:boolean = false;
-  //isJoined:boolean = false;
+    Me: User;
 
-  private _api = "http://localhost:8080/fitTracker";
+    staticAlertClosed = false;
 
-  constructor(private http: Http, private _Tracker: TrackerService) { 
-    this.Me = _Tracker.Me;
-    this._Tracker.isIdAvailable = false;
+    constructor(private _Tracker: TrackerService) { 
+        this.Me = _Tracker.Me;
+        
+        // Prevent showing the initial profile forms after a user sign out and tries to sign up.
+        this._Tracker.isIdAvailable = false;
+    }
+
+    ngOnInit() {
+        // Using ng-bootstrap auto dismissing static alert message box method.
+        setTimeout(() => this.staticAlertClosed = true, 5000);
+    }
+
+    // Checks if the user desired id is already in use. Calls isIdTaken() from service.
+    isIdTaken(userId: string){
+        this._Tracker.isIdTaken(userId);
+    }
+
+    // Let a user sign up using user id and password. Calls signup() from service.
+    signup(name: string, password: string){
+        this._Tracker.signup(name, password);
+    }
     
-  }
+    /* It submits the user's initial profile at the sign up. Calls submitInitialProfile() from service.
+    Calls bmiCalculator() to calculate the bmi of the user. */
+    submitInitialProfile(
+        e: MouseEvent, name:string, age:number, heightft:number, 
+        heightin:number, weight:number, email:string
+    ){
+        e.preventDefault();
+        var bmi = this.bmiCalculator(heightft, heightin, weight);
+        this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, bmi, email);
+    }
 
-  ngOnInit() {
-  }
-
-  
-
-  signup(name: string, password: string){
-      this._Tracker.signup(name, password);//delegate to service
-      // this._Tracker.isIdAvailable = false;
-  }
-
-  
-  isIdTaken(userId: string){
-    this._Tracker.isIdTaken(userId);
-
-  }
-
-  submitInitialProfile(e: MouseEvent, name:string, age:number, heightft:number, heightin:number, weight:number, email:string) {
-      e.preventDefault();
-      var bmi = this.bmiCalculator(heightft, heightin, weight);
-      this._Tracker.submitInitialProfile(name, age, heightft, heightin, weight, bmi, email);
-      console.log('initialization success')
-    
-  }//need to do something here, or the profile won't work.
-
-  toggleSignup(){
-    this.isClick = !this.isClick;
-  }
-
-  bmiCalculator(heightft:number, heightin:number, weight:number){
-    var height = heightft*12 + heightin;
-    var bmi = Math.round((weight/height/height*703) * 10000)/100;
-    return bmi;
-    //console.log('user bmi ' + this.Me.UserProfile.Age)
-  }
-
+    // Calculates the bmi of the user using their height and weight.
+    bmiCalculator(heightft:number, heightin:number, weight:number){
+        var height = (heightft*12 + heightin*1);
+        var bmi = Math.round((weight/height/height*703) * 100)/100;
+        return bmi;
+    }
 }
