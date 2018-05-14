@@ -1,5 +1,5 @@
 ### Note on the final exam
-I tried adding the typeahead in the client side properly, but I did not figure out how to receive the pipe line of text in the server yet. It's in progress.
+I tried adding the typeahead in the client side properly, displaying the typeahead form. But I did not figure out how to receive the pipe line of text in the server yet. In tracker.service.ts I implemented search function that gets from the server the requested items. In share.component.ts, search function fetches data from the typeahead form in the view. share.component.html has been appropriately updated to show typeahead. In model.js, I implemented ReturnSearchUser that filters from the Memebers and returns the filtered items. In controller.js, I called the ReturnSearchUser function from model.js, sending in the (supposedly) pipe line of text. It's in progress.
 
 
 # Jinsoo Choi
