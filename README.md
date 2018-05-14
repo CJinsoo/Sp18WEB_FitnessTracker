@@ -1,3 +1,7 @@
+### Note on the final exam
+I tried adding the typeahead in the client side properly, but I did not figure out how to receive the pipe line of text in the server yet. It's in progress.
+
+
 # Jinsoo Choi
 # Sp18WEB_FitnessTracker 
 

@@ -5,6 +5,8 @@ var app = express.Router();
 var tracker = new Tracker(); 
 
 module.exports = app 
+    // added during the final exam
+    .get('/getSearchUser', (req, res) => res.send( tracker.ReturnSearchUser(req.query.PARAMS) ))
     .get('/state', (req, res) => res.send(tracker) )
     .get('/getHomePic', (req, res) => 
         res.send( tracker.ReturnHomePics() ))

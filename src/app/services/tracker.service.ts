@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import {HttpParams} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { User, Profile, TotalToday, Friends } from '../model/tracker';
 import 'rxjs/add/operator/map';
+import {Observable } from 'rxjs';
+import { of } from 'rxjs/observable/of';
 import { MessagesService } from './messages.service';
+import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, merge} from 'rxjs/operators';
+
 
 @Injectable()
 export class TrackerService {
@@ -14,11 +19,36 @@ export class TrackerService {
     Users:User[] = [];
     isIdAvailable:boolean = false;
 
+    /* PARAMS = new HttpParams({
+        fromObject: {
+          action: 'opensearch',
+          format: 'json',
+          origin: '*'
+        }
+      }); */
+
     constructor(
         private http:Http, 
         private _Router:Router, 
         private _Messages:MessagesService
     ) {}
+
+/*     getSearchUser(query: string) {
+        return this.http.get(this._api+"/getSearchUser", { params: { Text: query } })
+            .map((response:Response) => response.json());
+    } */
+
+    // Added search during the final exam
+    search(term: string) {
+        if (term === '') {
+          return of([]);
+        }
+    
+        return this.http
+          .get(this._api+"/getSearchUser", {params: {PARAMS: term}}).pipe(
+            map(response => response[1])
+          );
+      }
 
     // Grabs 5 random pictures from the PicStack in the server, and returns them to home component.
     getHomePics() {

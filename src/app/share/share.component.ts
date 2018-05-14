@@ -4,6 +4,11 @@ import { Router } from '@angular/router';
 import { User, TotalToday, Friends, Profile } from '../model/tracker';
 import { Subscription } from 'rxjs/Subscription';
 import { MessagesService } from '../services/messages.service';
+import {Observable} from 'rxjs';
+import { of } from 'rxjs/observable/of';
+import { Http } from '@angular/http';
+import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, merge} from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-share',
@@ -13,6 +18,11 @@ import { MessagesService } from '../services/messages.service';
 export class ShareComponent implements OnInit, OnDestroy{
 
     Me:User;
+
+    searching = false;
+    searchFailed = false;
+    hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
+
 
     date:Date;
     today:string;
@@ -36,7 +46,8 @@ export class ShareComponent implements OnInit, OnDestroy{
     constructor(
         private _Tracker: TrackerService, 
         private _Router:Router, 
-        private _Messages: MessagesService
+        private _Messages: MessagesService,
+        private http: Http
     ) { 
         this.Me = _Tracker.Me;
         this.date = new Date();
@@ -64,6 +75,24 @@ export class ShareComponent implements OnInit, OnDestroy{
         }
     }
 
+    // Added the search function during the final exam
+    search = (text$: Observable<string>) =>
+        text$.pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            tap(() => this.searching = true),
+            switchMap(term =>
+                this._Tracker.search(term).pipe(
+                tap(() => this.searchFailed = false),
+                catchError(() => {
+                    this.searchFailed = true;
+                    return of([]);
+                }))
+            ),
+            tap(() => this.searching = false),
+            merge(this.hideSearchingWhenUnsubscribed)
+    );
+
     ngOnInit() {
     }
 
@@ -71,6 +100,8 @@ export class ShareComponent implements OnInit, OnDestroy{
         this.result.unsubscribe();
         clearInterval(this.interval);
     }
+
+    formatter = (x: {name: string}) => x.name;
 
     /* Every second it receives mapped data of all users from the server,
     and distributes data to local variables accordingly to display in view. */

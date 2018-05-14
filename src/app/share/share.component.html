@@ -6,24 +6,34 @@
 <div class = "container">
     <!-- starting of first row -->
     <div class = "row">
-
         <div class = "col-md-4">
-            <div class="card border-primary mb-3">
-                <div class="card-body text-primary">
-                    <h5 class="card-title">Send Friend Requests</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
-                    <div>
-                        <ul class="list-group list-group-flush" >
-                            <li *ngFor = "let user of ShowList" 
-                                class="list-group-item d-flex justify-content-between align-items-center">
-                                <img class="rounded" [src]="user.User.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
-                                {{user.User.UserId}}
-                                <button (click)="requestSuccessMessage(user.User.UserId);sendFriendReq($event, user.User.UserId)"
-                                    class = "btn btn-sm btn-primary">
-                                    Request
-                                </button>
-                            </li>
-                        </ul>
+            <!-- added the typeahead form -->
+            <div class = "row">
+                <div class="form-group">
+                    <label for="typeahead-http">Search for a friend:</label>
+                    <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Search in Friend" />
+                    <span *ngIf="searching">searching...</span>
+                    <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+                </div>
+            </div>
+            <div class = "row">
+                <div class="card border-primary mb-3">
+                    <div class="card-body text-primary">
+                        <h5 class="card-title">Send Friend Requests</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Choose users</h6>
+                        <div>
+                            <ul class="list-group list-group-flush" >
+                                <li *ngFor = "let user of ShowList" 
+                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                    <img class="rounded" [src]="user.User.UserProfile.ProfileImg" style = "height: 24px; width: 24px" alt="">
+                                    {{user.User.UserId}}
+                                    <button (click)="requestSuccessMessage(user.User.UserId);sendFriendReq($event, user.User.UserId)"
+                                        class = "btn btn-sm btn-primary">
+                                        Request
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

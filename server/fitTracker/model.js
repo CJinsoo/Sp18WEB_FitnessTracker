@@ -23,6 +23,13 @@ function Tracker() {
   
         this.Members = [];
 
+        // Added during the final exam
+        this.ReturnSearchUser = (text) => {
+            return this.Members.filter(v => v.UserId.toLowerCase().indexOf(text.toLowerCase()) > -1).slice(0, 10)
+                /* return text.map(x => 
+                this.Members.filter(v => v.UserId.toLowerCase().indexOf(x.term.toLowerCase()) > -1).slice(0, 10) */
+        }
+
         // Returns 5 random pictures from the PicStack to ultimately home component.
         this.ReturnHomePics = () => {
             return [1, 2, 3, 4, 5].map(() => {
