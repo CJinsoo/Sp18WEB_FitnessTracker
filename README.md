@@ -1,40 +1,41 @@
-# Sp18WEB_FitnessTracker Jinsoo Choi
+# Jinsoo Choi
+# Sp18WEB_FitnessTracker 
 
 ## Project Explanation:
 
 ### My tracker app uses MVC design pattern:
-Model : tracker.ts which has Memebers as the entire structure.
+- Model is tracker.ts which has Memebers as the entire structure.
 
 ### Important notice:
-- If nothing happens after a button click or selection from an option, it may be the button/selection did not actually get clicked. ** In that case, please try clicking one more time.** For some reason, these buttons want to be clicked all the way through. If the buttons are clicked properly, the app will work as expected. Thank you.
+- If nothing happens after a button click or selection from an option, it may be the button/selection did not actually get clicked. **In that case, please try clicking one more time.** For some reason, these buttons want to be clicked all the way through. If the buttons are clicked properly, the app will work as expected. Thank you.
 - You can run the app by ```ng serve``` and ```npm run server```
 
 ### There are key features that I focused on building up during the development of the tracker app:
 
 ### Tracker/log
 
-** :Workout Log **
+**:Workout Log**
 
 - Once the user visit the tracker page, they get the AvailableExercises list and are allowed to choose an exercise from the select option list. 
 - Once the user selects an exercise, they are allowed to save workout log with duration and cycle.
 - The user is allowed to save only if they have filled all fields of the form and an exercise has been selected initially. If no exercise is selected initially, they are not allowed to save even if the forms are filled.
 - Once the user clicks save, the workout summary/history at the bottom gets updated with new values and the values are displayed, and all the workouts saved are listed.
 
-** :Tracking Workout History  **
+**:Tracking Workout History**
 
-- **_ To test toggling prev/next workout history, I would like you to save a few workouts today and then change your computer's date manually through system preferences, and go out and come back in to the tracker page(save a few workouts if you'd like) and try toggling history back and forth using the prev/next buttons. _**
+- **_To test toggling prev/next workout history, I would like you to save a few workouts today and then change your computer's date manually through system preferences, and go out and come back in to the tracker page(save a few workouts if you'd like) and try toggling history back and forth using the prev/next buttons._**
 - Upon the user's save, the WorkoutHistory gets updated with new values. Then, all the workouts done in the day is being displayed in the workout summary section. By default, today's workout summary is displayed initially.
 - When the user clicks on Prev button, it shows the previous day workout summary of the user. Likewise, when the user clicks on Next button, it shows the next day workout summary. These buttons are only enabled if the previous/next day exists in the history.
 - When the date changes(i.e. next day), the user's today data is resetted.
 
 ### Profile management
 
-** :Upload Image **
+**:Upload Image**
 
 - It lets the user choose a file from the file system of their computer, and displays in the profile picture segment.
 - The user must click on Upload button for the image to be uploaded/updated in the server so that when the user re-signs in, the image is updated to the new one, and to allow other users to see in the share section. Otherwise, the picture is never updated in the server and the old one is still the old picture.
 
-** :Update/Change Profile Information **
+**:Update/Change Profile Information**
 
 - When the user clicks edit button, user can see the edit forms. 
 - The user can change their profile information via this forms.
@@ -43,18 +44,18 @@ Model : tracker.ts which has Memebers as the entire structure.
 
 ### Share 
 
-** :Send Friend Request **
+**:Send Friend Request**
 
 - The user can send a friend request to other users.
 - Once the request is sent, accepted a request, or became friends, the other user is removed from the user list to prevent double requests.
 
-** :Accept Friend Request **
+**:Accept Friend Request**
 
 - The user can accept friend requests from other users. 
 - Once the user accepts, they become friends and each other can view each other's workout history and profile.
 - Once they become friends, the other user appears in the user's friend list and the user can choose a friend to see their information.
 
-** :View Friends' Workout History **
+**:View Friends' Workout History**
 
 - Once the user select a friend to view from the friends list, the selected friend's profile and workout history is displayed.
 - The friend's workout history works similar to the tracker/log page's history feature.
@@ -84,16 +85,16 @@ This project is about building a fitness tracker.
 It will have at least three complete sub-systems – 1) profile management, 2) exercise log, 3) Sharing with friends. 
 
 ###Key features :
-** 1) Exercise Log **
+**1) Exercise Log**
 
 - log exercise and keep track of the history.
 
-** 2) Profile management: **
+**2) Profile management:**
 
 - let the user initialize profile upon sign up.
 - the user can update their profile in the profile page.
 
-** 3) Share with friends**
+**3) Share with friends**
 
 - let users be friends by sending requests and accepting requests.
 - once they become friends, they can view each other's profile and workout history.

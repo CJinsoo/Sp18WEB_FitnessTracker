@@ -1,3 +1,4 @@
+// Model of the app
 export class Tracker{
     Members: User[] = [];
 }
