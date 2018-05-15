@@ -23,7 +23,7 @@
 
 **:Tracking Workout History**
 
-- **_To test toggling prev/next workout history, I would like you to save a few workouts today and then change your computer's date manually through system preferences, and go out and come back in to the tracker page(save a few workouts if you'd like) and try toggling history back and forth using the prev/next buttons._**
+- To test toggling prev/next workout history, you can save a few workouts today and then change your computer's date manually through system preferences, and go out and come back in to the tracker page(save a few workouts if you'd like) and try toggling history back and forth using the prev/next buttons.
 - Upon the user's save, the WorkoutHistory gets updated with new values. Then, all the workouts done in the day is being displayed in the workout summary section. By default, today's workout summary is displayed initially.
 - When the user clicks on Prev button, it shows the previous day workout summary of the user. Likewise, when the user clicks on Next button, it shows the next day workout summary. These buttons are only enabled if the previous/next day exists in the history.
 - When the date changes(i.e. next day), the user's today data is resetted.
