@@ -116,11 +116,11 @@
             <div class="card border-success mb-3" >
                 <div class="card-header" style = "text-align: right" >
                     <button [disabled] = "selectedFriend.WorkoutHistory.length - this.minusLength <= 0" 
-                        type="button" class="btn btn-dark" (click) = "showPrev(list)">
+                        type="button" class="btn btn-dark" (click) = "showPrev(selectedFriend)">
                             Prev
                     </button>
                     <button [disabled] = "selectedFriend.WorkoutHistory.length - this.minusLength == selectedFriend.WorkoutHistory.length-1" 
-                        type="button" class="btn btn-dark" (click) = "showNext(list)">
+                        type="button" class="btn btn-dark" (click) = "showNext(selectedFriend)">
                             Next
                     </button>
                 </div>
